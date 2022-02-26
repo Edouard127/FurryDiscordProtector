@@ -69,10 +69,7 @@ client.on('messageCreate', message => {
         }
     }
 })
-client.on('ready', () => {
-    client.user.setPresence({ activities: [{ name: `${client.guilds.cache.size} servers to protect`, type: 'WATCHING'}]});
-    client.user.setStatus('dnd');
-})
+
 var c = 0
 var raidmode = false
 var threshold = {}
@@ -126,32 +123,14 @@ client.on('guildMemberAdd', member => {
     
 })
 
-
+var memberCount = 0
 client.login(process.env.TOKEN).then(() => {
-    fullMembersList = []
-    function removeDuplicates(arr) {
-        let unique_array = []
-        for (let i = 0; i < arr.length; i++) {
-          if (unique_array.indexOf(arr[i]) == -1) {
-            unique_array.push(arr[i])
-          }
-        }
-        return unique_array
-      }
-    client.guilds.cache.forEach(guild => {
-        guild.members.cache.forEach(member => {
-          var userID = member.id;
-          fullMembersList.push(userID)
-        })
-      })
-      var membersList = removeDuplicates(fullMembersList);
-    var memberCount = Object.keys(membersList).length;
-    
+    client.on('ready', () => {
+        client.user.setPresence({ activities: [{ name: `${client.guilds.cache.size} servers to protect`, type: 'WATCHING'}]});
+        client.user.setStatus('dnd');
+        client.guilds.cache.map(guild => memberCount=+guild.memberCount)
         console.log(`\n ${client.user.username}@Bot [Started] ${new Date()}
-        --------------------------------------\n Users: ${memberCount}\n Servers: ${client.guilds.cache.size}\n --------------------------------------\n`);      
-
-    
-    
-    
+      --------------------------------------\n Users: ${memberCount}\n Servers: ${client.guilds.cache.size}\n --------------------------------------\n`) 
+    })
+       
 })
-
