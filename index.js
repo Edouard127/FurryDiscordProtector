@@ -1,6 +1,6 @@
 const { Client, Intents, Collection } = require("discord.js");
 const fs = require('fs');
-
+const db = require("quick.db");
 const dir = './scripts/';
 const config = require("./config.json");
 const prefix = config.prefix
@@ -48,22 +48,33 @@ client.on('messageCreate', message => {
 })
 var c = 0
 var members = []
+var n = true
+var raidmode = false
 client.on('guildMemberAdd', member => {
+    if(!raidmode){
     
 
             c++
             members.push([member])
             if(c >= 2){
                 console.log("More than 2 members added")
+                raidmode = true
             }
-            console.log(c)
+            if(n)
             setTimeout(() => {
                 c = 0
                 console.log("Cleared")
-            }, 200000) 
+            }, 20000) 
+            n = false
+        }
+        else {
+            member.send(`Hello ${member.user.username}, this server is currently under attack, please try again later`).then(member.kick())
+            console.log(members)
+        }
     // other stuff ...
     
 // other stuff ...
+    
 })
 
 client.login(process.env.TOKEN).then(() => {
