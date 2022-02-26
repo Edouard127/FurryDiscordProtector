@@ -1,10 +1,6 @@
 const db = require("quick.db");
 const argsList = ['raidmode']
-const arguments_raidmode = ['']
 const createEmbed = require('../utils/createEmbed.js')
-const { Client, Intents, Collection, MessageEmbed } = require("discord.js");
-
-    const client = new Client({autoReconnect: true, max_message_cache: 0, intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS"], partials: ['MESSAGE', 'CHANNEL', 'REACTION'],/*, disableEveryone: true*/});
 
 exports.name = "config"; 
 exports.description = "Configure the Raid Detection for your server"
