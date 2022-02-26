@@ -7,8 +7,9 @@ function bytesToSize(bytes) {
     if (bytes == 0) return '0 Byte';
     var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
     return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
- }
-
+}
+exports.name = "server";
+exports.description = 'Stats for nerds like you 🤓'
 exports.run = (message, args) => {
     var threads = 0
     var model = ''
@@ -35,4 +36,3 @@ exports.run = (message, args) => {
 
 }
 
-exports.name = "server";

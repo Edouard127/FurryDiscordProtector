@@ -2,6 +2,9 @@ const { Client, Intents, Collection, MessageEmbed } = require("discord.js");
 
     const client = new Client({autoReconnect: true, max_message_cache: 0, intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS"], partials: ['MESSAGE', 'CHANNEL', 'REACTION'],/*, disableEveryone: true*/});
 
+
+exports.name = "ping";
+exports.description = 'Pong !'
 exports.run = (message, args) => {
         const ping = new MessageEmbed()
 	.setColor('#0099ff')
@@ -17,5 +20,3 @@ exports.run = (message, args) => {
 	//console.log(new Date().getTime() - message.createdTimestamp )
 
 }
-
-exports.name = "ping";

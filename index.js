@@ -18,7 +18,7 @@ for (const file of commands) {
 
   console.log(`Attempting to load command ${commandName}`);
   // Set the command to a collection
-  client.commands.set(commandName, command);
+  client.commands.set(commandName, command, command.description);
   
   console.log(`Successfully loaded ${commandName}`);
 }
@@ -26,7 +26,7 @@ client.on('messageCreate', message => {
     const args = message.content.slice(prefix.length).trim().split(/ +/);
 
     switch(true){
-        case (message.content.startsWith(prefix + 'ping') && !message.author.bot && message.channel.type !== "dm"): {
+        case (args[0] === 'ping' && !message.author.bot && message.channel.type !== "dm"): {
             try {
                 let cmd = client.commands.get(message.content.replace(prefix, ''))
                 //console.log(message.content.replace(prefix, '') + ".js");
@@ -37,7 +37,7 @@ client.on('messageCreate', message => {
             }
         }
         break;
-        case (message.content.startsWith(prefix + 'server') && !message.author.bot && message.channel.type !== "dm"): {
+        case (args[0] ===  'server' && !message.author.bot && message.channel.type !== "dm"): {
             try {
                 let cmd = client.commands.get(message.content.replace(prefix, ''))
                 //console.log(message.content.replace(prefix, '') + ".js");
@@ -60,38 +60,71 @@ client.on('messageCreate', message => {
                 console.log(err)
             }
         }
+        break;
+        case (args[0] === 'help' && !message.author.bot && message.channel.type !== "dm"): {
+                let cmd = client.commands.get(args[0])
+                //console.log(message.content.replace(prefix, '') + ".js");
+                if (cmd) cmd.run(message, args, client, prefix)
+
+        }
     }
 })
+client.on('ready', () => {
+    client.user.setPresence({ activities: [{ name: `${client.guilds.cache.size} servers to protect`, type: 'WATCHING'}]});
+    client.user.setStatus('dnd');
+})
 var c = 0
-var members = []
-var n = true
 var raidmode = false
+var threshold = {}
+var c = {}
 client.on('guildMemberAdd', member => {
-    if(!raidmode){
-    
-
-            c++
-            members.push([member])
-            if(c >= 2){
-                console.log("More than 2 members added")
-                raidmode = true
-            }
-            if(n)
-            setTimeout(() => {
-                c = 0
-                console.log("Cleared")
-            }, 20000) 
-            n = false
+    (async () => {
+        if(!await db.get(member.guild.id)){
+            
+            threshold = 5
         }
         else {
-            member.send(`Hello ${member.user.username}, this server is currently under attack, please try again later`).then(member.kick())
-            console.log(members)
+            threshold[member.guild.id] = JSON.stringify(await db.get(member.guild.id).raidmode).replace(/['"]+/g, '')
+            console.log(threshold[member.guild.id])
+            
         }
-    // other stuff ...
+    })().then(() => {
+        if(!raidmode){
+            var canClear = true
+
+        
+                if(!c[member.guild.id]){
+                    c[member.guild.id] = { count: 1 }
+                    //console.log(c)
+                }
+                else {
+                    c[member.guild.id].count++
+                    //console.log(c)
+                }
+                
+                
+                
+                if(c[member.guild.id].count >= threshold[member.guild.id]){
+                    
+                    raidmode = true
+                }
+                if(canClear){
+                setTimeout(() => {
+                    
+                    canClear = false
+                    
+                }, 10000, canClear = true, c[member.guild.id].count = 0)
+            }
+            }
+            else {
+                member.send(`Hello ${member.user.username}, this server is currently under attack, please try again later`).then(member.kick())
+                console.log(members)
+            }
+    })
     
-// other stuff ...
     
 })
+
 
 client.login(process.env.TOKEN).then(() => {
     fullMembersList = []
@@ -112,8 +145,12 @@ client.login(process.env.TOKEN).then(() => {
       })
       var membersList = removeDuplicates(fullMembersList);
     var memberCount = Object.keys(membersList).length;
-    console.log(`\n ${client.user.username}@Bot [Started] ${new Date()}
-    --------------------------------------\n Utilisateurs: ${memberCount}\n Servers: ${client.guilds.cache.size}\n --------------------------------------\n`);
+    
+        console.log(`\n ${client.user.username}@Bot [Started] ${new Date()}
+        --------------------------------------\n Users: ${memberCount}\n Servers: ${client.guilds.cache.size}\n --------------------------------------\n`);      
+
+    
     
     
 })
+
