@@ -1,6 +1,6 @@
-const { QuickDB } = require("quick.db");
-const db = QuickDB(); 
+const db = require("quick.db"); 
 
-function db(data){
+function db_(data){
     
 }
+module.exports = db_
