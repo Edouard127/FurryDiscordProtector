@@ -23,6 +23,8 @@ for (const file of commands) {
   console.log(`Successfully loaded ${commandName}`);
 }
 client.on('messageCreate', message => {
+    const args = message.content.slice(prefix.length).trim().split(/ +/);
+
     switch(true){
         case (message.content.startsWith(prefix + 'ping') && !message.author.bot && message.channel.type !== "dm"): {
             try {
@@ -34,11 +36,25 @@ client.on('messageCreate', message => {
                 console.log(err)
             }
         }
+        break;
         case (message.content.startsWith(prefix + 'server') && !message.author.bot && message.channel.type !== "dm"): {
             try {
                 let cmd = client.commands.get(message.content.replace(prefix, ''))
                 //console.log(message.content.replace(prefix, '') + ".js");
                 if (cmd) cmd.run(message, prefix)
+                
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        break;
+        case (args[0] === 'config' && !message.author.bot && message.channel.type !== "dm"): {
+            try {
+                
+                let cmd = client.commands.get(args[0])
+                //console.log(message.content.replace(prefix, '') + ".js");
+                var p = prefix
+                if (cmd) cmd.run(message, args, p)
                 
             } catch (err) {
                 console.log(err)
