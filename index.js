@@ -79,12 +79,13 @@ var threshold = {}
 var c = {}
 client.on('guildMemberAdd', member => {
     (async () => {
-        if(!await db.get(member.guild.id)){
+        if(!await db.get(`${member.guild.id}.raidmode.raidmode`)){
             
             threshold = 5
         }
         else {
-            threshold[member.guild.id] = JSON.stringify(await db.get(member.guild.id).raidmode).replace(/['"]+/g, '')
+            
+            threshold[member.guild.id] = JSON.stringify(await db.get(`${member.guild.id}.raidmode.raidmode`)).replace(/['"]+/g, '')
             console.log(threshold[member.guild.id])
             
         }
