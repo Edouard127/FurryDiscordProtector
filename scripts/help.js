@@ -1,4 +1,3 @@
-const { MessageEmbed } = require("discord.js");
 const createEmbed = require('../utils/createEmbed.js')
 
 exports.name = "help";
