@@ -1,5 +1,7 @@
 const { Client, Intents, Collection, MessageEmbed } = require("discord.js");
+const client = new Client({autoReconnect: true, max_message_cache: 0, intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS"], partials: ['MESSAGE', 'CHANNEL', 'REACTION'],/*, disableEveryone: true*/});
 const os = require('os')
+
 function bytesToSize(bytes) {
     var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     if (bytes == 0) return '0 Byte';
@@ -11,16 +13,19 @@ exports.run = (message, args) => {
     var threads = 0
     var model = ''
     var clock = 0
+    var guilds_count = 0
     for(var i = 0; i <os.cpus().length; i++) {
         threads++
         model = os.cpus()[i].model
         clock = os.cpus()[i].speed / 1000
     }
-        const ping = new MessageEmbed()
+    
+    const ping = new MessageEmbed()
 	.setColor('#0099ff')
 	.setTitle('📊 Nerd Stats')
 	.setDescription(`Made for nerds like you 🤓\n
-    <:CPU:946565742055292949> CPU Informations:\nModel: ${model}\nNumber of Threads: ${threads}\nClock: ${clock} Ghz\n\n<:RAM:946581194793971712> RAM Informations:\n Total RAM: ${bytesToSize(os.totalmem())}\nFree RAM: ${bytesToSize(os.freemem())}\nRAM Used by process: ${bytesToSize(process.memoryUsage.rss())}`
+    <:CPU:946565742055292949> CPU Informations:\nModel: ${model}\nNumber of Threads: ${threads}\nClock: ${clock} Ghz\n\n
+    <:RAM:946581194793971712> RAM Informations:\n Total RAM: ${bytesToSize(os.totalmem())}\nFree RAM: ${bytesToSize(os.freemem())}\nRAM Used by process: ${bytesToSize(process.memoryUsage.rss())}`
       )
 	.setTimestamp()
 	.setFooter({ text: 'Coded by Kamigen#0001', iconURL: 'https://cdn.discordapp.com/avatars/385441179069579265/864fa98fa71abc1258b21435440e097d.png?size=64' });

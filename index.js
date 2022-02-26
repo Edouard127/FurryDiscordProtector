@@ -27,7 +27,7 @@ client.on('messageCreate', message => {
         case (message.content.startsWith(prefix + 'ping') && !message.author.bot && message.channel.type !== "dm"): {
             try {
                 let cmd = client.commands.get(message.content.replace(prefix, ''))
-                console.log(message.content.replace(prefix, '') + ".js");
+                //console.log(message.content.replace(prefix, '') + ".js");
                 if (cmd) cmd.run(message, prefix)
                 
             } catch (err) {
@@ -37,7 +37,7 @@ client.on('messageCreate', message => {
         case (message.content.startsWith(prefix + 'server') && !message.author.bot && message.channel.type !== "dm"): {
             try {
                 let cmd = client.commands.get(message.content.replace(prefix, ''))
-                console.log(message.content.replace(prefix, '') + ".js");
+                //console.log(message.content.replace(prefix, '') + ".js");
                 if (cmd) cmd.run(message, prefix)
                 
             } catch (err) {
@@ -45,6 +45,25 @@ client.on('messageCreate', message => {
             }
         }
     }
+})
+var c = 0
+var members = []
+client.on('guildMemberAdd', member => {
+    
+
+            c++
+            members.push([member])
+            if(c >= 2){
+                console.log("More than 2 members added")
+            }
+            console.log(c)
+            setTimeout(() => {
+                c = 0
+                console.log("Cleared")
+            }, 200000) 
+    // other stuff ...
+    
+// other stuff ...
 })
 
 client.login(process.env.TOKEN).then(() => {
@@ -68,5 +87,6 @@ client.login(process.env.TOKEN).then(() => {
     var memberCount = Object.keys(membersList).length;
     console.log(`\n ${client.user.username}@Bot [Started] ${new Date()}
     --------------------------------------\n Utilisateurs: ${memberCount}\n Servers: ${client.guilds.cache.size}\n --------------------------------------\n`);
-    client.ws.ping
+    
+    
 })
