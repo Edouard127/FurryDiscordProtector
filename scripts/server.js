@@ -6,6 +6,9 @@ const os = require('os')
 exports.name = "server";
 exports.description = 'Stats for nerds like you 🤓'
 exports.run = (message, args) => {
+    const guildLanguages = require('../utils/languages/config/languages.json')
+    const guildLanguage = guildLanguages[message.guild.id] || "en"; // "english" will be the default language
+    const language = require(`../utils/languages/${guildLanguage}.js`);
     var threads = 0
     var model = ''
     var clock = 0
@@ -15,9 +18,10 @@ exports.run = (message, args) => {
         model = os.cpus()[i].model
         clock = os.cpus()[i].speed / 1000
     }
-    const ping = createEmbed('#0099ff', '📊 Nerd Stats', `Made for nerds like you 🤓\n
-    <:CPU:946565742055292949> CPU Informations:\nModel: ${model}\nNumber of Threads: ${threads}\nClock: ${clock} Ghz\n\n
-    <:RAM:946581194793971712> RAM Informations:\n Total RAM: ${bytesToSize(os.totalmem())}\nFree RAM: ${bytesToSize(os.freemem())}\nRAM Used by process: ${bytesToSize(process.memoryUsage.rss())}`)
+    var freemem = bytesToSize(os.freemem())
+    var totalmem = bytesToSize(os.totalmem())
+    var memusage = bytesToSize(process.memoryUsage.rss())
+    const ping = createEmbed('#0099ff', `${language('_stats_nerd')}`,`${language('_stats_nerd_infos', model, threads, clock, totalmem, freemem, memusage)}`)
 
     message.channel.send({ embeds: [ping] })
     

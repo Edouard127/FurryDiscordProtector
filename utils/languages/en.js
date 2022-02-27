@@ -18,11 +18,12 @@ const languageData = {
         _lang_choices: (langs) => `Please chose one of the following languages:\n${langs}`,
         _lang_invalid: '⚙️ Invalid language',
         _lang_lang_configuration: (prefix, exports, argsList) => `Bot Configuration\nCommand: ${prefix}${exports}\n\nArguments: ${argsList}`,
+        _lang_validation: 'Successfully updated bot language to English',
         _ping_answer: "You've got an answer",
         _ping_response: (ms_lt, ms_api) => `⌛ Latency is ${ms_lt} ms\n⏲️ API Ping is ${ms_api} ms`,
         _stats_nerd: '📊 Nerd Stats',
         _stats_nerd_stats: 'Made for nerds like you 🤓',
-        _stats_nerd_infos: (model, threads, clock, total_ram, free_ram, used_ram) => `<:CPU:946565742055292949> CPU Informations:\nModel: ${model}\nNumber of Threads: ${threads}\nClock: ${clock} Ghz\n\n<:RAM:946581194793971712> RAM Informations:\n Total RAM: ${total_ram}\nFree RAM: ${free_ram}\nRAM Used by process: ${used_ram}`,
+        _stats_nerd_infos: (model, threads, clock, total_ram, free_ram, used_ram) => `Made for nerds like you 🤓\n<:CPU:946565742055292949> CPU Informations:\nModel: ${model}\nNumber of Threads: ${threads}\nClock: ${clock} Ghz\n\n<:RAM:946581194793971712> RAM Informations:\n Total RAM: ${total_ram}\nFree RAM: ${free_ram}\nRAM Used by process: ${used_ram}`,
         
 }
 const translate = (key, ...args) => {

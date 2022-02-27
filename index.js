@@ -47,7 +47,7 @@ client.on('messageCreate', message => {
             }
         }
         break;
-        case (args[0] ===  'server' && !message.author.bot && message.channel.type !== "dm"): {
+        case (args[0] === 'server' && !message.author.bot && message.channel.type !== "dm"): {
             try {
                 let cmd = client.commands.get(message.content.replace(prefix, ''))
                 //console.log(message.content.replace(prefix, '') + ".js");
@@ -84,6 +84,13 @@ client.on('messageCreate', message => {
                 if (cmd) cmd.run(message, args, client, prefix)
 
         }
+        break;
+        case (args[0] === 'lang' && !message.author.bot && message.channel.type !== "dm"): {
+            let cmd = client.commands.get(args[0])
+            //console.log(message.content.replace(prefix, '') + ".js");
+            if (cmd) cmd.run(message, args, client, prefix)
+
+    }
     }
 })
 

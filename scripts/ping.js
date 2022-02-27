@@ -5,10 +5,14 @@ const createEmbed = require('../utils/createEmbed.js')
 exports.name = "ping";
 exports.description = 'Pong !'
 exports.run = (message, args) => {
-	const ping = createEmbed('$0099ff', 'Pong !', `You've got an answer\n
-	⌛ Latency is ${Math.floor(
-		message.createdTimestamp - new Date().getTime()
-	)}ms\n⏲️ API Ping is ${Math.round(message.client.ws.ping)} ms`)
+	const guildLanguages = require('../utils/languages/config/languages.json')
+    const guildLanguage = guildLanguages[message.guild.id] || "en"; // "english" will be the default language
+    const language = require(`../utils/languages/${guildLanguage}.js`);
+	var ws = Math.floor(
+		message.createdTimestamp/1000 - new Date().getTime()/1000 
+	)
+	var api = Math.round(message.client.ws.ping)
+	const ping = createEmbed('$0099ff', `${language('_ping_answer')}`, `${language('_ping_response', ws, api)}`)
 
     message.channel.send({ embeds: [ping] })
 	//console.log(new Date().getTime() - message.createdTimestamp )
