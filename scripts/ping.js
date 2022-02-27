@@ -1,4 +1,5 @@
 const createEmbed = require('../utils/createEmbed.js')
+const db = require('quick.db')
 
 
 
