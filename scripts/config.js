@@ -5,6 +5,9 @@ const createEmbed = require('../utils/createEmbed.js')
 exports.name = "config";
 exports.description = "Configure the Raid Detection for your server"
 exports.run = (message, args, prefix) => {
+    const guildLanguages = require('../utils/languages/config/languages.json')
+    const guildLanguage = guildLanguages[message.guild.id] || "en"; // "english" will be the default language
+    const language = require(`../utils/languages/${guildLanguage}.js`);
     //console.log(message)
     switch (true) {
         case (args[1] === 'raidmode'): {
@@ -32,16 +35,16 @@ exports.run = (message, args, prefix) => {
                         var after = (new Date().getTime()).toFixed(2)
                         var lapsedTime = after - before
                         var config = createEmbed('#0099ff',
-                            '⚙️ Raidmode Configuration',
-                            `✅ Operation Completed in ${lapsedTime} ms`)
-                        message.reply({ embeds: [config] })
+                            `${language("_config_raid_raidmode")}`,
+                            `${language("_config_success", lapsedTime)}`)
+                            message.reply({ embeds: [config] })
                     })
                 }
                 else {
                     var config = createEmbed('#0099ff',
-                        '⚙️ Raidmode Configuration',
-                        `Invalid Syntax: ${args[2]} is not an integer`)
-                    message.reply({ embeds: [config] })
+                        `${language("_config_raid_raidmode")}`,
+                        `${language("_config_bad_syntax", args[2])}`)
+                        message.reply({ embeds: [config] })
                 }
             }
             else {
@@ -49,8 +52,8 @@ exports.run = (message, args, prefix) => {
                 (async () => {
                     try {
                         if (!await db.get(message.guild.id)) {
-                            configuration = '```No configuration detected for this server```'
-                            console.log(configuration)
+                            configuration = language("_config_no_configuration")
+                            
                         }
                         else {
                             configuration = '```' + JSON.stringify(await db.get(message.guild.id)) + '```'
@@ -59,9 +62,10 @@ exports.run = (message, args, prefix) => {
                     } catch (err) { console.log(err) }
                 })().then(() => {
                     var config = createEmbed('#0099ff',
-                        '⚙️ Raidmode Configuration',
-                        `Current configuration:\n${configuration}\nSyntax: ${prefix}${exports.name} raidmode [ number ] => Number of joins in 10 seconds before triggering the Anti-Raid Mode`)
+                        `${language('_config_raid_raidmode')}`,
+                        `${language('_config_raid_configuration', configuration, prefix, exports.name)}`)
                     message.reply({ embeds: [config] })
+                    
                 })
 
             }
@@ -94,15 +98,15 @@ exports.run = (message, args, prefix) => {
                         var after = (new Date().getTime()).toFixed(2)
                         var lapsedTime = after - before
                         var config = createEmbed('#0099ff',
-                            '⚙️ Anti-Spam Configuration',
-                            `✅ Operation Completed in ${lapsedTime} ms`)
+                            `${language('_config_nspam_config')}`,
+                            `${language('_config_succes', lapsedTime)}`)
                         message.reply({ embeds: [config] })
                     })
                 }
                 else {
                     var config = createEmbed('#0099ff',
-                        '⚙️ Anti-Spam Configuration',
-                        `Invalid Syntax: ${args[2]} is not an integer`)
+                        `${language('_config_nspam_config')}`,
+                        `${language("_config_bad_syntax", args[2])}`)
                     message.reply({ embeds: [config] })
                 }
             }
@@ -111,8 +115,8 @@ exports.run = (message, args, prefix) => {
                 (async () => {
                     try {
                         if (!await db.get(message.guild.id)) {
-                            configuration = '```No configuration detected for this server```'
-                            console.log(configuration)
+                            configuration = language("_config_no_configuration")
+                            
                         }
                         else {
                             configuration = '```' + JSON.stringify(await db.get(message.guild.id)) + '```'
@@ -121,8 +125,8 @@ exports.run = (message, args, prefix) => {
                     } catch (err) { console.log(err) }
                 })().then(() => {
                     var config = createEmbed('#0099ff',
-                        '⚙️ Anti-Spam Configuration',
-                        `Current configuration:\n${configuration}\nSyntax: ${prefix}${exports.name} antispam [ number ] => Number of messages in 5 seconds before triggering the Anti-Spam`)
+                        `${language('_config_nspam_config')}`,
+                        `${language('_config_nspam_configuration', configuration, prefix, exports.name)}`)
                     message.reply({ embeds: [config] })
                 })
             }
@@ -130,11 +134,9 @@ exports.run = (message, args, prefix) => {
             break;
         default: {
             var config = createEmbed('#0099ff',
-                '⚙️ Config',
+                `${language('_config_default')}`,
 
-                `Bot Configuration\n
-            Command: ${prefix}${exports.name}\n\n
-            Arguments: ${argsList} `)
+                `${language('_config_default_syntax', exports.name, argsList)}`)
 
             message.reply({ embeds: [config] })
         }
