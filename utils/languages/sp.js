@@ -11,7 +11,7 @@ const languageData = {
         _config_no_configuration: '```No se detectó ninguna configuración para este servidor```',
         _config_configuration: (configuration, prefix, exports) => `Configuración actual:\n${configuration}\nSintaxis: ${prefix}${exports} raidmode [ número ] => Número de uniones en 10 segundos antes de activar el modo Anti-Raid`,
         _config_nspam_config: '⚙️ Configuración antispam',
-        _config_nspam_configuration: (configuration, prefix, exports) => `Configuración actual:\n${configuration}\nSintaxis: ${prefix}${exports} antispam [ número ] => Número de mensajes en 5 segundos antes de activar el Anti-Spam`,
+        _config_nspam_configuration: (configuration, prefix, exports) => `Configuración actual:\n${configuration}\nSintaxis: ${prefix}${exports} antispam [ número ] => Número de mensajes en 3 segundos antes de activar el Anti-Spam`,
         _help_help: '❓ Ayuda',
         _lang_lang: '⚙️ Configuración',
         _lang_lang_configuration: (prefix, exports, argsList) => `Configuración del bot\nComando: ${prefix}${exports}\n\nArgumentos: ${argsList}`,

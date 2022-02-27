@@ -10,7 +10,7 @@ const languageData = {
     _config_no_configuration: 'Конфигурация для этого сервера не обнаружена',
     _config_raid_configuration: (configuration, prefix, exports) => `Текущая конфигурация:\n${configuration}\nСинтаксис: ${prefix}${exports} raidmode [ номер ] => Количество объединений за 10 секунд до срабатывания режима антирейда`,
     _config_nspam_config: ':gear: Настройка антиспама',
-    _config_nspam_configuration: (configuration, prefix, exports) => `Текущая конфигурация:\n${configuration}\nСинтаксис: ${prefix}${exports} antispam [ номер ] => Количество сообщений за 5 секунд до срабатывания антиспама`,
+    _config_nspam_configuration: (configuration, prefix, exports) => `Текущая конфигурация:\n${configuration}\nСинтаксис: ${prefix}${exports} antispam [ номер ] => Количество сообщений за 3 секунд до срабатывания антиспама`,
     _config_default: `⚙️ Конфигурация`,
     _config_default_syntax: (exports, argsList) => `Конфигурация бота\nКоманда: ${exports}\n\nАргументы: ${argsList}`,
     _help_help: ':question: Помощь',

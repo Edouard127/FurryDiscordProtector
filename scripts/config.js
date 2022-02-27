@@ -99,7 +99,7 @@ exports.run = (message, args, prefix) => {
                         var lapsedTime = after - before
                         var config = createEmbed('#0099ff',
                             `${language('_config_nspam_config')}`,
-                            `${language('_config_succes', lapsedTime)}`)
+                            `${language('_config_success', lapsedTime)}`)
                         message.reply({ embeds: [config] })
                     })
                 }
