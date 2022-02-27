@@ -1,6 +1,7 @@
-const { Client, Intents, Collection } = require("discord.js");
+const { Client, Intents, Collection, Permissions } = require("discord.js");
 const fs = require('fs');
 const db = require("quick.db");
+const spam_ = require("./utils/antispam.js")
 const dir = './scripts/';
 const config = require("./config.json");
 const prefix = config.prefix
@@ -23,9 +24,18 @@ for (const file of commands) {
   console.log(`Successfully loaded ${commandName}`);
 }
 client.on('messageCreate', message => {
+    if(!message.author.bot && message.channel.type !== "dm"){
+    spam_(message, client)
+    }
+    
+    
+        
+
+        
     const args = message.content.slice(prefix.length).trim().split(/ +/);
 
     switch(true){
+        
         case (args[0] === 'ping' && !message.author.bot && message.channel.type !== "dm"): {
             try {
                 let cmd = client.commands.get(message.content.replace(prefix, ''))
@@ -49,6 +59,7 @@ client.on('messageCreate', message => {
         }
         break;
         case (args[0] === 'config' && !message.author.bot && message.channel.type !== "dm"): {
+            if(message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MODERATE_MEMBERS)){
             try {
                 
                 let cmd = client.commands.get(args[0])
@@ -60,6 +71,12 @@ client.on('messageCreate', message => {
                 console.log(err)
             }
         }
+        else {
+            message.reply("You do not have permissions to use this command")
+        }
+            
+        }
+        
         break;
         case (args[0] === 'help' && !message.author.bot && message.channel.type !== "dm"): {
                 let cmd = client.commands.get(args[0])
