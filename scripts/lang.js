@@ -15,7 +15,7 @@ exports.run = (message, args, client, prefix) => {
                 if (langs.includes(args[1])) {
 
                     guildLanguages[message.guild.id] = args[1];
-                    console.log(guildLanguages)
+                    
                         fs.writeFileSync(__dirname + '/../utils/languages/config/languages.json', JSON.stringify(guildLanguages))
                         const newl = require(`../utils/languages/${args[1]}.js`);
                         var config = createEmbed('#0099ff', `${newl('_lang_lang')}`, `${newl('_lang_validation')}`)
