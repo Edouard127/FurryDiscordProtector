@@ -131,7 +131,7 @@ client.on('messageCreate', message => {
     }
     }
 })
-client.on('error')
+
 var c = 0
 var raidmode = false
 var threshold = {}

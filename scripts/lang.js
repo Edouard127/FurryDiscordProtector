@@ -1,6 +1,6 @@
 const createEmbed = require('../utils/createEmbed.js')
 const fs = require('fs')
-const langs = ['en', 'fr', 'ru', 'es']
+const langs = ['en', 'fr', 'ru', 'sp']
 
 
 exports.name = "lang";
@@ -17,9 +17,15 @@ exports.run = (message, args, client, prefix) => {
                     guildLanguages[message.guild.id] = args[1];
                     
                         fs.writeFileSync(__dirname + '/../utils/languages/config/languages.json', JSON.stringify(guildLanguages))
+                        try {
                         const newl = require(`../utils/languages/${args[1]}.js`);
                         var config = createEmbed('#0099ff', `${newl('_lang_lang')}`, `${newl('_lang_validation')}`)
                         message.reply({ embeds: [config] })
+                    } catch (err){
+                        const language = require(`../utils/languages/${guildLanguage}.js`);
+                        var config = createEmbed('#0099ff', `${language('_lang_invalid')}`, `${language('_lang_choices', langs)}`)
+                        message.reply({ embeds: [config] })
+                    }
                     
 
                 }
