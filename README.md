@@ -21,7 +21,6 @@ And more soon
 
 ## Badges
 
-Add badges from somewhere like: [shields.io](https://shields.io/)
 
 ![Repo size](https://img.shields.io/github/repo-size/Edouard127/FurryDiscordProtector)
 
