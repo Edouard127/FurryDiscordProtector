@@ -1,4 +1,4 @@
-const { Client, Intents, Collection, Permissions } = require("discord.js");
+const { Client, Collection, Permissions } = require("discord.js");
 const fs = require('fs');
 const db = require("quick.db");
 const spam_ = require("./utils/antispam.js")
@@ -34,35 +34,31 @@ process.on('uncaughtException', error => {
     console.log('Uncaught Exception:', error);
 })
 client.on('messageCreate', message => {
-    if(message.attachments){
-        message.attachments.forEach(attachments => {
-            url = attachments.proxyURL
-            isNsfwQ(url, message)
-        })
-        
-    }
     
-    if(!message.author.bot && message.channel.type !== 'DM'){
-    let array = message.content.split(" ")
-    for(var arr in array){
-        if(array[arr].match(/(https?:\/\/.*\.(?:png|jpg))/i)){
-            url = array[arr]
-            isNsfwQ(url, message)
-        }
-    }
-}
+    
     if(!message.author.bot && message.channel.type !== "dm"){
-    spam_(message, client)
-    }
-    
-    
-        
+        if(message.attachments){
+            message.attachments.forEach(attachments => {
+                url = attachments.proxyURL
+                isNsfwQ(url, message)
+            })
+            
+        }
+        spam_(message, client)
+        let array = message.content.split(" ")
+        for(let arr in array){
+            if(array[arr].match(/(https?:\/\/.*\.(?:png|jpg))/i)){
+                url = array[arr]
+                isNsfwQ(url, message)
+            }
+        }
+    }    
 
         
     const args = message.content.slice(prefix.length).trim().split(/ +/);
 
     switch(true){
-        
+
         case (args[0] === 'ping' && !message.author.bot && message.channel.type !== "dm"): {
             try {
                 let cmd = client.commands.get(message.content.replace(prefix, ''))
@@ -93,7 +89,7 @@ client.on('messageCreate', message => {
                 
                 let cmd = client.commands.get(args[0])
                 //console.log(message.content.replace(prefix, '') + ".js");
-                var p = prefix
+                let p = prefix
                 if (cmd) cmd.run(message, args, p)
                 
             } catch (err) {
@@ -132,10 +128,9 @@ client.on('messageCreate', message => {
     }
 })
 
-var c = 0
-var raidmode = false
-var threshold = {}
-var c = {}
+let raidmode = false
+let threshold = {}
+let c = {}
 client.on('guildMemberAdd', member => {
     (async () => {
         if(!await db.get(`${member.guild.id}.raidmode.raidmode`)){
@@ -150,7 +145,7 @@ client.on('guildMemberAdd', member => {
         }
     })().then(() => {
         if(!raidmode){
-            var canClear = true
+            let canClear = true
 
         
                 if(!c[member.guild.id]){
@@ -185,7 +180,7 @@ client.on('guildMemberAdd', member => {
     
 })
 
-var memberCount = 0
+let memberCount = 0
 client.login(process.env.TOKEN).then(() => {
     client.on('ready', () => {
         client.user.setPresence({ activities: [{ name: `${client.guilds.cache.size} servers to protect`, type: 'WATCHING'}]});

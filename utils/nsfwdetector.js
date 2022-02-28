@@ -1,14 +1,14 @@
 const axios = require('axios').default
-function isNsfwQ(url, message){
+async function isNsfwQ(url, message){
     try {
-    axios.get(`https://nsfw-demo.sashido.io/api/image/classify?url=${url}`).then((response, err) => {
-        //console.log(response.data)
+    var data = await axios.get(`https://nsfw-demo.sashido.io/api/image/classify?url=${url}`)
+        console.log(data.data)
         if(err) { throw err }
         try {
-        if(response.data[0].className === 'Hentai' || response.data[0].className === 'Porn'){
+        if(data.data[0].className === 'Hentai' || data.data[0].className === 'Porn'){
                 message.reply(`Your image has been flagged as NSFW, please refrain from posting this kind of stuff`).then(() => {
                     try {
-                    setTimeout(() => message.delete().catch(), 1)
+                    setTimeout(() => message.delete().catch(), 0)
                     } catch {}
                 })
             
@@ -19,7 +19,7 @@ function isNsfwQ(url, message){
                 setTimeout(() => message.delete(), 1)
             })
         }*/
-    })
+    
 } catch(err) {
     console.log(err)
 }
