@@ -23,7 +23,7 @@ And more soon
 
 
 ![Repo size](https://img.shields.io/github/repo-size/Edouard127/FurryDiscordProtector)
-
+ 
 
 ## Installation
 
@@ -31,5 +31,5 @@ Currently no Installation steps are provided
 
 ```bash
 
-```
+``` 
     
