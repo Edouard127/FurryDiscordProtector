@@ -33,8 +33,8 @@ module.exports = {
    * @param amount - Treshold of messages in interval
    * @param interval - The interval (in millisecond)
    */
-  tooQuick: function(amount) {
-    let interval = 9999999999999999999
+  tooQuick: function(amount, interval){
+    if(this.message.author.bot) return false
     // getting the messages of last message' author from log
     let msg = this.messageLog.filter(log =>log.author == this.message.author.id)
 
@@ -42,7 +42,6 @@ module.exports = {
     if(msg.length < amount) return false
     
     // space-time continum manipulation...
-    if(this.message.author.bot) console.log('true')
     let lastTimeStamp = msg[msg.length - amount].timeStamp
     let currentTimeStamp = msg[msg.length - 1].timeStamp
     let msgInterval = currentTimeStamp - lastTimeStamp
@@ -55,6 +54,7 @@ module.exports = {
    * @param interval - The interval (in millisecond)
    */
   sameMessages: function(amount, interval){
+    if(this.message.author.bot) return false
     // getting the messages of last message' author from log.. again
 
     // only get messages from within the interval given

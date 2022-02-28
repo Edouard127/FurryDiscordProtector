@@ -5,6 +5,7 @@ const spam_ = require("./utils/antispam.js")
 const dir = './scripts/';
 const config = require("./config.json");
 const prefix = config.prefix
+const isNsfwQ = require('./utils/nsfwdetector.js')
 
 const client = new Client({autoReconnect: true, max_message_cache: 0, intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS"], partials: ['MESSAGE', 'CHANNEL', 'REACTION'],/*, disableEveryone: true*/});
 client.commands = new Collection();
@@ -24,6 +25,23 @@ for (const file of commands) {
   console.log(`Successfully loaded ${commandName}`);
 }
 client.on('messageCreate', message => {
+    if(message.attachments){
+        message.attachments.forEach(attachments => {
+            url = attachments.proxyURL
+            isNsfwQ(url, message)
+        })
+        
+    }
+    
+    if(!message.author.bot && message.channel.type !== 'DM'){
+    let array = message.content.split(" ")
+    for(var arr in array){
+        if(array[arr].match(/(https?:\/\/.*\.(?:png|jpg))/i)){
+            url = array[arr]
+            isNsfwQ(url, message)
+        }
+    }
+}
     if(!message.author.bot && message.channel.type !== "dm"){
     spam_(message, client)
     }
@@ -57,6 +75,7 @@ client.on('messageCreate', message => {
                 console.log(err)
             }
         }
+        
         break;
         case (args[0] === 'config' && !message.author.bot && message.channel.type !== "dm"): {
             if(message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MODERATE_MEMBERS)){

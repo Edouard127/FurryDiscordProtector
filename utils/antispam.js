@@ -15,7 +15,7 @@ function spam_(message, client){
         }
         })().then(() => {
             let u = message.guild.members.cache.get(message.author.id)
-            if(spam.tooQuick(thresh, 3000)){
+            if(spam.sameMessages(thresh, 3000)){
                 
                 if(message.guild.members.cache.get(message.author.id).moderatable){
                     message.react('😡')
