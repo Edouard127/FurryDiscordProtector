@@ -6,7 +6,7 @@ const langs = ['en', 'fr', 'ru', 'sp']
 exports.name = "lang";
 exports.description = "Change the language of the bot"
 exports.run = (message, args, client, prefix) => {
-    const guildLanguages = require('../utils/languages/config/languages.json')
+    const guildLanguages = require('../utils/languages/config/languages.json') //<------------------------------------------------------------ FIX IF THE LANGUAGE IN THE JSON FILE IS NOT VALID, PUT THE DEFAULT VARIABLE
     const guildLanguage = guildLanguages[message.guild.id] || "en"; // "english" will be the default language
     const language = require(`../utils/languages/${guildLanguage}.js`);
     switch (true) {
