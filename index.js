@@ -82,6 +82,7 @@ client.on('messageCreate', message => {
         break;
         case (args[0] === 'config' && !message.author.bot && message.channel.type !== "dm"): {
             if(message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MODERATE_MEMBERS)){
+                if(message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MANAGE_GUILD)){
             try {
                 
                 let cmd = client.commands.get(args[0])
@@ -94,7 +95,11 @@ client.on('messageCreate', message => {
             }
         }
         else {
-            message.reply("You do not have permissions to use this command")
+            message.reply("You do not have permissions to use this command ```Permissions.FLAGS.MANAGE_GUILD```")
+        }
+        }
+        else {
+            message.reply("You do not have permissions to use this command ```Permissions.FLAGS.MODERATE_MEMBERS```")
         }
             
         }
@@ -108,9 +113,14 @@ client.on('messageCreate', message => {
         }
         break;
         case (args[0] === 'lang' && !message.author.bot && message.channel.type !== "dm"): {
+            if(message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MANAGE_GUILD)){
             let cmd = client.commands.get(args[0])
             //console.log(message.content.replace(prefix, '') + ".js");
             if (cmd) cmd.run(message, args, client, prefix)
+            }
+            else {
+                message.reply("You do not have permissions to use this command ```Permissions.FLAGS.MANAGE_GUILD```")
+            }
 
     }
     }
