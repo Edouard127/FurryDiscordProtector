@@ -11,6 +11,9 @@ const client = new Client({autoReconnect: true, max_message_cache: 0, intents: [
 client.commands = new Collection();
 // Read the Commands Directory, and filter the files that end with .js
 const commands = fs.readdirSync(dir).filter(file => file.endsWith(".js"));
+if(!fs.existsSync(__dirname + '/utils/languages/config/languages.json')){
+    fs.writeFileSync(__dirname + '/utils/languages/config/languages.json', "{}")
+}
 // Loop over the Command files
 for (const file of commands) {
   // Get the command name from splitting the file
