@@ -7,7 +7,9 @@ function isNsfwQ(url, message){
         try {
         if(response.data[0].className === 'Hentai' || response.data[0].className === 'Porn'){
                 message.reply(`Your image has been flagged as NSFW, please refrain from posting this kind of stuff`).then(() => {
-                    setTimeout(() => message.delete(), 1)
+                    try {
+                    setTimeout(() => message.delete().catch(), 1)
+                    } catch {}
                 })
             
         }

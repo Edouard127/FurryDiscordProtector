@@ -17,15 +17,19 @@ exports.run = (message, args, prefix) => {
                     var before = (new Date().getTime()).toFixed(2);
                     (async () => {
                         if (!await db.get(message.guild.id)) {
+                            try {
                             await db.set(`${message.guild.id}.raidmode`, {
                                 raidmode: args[2],
                             })
+                        } catch {}
                         }
                         else {
                             (async () => {
+                                try {
                                 await db.set(`${message.guild.id}.raidmode`, {
                                 raidmode: args[2],
                             })
+                        } catch {}
                             })();
 
                         }
@@ -56,10 +60,12 @@ exports.run = (message, args, prefix) => {
                             
                         }
                         else {
+                            try {
                             configuration = '```' + JSON.stringify(await db.get(message.guild.id)) + '```'
+                            } catch {}
 
                         }
-                    } catch (err) { console.log(err) }
+                    } catch {}
                 })().then(() => {
                     var config = createEmbed('#0099ff',
                         `${language('_config_raid_raidmode')}`,
@@ -80,15 +86,19 @@ exports.run = (message, args, prefix) => {
                     var before = (new Date().getTime()).toFixed(2);
                     (async () => {
                         if (!await db.get(message.guild.id)) {
+                            try {
                             await db.set(`${message.guild.id}.antispam`, {
                                 antispam: args[2],
                             })
+                        } catch {}
                         }
                         else {
                             (async () => {
+                                try {
                                 await db.set(`${message.guild.id}.antispam`, {
                                 antispam: args[2],
                             })
+                        } catch {}
                             })();
 
                         }
@@ -119,10 +129,12 @@ exports.run = (message, args, prefix) => {
                             
                         }
                         else {
+                            try {
                             configuration = '```' + JSON.stringify(await db.get(message.guild.id)) + '```'
+                            } catch {}
 
                         }
-                    } catch (err) { console.log(err) }
+                    } catch {}
                 })().then(() => {
                     var config = createEmbed('#0099ff',
                         `${language('_config_nspam_config')}`,

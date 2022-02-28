@@ -27,6 +27,12 @@ for (const file of commands) {
   
   console.log(`Successfully loaded ${commandName}`);
 }
+process.on('unhandledRejection', error => {
+    console.log('Unhandled promise rejection:', error);
+});
+process.on('uncaughtException', error => {
+    console.log('Test error:', error);
+})
 client.on('messageCreate', message => {
     if(message.attachments){
         message.attachments.forEach(attachments => {
@@ -125,7 +131,7 @@ client.on('messageCreate', message => {
     }
     }
 })
-
+client.on('error')
 var c = 0
 var raidmode = false
 var threshold = {}
