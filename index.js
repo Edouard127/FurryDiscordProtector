@@ -31,7 +31,7 @@ process.on('unhandledRejection', error => {
     console.log('Unhandled promise rejection:', error);
 });
 process.on('uncaughtException', error => {
-    console.log('Test error:', error);
+    console.log('Uncaught Exception:', error);
 })
 client.on('messageCreate', message => {
     if(message.attachments){
