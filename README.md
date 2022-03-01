@@ -8,6 +8,7 @@ This bot currently haves:
 Mass join detection (Raid)\
 Anti-Spam\
 NSFW Content detection\
+Anti Furry Speech and images detector\
 Multi languages\
 And more soon
 
