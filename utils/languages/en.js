@@ -25,7 +25,12 @@ const languageData = {
         _stats_nerd_stats: 'Made for nerds like you 🤓',
         _stats_nerd_infos: (model, threads, clock, total_ram, free_ram, used_ram) => `Made for nerds like you 🤓\n<:CPU:946565742055292949> CPU Informations:\nModel: ${model}\nNumber of Threads: ${threads}\nClock: ${clock} Ghz\n\n<:RAM:946581194793971712> RAM Informations:\n Total RAM: ${total_ram}\nFree RAM: ${free_ram}\nRAM Used by process: ${used_ram}`,
         _raidmode_raidmode: '🛡️ Raidmode',
-        _raidmode_success: (mode, ms) => `Successfully ${mode} raidmode in ${ms} ms`
+        _raidmode_success: (mode, ms) => `Successfully ${mode} raidmode in ${ms} ms`,
+        _logs_logs: `⚙️ Logs Configuration`,
+        _logs_success: (log, ms) => `Successfully updared the log channel for ${log} in ${ms} ms`,
+        _logs_bad_syntax: (log) => `❌ "${log}" is not a valid channel`,
+        _raid_: `⚠️Raid⚠️`,
+        _raid_message: (m) => `⚠️ Warning ⚠️\nA raid has been detected <@${m}>`,
         
 }
 const translate = (key, ...args) => {

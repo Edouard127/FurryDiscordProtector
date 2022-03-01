@@ -1,10 +1,11 @@
 const db = require("quick.db");
-const argsList = ['raidmode', 'antispam']
+const argsList = ['raidmode', 'antispam', 'logs']
 const createEmbed = require('../utils/createEmbed.js')
 
 exports.name = "config";
 exports.description = "Configure the Raid Detection for your server"
 exports.run = (message, args, prefix) => {
+    const { MessageMentions: { CHANNELS_PATTERN } } = require('discord.js');
     const guildLanguages = require('../utils/languages/config/languages.json')
     const guildLanguage = guildLanguages[message.guild.id] || "en"; // "english" will be the default language
     const language = require(`../utils/languages/${guildLanguage}.js`);
@@ -145,6 +146,29 @@ exports.run = (message, args, prefix) => {
             }
         }
             break;
+        case (args[1] === 'logs'): {
+            let matches = args[2].match(CHANNELS_PATTERN);
+            if(matches){
+            let chan = message.mentions.channels.first()
+            let before
+            let after
+                (async () => {
+                    before = new Date().getTime()
+                    await db.set(`${message.guild.id}.logs`, chan.id)
+                    
+                })().then(() => {
+                    let ms = after - before
+                    let log = chan.name
+                    let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_success', log, ms))
+                    message.reply({ embeds: [config] })
+                })
+            }
+            else {
+                let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_bad_syntax', args[2]))
+                message.reply({ embeds: [config] })
+            }
+        }
+        break;
         default: {
             let config = createEmbed('#0099ff',
                 `${language('_config_default')}`,

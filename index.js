@@ -6,7 +6,9 @@ const dir = './scripts/';
 const config = require("./config.json");
 const prefix = config.prefix
 const isNsfwQ = require('./utils/nsfwdetector.js')
-const profanityChecker = require('./utils/profanity.js')
+const profanityChecker = require('./utils/profanity.js');
+const createEmbed = require('./utils/createEmbed.js')
+
 
 const client = new Client({autoReconnect: true, max_message_cache: 0, intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS"], partials: ['MESSAGE', 'CHANNEL', 'REACTION'],/*, disableEveryone: true*/});
 client.commands = new Collection();
@@ -34,8 +36,7 @@ process.on('unhandledRejection', error => {
 process.on('uncaughtException', error => {
     console.log('Uncaught Exception:', error);
 })
-client.on('messageCreate', message => {
-    
+client.on('messageCreate', async message => {
     
     if(!message.author.bot && message.channel.type !== "dm"){
         if(message.attachments){
@@ -107,7 +108,6 @@ client.on('messageCreate', message => {
         }
             
         }
-        
         break;
         case (args[0] === 'help' && !message.author.bot && message.channel.type !== "dm"): {
                 let cmd = client.commands.get(args[0])
@@ -139,8 +139,11 @@ client.on('messageCreate', message => {
 let threshold = {}
 let c = {}
 let raidmode = {}
-let sus_members = {}
+let sus_members = []
 client.on('guildMemberAdd', member => {
+    const guildLanguages = require('./utils/languages/config/languages.json')
+    const guildLanguage = guildLanguages[member.guild.id] || "en"; // "english" will be the default language
+    const language = require(`./utils/languages/${guildLanguage}.js`);
     (async () => {
         if(await db.get(`${member.guild.id}.isRaid`) === true){
             raidmode[member.guild.id] = { "raid": true }
@@ -162,7 +165,7 @@ client.on('guildMemberAdd', member => {
         }
     })().then(() => {
         if(raidmode[member.guild.id].raid === false){
-            sus_members[member.guild.id] =+ [member]
+            sus_members[member.guild.id].push({member})
             let canClear = true 
 
         
@@ -178,6 +181,21 @@ client.on('guildMemberAdd', member => {
                     
                         db.set(`${member.guild.id}.isRaid`, true)
                         console.log(sus_members)
+                        (async () => {
+                            if(await db.get(`${member.guild.id}.logs`)){
+                                
+                                let ch = await member.guild.channels.cache.find(c => c.id === db.get((`${member.guild.id}.logs`).replace(/['"]+/g, '')))
+                                if(ch){
+                                    let config = createEmbed('#0099ff', `${language('_raid_'), `${language('_raid_message', (await member.guild.fetchOwner()).id)}`}`)
+                                    ch.send({ embeds: [config]})
+                                }
+                                else {
+                                    let channel = member.guild.channels.cache.filter(c => c.type === 'text').find(x => x.position == 0);
+                                    let config = createEmbed('#0099ff', `${language('_raid_'), `${language('_raid_message', (await member.guild.fetchOwner()).id)}`}`)
+                                    channel.send({ embeds: [config]})
+                                }
+                            }
+                        })
                 }
                 if(canClear){
                 setTimeout(() => {
