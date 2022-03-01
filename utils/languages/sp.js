@@ -24,6 +24,13 @@ const languageData = {
         _stats_nerd: '📊 Estadísticas de empollón',
         _stats_nerd_stats: 'Hecho para nerds como tú 🤓',
         _stats_nerd_infos: (model, threads, clock, total_ram, free_ram, used_ram) => `<:CPU:946565742055292949> Información de CPU:\nModelo: ${model}\nNúmero de subprocesos: ${threads}\nReloj: ${clock} Ghz\n\n<:RAM:946581194793971712> Información de RAM:\n RAM total: ${total_ram}\n RAM libre: ${free_ram}\nRAM utilizada por el proceso: ${used_ram}`,
+        _raidmode_raidmode: '🛡️ Modo Incursión',
+        _raidmode_success: (mode, ms) => `Con éxito ${mode} raidmode en ${ms} ms`,
+        _logs_logs: `⚙️ Configuración de registros`,
+        _logs_success: (log, ms) => `Se actualizó con éxito el canal de registro para **${log}** en ${ms} ms`,
+        _logs_bad_syntax: (log) => `❌ "${log}" no es un canal válido`,
+        _incursión_: `⚠️Incursión⚠️`,
+        _raid_message: (m) => `⚠️ Advertencia ⚠️\nSe ha detectado una redada <@${m}>`,
         
 }
 const translate = (key, ...args) => {
