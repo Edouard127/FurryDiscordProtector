@@ -6,6 +6,7 @@ const dir = './scripts/';
 const config = require("./config.json");
 const prefix = config.prefix
 const isNsfwQ = require('./utils/nsfwdetector.js')
+const profanityChecker = require('./utils/profanity.js')
 
 const client = new Client({autoReconnect: true, max_message_cache: 0, intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS"], partials: ['MESSAGE', 'CHANNEL', 'REACTION'],/*, disableEveryone: true*/});
 client.commands = new Collection();
@@ -41,6 +42,7 @@ client.on('messageCreate', message => {
             message.attachments.forEach(attachments => {
                 url = attachments.proxyURL
                 isNsfwQ(url, message)
+                profanityChecker(url, message)
             })
             
         }
@@ -125,60 +127,86 @@ client.on('messageCreate', message => {
             }
 
     }
+        case (args[0] === 'raidmode' && !message.author.bot && message.channel.type !== "dm"): {
+            let cmd = client.commands.get(args[0])
+            //console.log(message.content.replace(prefix, '') + ".js");
+            if (cmd) cmd.run(message, args, client, prefix)
+        }
     }
 })
 
-let raidmode = false
+
 let threshold = {}
 let c = {}
+let raidmode = {}
 client.on('guildMemberAdd', member => {
     (async () => {
-        if(!await db.get(`${member.guild.id}.raidmode.raidmode`)){
+        console.log(await db.get(`${member.guild.id}.isRaid`))
+        if(await db.get(`${member.guild.id}.isRaid`) === true){
+            raidmode[member.guild.id] = { "raid": true }
+            console.log(raidmode)
+            console.log('raidmode is true')
+        }
+        else {
+        raidmode[member.guild.id] = { "raid": false }
+            console.log(raidmode)
+            console.log('raidmode is false')
+        }
+
+        if(await db.get(`${member.guild.id}.raidmode.raidmode`)){
             
-            threshold = 5
+            threshold[member.guild.id] = await db.get((`${member.guild.id}.raidmode.raidmode`)).replace(/['"]+/g, '')
+            console.log(threshold)
+            console.log(threshold[member.guild.id])
         }
         else {
             
-            threshold[member.guild.id] = JSON.stringify(await db.get(`${member.guild.id}.raidmode.raidmode`)).replace(/['"]+/g, '')
-            console.log(threshold[member.guild.id])
+            threshold[member.guild.id] = 5
+            console.log('threshold is undefined')
             
         }
     })().then(() => {
-        if(!raidmode){
+        if(raidmode[member.guild.id].raid === false){
             let canClear = true 
 
         
-                if(!c[member.guild.id]){
-                    c[member.guild.id] = { count: 1 }
-                    //console.log(c)
+                if(c[member.guild.id]){
+                    console.log('I exist')
+                    console.log(c[member.guild.id].count+2)
+                    c[member.guild.id].count = c[member.guild.id].count + 1
+                    console.log(c)
                 }
                 else {
-                    c[member.guild.id].count++
-                    //console.log(c)
+                    c[member.guild.id] = { count: 1 }
+                    console.log('I do not exist')
+                    console.log(c)
                 }
                 
-                
+                console.log(c[member.guild.id].count, threshold[member.guild.id])
                 
                 if(c[member.guild.id].count >= threshold[member.guild.id]){
                     
-                    raidmode = true
+                        db.set(`${member.guild.id}.isRaid`, true)
+                        console.log('raidmode enabled')
                 }
                 if(canClear){
                 setTimeout(() => {
                     
                     canClear = false
                     
-                }, 10000, canClear = true, c[member.guild.id].count = 0)
+                }, 100000, canClear = true, c[member.guild.id].count = 0)
             }
             }
+        
             else {
                 member.send(`Hello ${member.user.username}, this server is currently under attack, please try again later`).then(member.kick())
-                console.log(members)
             }
+        })
     })
+
     
     
-})
+
 
 let memberCount = 0
 client.login(process.env.TOKEN).then(() => {
