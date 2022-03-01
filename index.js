@@ -145,7 +145,7 @@ client.on('guildMemberAdd', member => {
         }
     })().then(() => {
         if(!raidmode){
-            let canClear = true
+            let canClear = true 
 
         
                 if(!c[member.guild.id]){
