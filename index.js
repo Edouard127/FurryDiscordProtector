@@ -171,15 +171,10 @@ client.on('guildMemberAdd', member => {
 
         
                 if(c[member.guild.id]){
-                    console.log('I exist')
-                    console.log(c[member.guild.id].count+2)
                     c[member.guild.id].count = c[member.guild.id].count + 1
-                    console.log(c)
                 }
-                else {
-                    c[member.guild.id] = { count: 1 }
-                    console.log('I do not exist')
-                    console.log(c)
+                else if(!c[member.guild.id]){
+                    c[member.guild.id] = { count: 2 }
                 }
                 
                 console.log(c[member.guild.id].count, threshold[member.guild.id])
@@ -187,14 +182,14 @@ client.on('guildMemberAdd', member => {
                 if(c[member.guild.id].count >= threshold[member.guild.id]){
                     
                         db.set(`${member.guild.id}.isRaid`, true)
-                        console.log('raidmode enabled')
                 }
                 if(canClear){
                 setTimeout(() => {
                     
-                    canClear = false
+                    canClear = true
+                    c[member.guild.id].raid = 0
                     
-                }, 100000, canClear = true, c[member.guild.id].count = 0)
+                }, 100000, canClear = false)
             }
             }
         
