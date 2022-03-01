@@ -139,18 +139,14 @@ client.on('messageCreate', message => {
 let threshold = {}
 let c = {}
 let raidmode = {}
+let sus_members = {}
 client.on('guildMemberAdd', member => {
     (async () => {
-        console.log(await db.get(`${member.guild.id}.isRaid`))
         if(await db.get(`${member.guild.id}.isRaid`) === true){
             raidmode[member.guild.id] = { "raid": true }
-            console.log(raidmode)
-            console.log('raidmode is true')
         }
         else {
         raidmode[member.guild.id] = { "raid": false }
-            console.log(raidmode)
-            console.log('raidmode is false')
         }
 
         if(await db.get(`${member.guild.id}.raidmode.raidmode`)){
@@ -162,11 +158,11 @@ client.on('guildMemberAdd', member => {
         else {
             
             threshold[member.guild.id] = 5
-            console.log('threshold is undefined')
             
         }
     })().then(() => {
         if(raidmode[member.guild.id].raid === false){
+            sus_members[member.guild.id] =+ [member]
             let canClear = true 
 
         
@@ -177,19 +173,19 @@ client.on('guildMemberAdd', member => {
                     c[member.guild.id] = { count: 2 }
                 }
                 
-                console.log(c[member.guild.id].count, threshold[member.guild.id])
                 
                 if(c[member.guild.id].count >= threshold[member.guild.id]){
                     
                         db.set(`${member.guild.id}.isRaid`, true)
+                        console.log(sus_members)
                 }
                 if(canClear){
                 setTimeout(() => {
                     
                     canClear = true
-                    c[member.guild.id].raid = 0
+                    c[member.guild.id].count = 0
                     
-                }, 100000, canClear = false)
+                }, 10000, canClear = false)
             }
             }
         
