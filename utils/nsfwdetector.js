@@ -3,7 +3,6 @@ async function isNsfwQ(url, message){
     try {
     var data = await axios.get(`https://nsfw-demo.sashido.io/api/image/classify?url=${url}`)
         console.log(data.data)
-        if(err) { throw err }
         try {
         if(data.data[0].className === 'Hentai' || data.data[0].className === 'Porn'){
                 message.reply(`Your image has been flagged as NSFW, please refrain from posting this kind of stuff`).then(() => {
