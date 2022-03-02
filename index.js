@@ -1,4 +1,4 @@
-const { Client, Collection, Permissions } = require("discord.js");
+const { Client, Collection, Permissions, MessageEmbed } = require("discord.js");
 const fs = require('fs');
 const db = require("quick.db");
 const spam_ = require("./utils/antispam.js")
@@ -8,6 +8,7 @@ const prefix = config.prefix
 const isNsfwQ = require('./utils/nsfwdetector.js')
 const profanityChecker = require('./utils/profanity.js');
 const createEmbed = require('./utils/createEmbed.js')
+const getServerCount = require('./utils/getServerCount.js')
 
 
 const client = new Client({autoReconnect: true, max_message_cache: 0, intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS"], partials: ['MESSAGE', 'CHANNEL', 'REACTION'],/*, disableEveryone: true*/});
@@ -213,18 +214,51 @@ client.on('guildMemberAdd', member => {
         })
     })
 
+client.on('shardDisconnect', shard => {
+    client.channels.fetch('948369400866684969').then(channel => channel.send(`Shard ${shard.code} unready`))
+})
+client.on('shardReconnecting', shard => {
+    client.channels.fetch('948369400866684969').then(channel => channel.send(`Shard ${shard} reconnecting`))
+})
+client.on('shardError', shard => {
+    client.channels.fetch('948369400866684969').then(channel => channel.send(`Shard error: ${shard.message}`))
+})
+client.on('shardReady', shard => {
+    client.channels.fetch('948369400866684969').then(channel => channel.messages.fetch('948380114868125757').then(message => {
+        
+        client.shard.broadcastEval(client => [client.shard.ids, client.ws.status, client.ws.ping, client.guilds.cache.size])
+.then((results) =>{
+    const embed = new MessageEmbed()
+        .setTitle(`👨‍💻 Bot Shards (${client.shard.count})`)
+        .setColor('#ccd6dd')
+        .setTimestamp();
     
-    
-
+    results.map((data) => {
+        embed.addField(`📡 Shard ${data[0]}`, `**Status:** ${data[1]}\n**Ping:** ${data[2]}ms\n**Guilds:** ${data[3]}`, false)
+    });
+    message.edit({ content: '_ _', embeds: [embed]})
+})
+.catch((error) => {
+    console.error(error);
+});
+    }))
+})
 
 let memberCount = 0
 client.login(process.env.TOKEN).then(() => {
     client.on('ready', () => {
+        
         client.user.setPresence({ activities: [{ name: `${client.guilds.cache.size} servers to protect`, type: 'WATCHING'}]});
         client.user.setStatus('dnd');
         client.guilds.cache.map(guild => memberCount=+guild.memberCount)
-        console.log(`\n ${client.user.username}@Bot [Started] ${new Date()}
-      --------------------------------------\n Users: ${memberCount}\n Servers: ${client.guilds.cache.size}\n --------------------------------------\n`) 
+        let servers
+        (async () => {
+        servers = await getServerCount(client)
+
+        })().then(() => {
+            console.log(`\n ${client.user.username}@Bot [Started] ${new Date()}
+            --------------------------------------\n Users: ${memberCount}\n Servers: ${servers}\n --------------------------------------\n`) 
+        })
     })
        
 })

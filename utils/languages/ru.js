@@ -30,7 +30,7 @@ const languageData = {
     _logs_success: (log, ms) => `Успешно обновлен канал журнала для **${log}** за ${ms} ms`,
     _logs_bad_syntax: (log) => `❌ "${log}" не является допустимым каналом`,
     _raid_: `⚠️Raid⚠️`,
-    _raid_message: (m) => `⚠️ Предупреждение ⚠️\nОбнаружен налет <@${m}>`,
+    _raid_message: (m) => `Предупреждение\nОбнаружен налет`,
     
 }
 const translate = (key, ...args) => {

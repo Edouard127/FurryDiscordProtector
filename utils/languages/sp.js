@@ -30,7 +30,7 @@ const languageData = {
         _logs_success: (log, ms) => `Se actualizó con éxito el canal de registro para **${log}** en ${ms} ms`,
         _logs_bad_syntax: (log) => `❌ "${log}" no es un canal válido`,
         _incursión_: `⚠️Incursión⚠️`,
-        _raid_message: (m) => `⚠️ Advertencia ⚠️\nSe ha detectado una redada <@${m}>`,
+        _raid_message: (m) => `Advertencia\nSe ha detectado una redada`,
         
 }
 const translate = (key, ...args) => {

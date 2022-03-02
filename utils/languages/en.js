@@ -30,7 +30,7 @@ const languageData = {
         _logs_success: (log, ms) => `Successfully updared the log channel for **${log}** in ${ms} ms`,
         _logs_bad_syntax: (log) => `❌ "${log}" is not a valid channel`,
         _raid_: `⚠️Raid⚠️`,
-        _raid_message: (m) => `⚠️ Warning ⚠️\nA raid has been detected <@${m}>`,
+        _raid_message: `Warning\nA raid has been detected`,
         
 }
 const translate = (key, ...args) => {

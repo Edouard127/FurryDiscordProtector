@@ -28,7 +28,7 @@ if (word.match(w)) {
             channel.send({ embeds: [config]})
         }
         
-    })
+    })()
 
 }
 
@@ -50,6 +50,7 @@ ReadText(url).then(text => {
             }
             
         })
+        
         
     }
 }).catch(err => {

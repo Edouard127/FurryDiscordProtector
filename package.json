@@ -1,0 +1,24 @@
+{
+  "name": "furryprotector",
+  "version": "1.0.0",
+  "description": "Protect your server from haters",
+  "main": "shards.js",
+  "scripts": {
+    "start": "cross-env TOKEN='insert token' node ./shards.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Edouard127/FurryDiscordProtector.git"
+  },
+  "keywords": [
+    "furry",
+    "sfw",
+    "lgbtq"
+  ],
+  "author": "Kamigen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Edouard127/FurryDiscordProtector/issues"
+  },
+  "homepage": "https://github.com/Edouard127/FurryDiscordProtector#readme"
+}

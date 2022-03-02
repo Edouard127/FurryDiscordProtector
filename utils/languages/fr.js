@@ -30,7 +30,7 @@ const languageData = {
         _logs_success: (log, ms) => `Mise à jour réussie du salon de logs pour **${log}** en ${ms} ms`,
         _logs_bad_syntax: (log) => `❌ "${log}" n'est pas un salon valide`,
         _raid_: `⚠️Raid⚠️`,
-        _raid_message: (m) => `⚠️ Attention ⚠️\nUn raid a été détecté <@${m}>`,
+        _raid_message: (m) => `Attention\nUn raid a été détecté`,
         
 }
 const translate = (key, ...args) => {
