@@ -52,16 +52,20 @@ client.on('messageCreate', message => {
                 }
             })
             if (message.attachments) {
-                message.attachments.forEach(attachments => {
-                    let nsfwCheck
+                let nsfwCheck
                     (async () => {
                         nsfwCheck = await db.get(`${message.guild.id}.nsfwCheck`) || false
                     })().then(() => {
                         if (nsfwCheck === true) {
+                        message.attachments.forEach(attachments => {
+                        
                             url = attachments.proxyURL
                             isNsfwQ(url, message)
+                        })
                         }
-                    })
+                    
+                
+                    
                     let check
                     (async () => {
                         check = await db.get(`${message.guild.id}.profanityCheck`) || false
