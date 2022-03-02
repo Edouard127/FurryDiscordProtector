@@ -52,6 +52,7 @@ client.on('messageCreate', message => {
                 }
             })
             if (message.attachments) {
+                let url
                 let nsfwCheck
                     (async () => {
                         nsfwCheck = await db.get(`${message.guild.id}.nsfwCheck`) || false
@@ -61,13 +62,8 @@ client.on('messageCreate', message => {
                         
                             url = attachments.proxyURL
                             isNsfwQ(url, message)
-                        })
-                        }
-                    
-                
-                    
-                    let check
-                    (async () => {
+                            let check
+                            (async () => {
                         check = await db.get(`${message.guild.id}.profanityCheck`) || false
 
                     })().then(() => {
@@ -75,6 +71,12 @@ client.on('messageCreate', message => {
                             profanityImage(url, message)
                         }
                     })
+                        })
+                        }
+                    
+                
+                    
+
 
                 })
 

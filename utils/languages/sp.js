@@ -42,7 +42,8 @@ const languageData = {
         _nsfw_config: `🔞 Filtrado de contenido NSFW`,
         _nsfw_success: (mode, ms) => `Filtrado de contenido con éxito ${mode} en ${ms} ms`,
         _nsfw_message: (argsList) => `Esta función le permite a usted y a su servidor mantener un entorno seguro y adecuado para su comunidad\nEsto se basa en un modelo de aprendizaje profundo entrenado con reconocimiento de imágenes nsfw\nPrecisión de más del 93 %\n\nArgumentos: ${argsList}`,
-        _nsfw_config_NaN: (arg) => `${arg} no es un número`
+        _nsfw_config_NaN: (arg) => `${arg} no es un número o está fuera del rango permitido`,
+        _nsfw_success_threshold: (threshold, ms) => `El umbral NSFW se actualizó con éxito a ${threshold} en ${ms} ms`,
         
 }
 const translate = (key, ...args) => {
