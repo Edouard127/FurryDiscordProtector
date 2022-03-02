@@ -39,8 +39,7 @@ process.on('unhandledRejection', error => {
 process.on('uncaughtException', error => {
     console.log('Uncaught Exception:', error);
 })
-client.on('messageCreate', async message => {
-    
+client.on('messageCreate', message => {    
     if(!message.author.bot && message.channel.type !== "dm"){
         if(message.attachments){
             message.attachments.forEach(attachments => {
@@ -130,7 +129,8 @@ client.on('messageCreate', async message => {
                 message.reply("You do not have permissions to use this command ```Permissions.FLAGS.MANAGE_GUILD```")
             }
 
-    }
+        }
+        break;
         case (args[0] === 'raidmode' && !message.author.bot && message.channel.type !== "dm"): {
             let cmd = client.commands.get(args[0])
             //console.log(message.content.replace(prefix, '') + ".js");

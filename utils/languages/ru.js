@@ -31,6 +31,8 @@ const languageData = {
     _logs_bad_syntax: (log) => `❌ "${log}" не является допустимым каналом`,
     _raid_: `⚠️Raid⚠️`,
     _raid_message: (m) => `Предупреждение\nОбнаружен налет`,
+    _profanity: `⚠️Profanity⚠️`,
+    _profanity_message: (message) => `${message} был помечен как ненормативная лексика в любом виде`,
     
 }
 const translate = (key, ...args) => {

@@ -11,21 +11,14 @@ exports.run = (message, args, client, prefix) => {
     const language = require(`../utils/languages/${guildLanguage}.js`);
     switch (true) {
         case (args[0] === 'lang'): {
-            if (args[1]) {
                 if (langs.includes(args[1])) {
 
                     guildLanguages[message.guild.id] = args[1];
                     
                         fs.writeFileSync(__dirname + '/../utils/languages/config/languages.json', JSON.stringify(guildLanguages))
-                        try {
-                        const newl = require(`../utils/languages/${args[1]}.js`);
+                        let newl = require(`../utils/languages/${args[1]}.js`);
                         var config = createEmbed('#0099ff', `${newl('_lang_lang')}`, `${newl('_lang_validation')}`)
                         message.reply({ embeds: [config] })
-                    } catch (err){
-                        const language = require(`../utils/languages/${guildLanguage}.js`);
-                        var config = createEmbed('#0099ff', `${language('_lang_invalid')}`, `${language('_lang_choices', langs)}`)
-                        message.reply({ embeds: [config] })
-                    }
                     
 
                 }
@@ -34,20 +27,11 @@ exports.run = (message, args, client, prefix) => {
                     message.reply({ embeds: [config] })
                 }
                     
-            }
+            
 
         }
-            break;
-        default: {
-            var config = createEmbed('#0099ff',
-                '⚙️ Config',
+        break;
 
-                `Bot Configuration\n
-            Command: ${prefix}${exports.name}\n\n
-            Arguments: ${argsList} `)
-
-            message.reply({ embeds: [config] })
-        }
     }
     
 

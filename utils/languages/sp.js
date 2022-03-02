@@ -29,8 +29,10 @@ const languageData = {
         _logs_logs: `⚙️ Configuración de registros`,
         _logs_success: (log, ms) => `Se actualizó con éxito el canal de registro para **${log}** en ${ms} ms`,
         _logs_bad_syntax: (log) => `❌ "${log}" no es un canal válido`,
-        _incursión_: `⚠️Incursión⚠️`,
-        _raid_message: (m) => `Advertencia\nSe ha detectado una redada`,
+        _raid_: `⚠️Incursión⚠️`,
+        _raid_message: `Advertencia\nSe ha detectado una redada`,
+        _blasfemias: `⚠️Blasfemias⚠️`,
+        _profanity_message: (message) => `${message} ha sido marcado como blasfemia de cualquier tipo`,
         
 }
 const translate = (key, ...args) => {
