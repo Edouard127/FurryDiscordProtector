@@ -44,11 +44,7 @@ const languageData = {
         _nsfw_message : (argsList) => `Cette fonction vous permet, à vous et à votre serveur, de maintenir un environnement sûr et propre à votre communauté\nCette fonction est basée sur un modèle d'apprentissage profond entraîné avec une reconnaissance des images nsfw\nPrécision de plus de 93%\n\nArguments : ${argsList}`,
         _nsfw_config_NaN : (arg) => `${arg} n'est pas un nombre ou est au-delà de l'intervalle autorisé`,
         _nsfw_success_threshold : (threshold, ms) => `Le seuil NSFW a été mis à jour avec succès à ${threshold} en ${ms} ms`,
-        _nsfw_threshold_: (arg) => `Argument : ${arg}\NInformations:\NL'argument de seuil de cette commande est nécessaire pour s'assurer qu'il n'y a pas de faux positif ou du moins limiter le risque de faux positif\n
-        L'argument range de cette commande va de 1 à 100, soit le pourcentage de probabilité que l'image soit NSF.
-        Exemple de réponse de l'IA sur une image NSFW:````{ className : 'Hen***', probability : 0.5407443642616272 }{ className : Po**', probability : 0.5407443642616272 }````\n
-        La probability étant le pourcentage de la probabilité que l'image soit nsfw\nSi vous n'êtes pas bon en maths, c'est simple, probabilité = nombre entre 0 et 100 divisé par 100, 10% => 0.10\n
-        Nous recommandons une valeur comprise entre 40 et 60 % pour éviter les faux positifs et les faux négatifs.`
+        _nsfw_threshold_: "Informations:\NL'argument de seuil de cette commande est nécessaire pour s'assurer qu'il n'y a pas de faux positif ou du moins limiter le risque de faux positif\nL'argument range de cette commande va de 1 à 100, soit le pourcentage de probabilité que l'image soit NSF.Exemple de réponse de l'IA sur une image NSFW:```{ className : 'Hen***', probability : 0.5407443642616272 }{ className : Po**', probability : 0.5407443642616272 }```\nLa probability étant le pourcentage de la probabilité que l'image soit nsfw\nSi vous n'êtes pas bon en maths, c'est simple, probabilité = nombre entre 0 et 100 divisé par 100, 10% => 0.10\nNous recommandons une valeur comprise entre 60% et 80% pour éviter les faux positifs et les faux négatifs.",
 
         
 }

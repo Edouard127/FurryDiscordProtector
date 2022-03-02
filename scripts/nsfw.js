@@ -62,7 +62,8 @@ exports.run = (message, args, prefix) => {
                 message.reply({ embeds: [config] })
             }
         }
-            console.log('a')
+            let config = createEmbed('#0099ff', `${language('_nsfw_config')}`, `${language('_nsfw_threshold_', args[1])}`)
+            message.reply({ embeds: [config] })
         }
         
         break;

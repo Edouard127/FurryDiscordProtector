@@ -44,11 +44,7 @@ const languageData = {
         _nsfw_message: (argsList) => `This function allows you and your server to keep an environment safe and proper to your community\nThis is based on a Trained Deep Learning Model with nsfw images recognition\nAccuracy of over 93%\n\nArguments: ${argsList}`,
         _nsfw_config_NaN: (arg) => `${arg} is not a number or is beyond the range allowed`,
         _nsfw_success_threshold: (threshold, ms) => `Successfully updated NSFW threshold to ${threshold} in ${ms} ms`,
-        _nsfw_threshold_: (arg) => `Argument: ${arg}\nInformations:\nThe threshold argument on this command is required to make sure that there is no false positive or at least limiting the risk of false positives\n
-        The range argument on this command is from 1 to 100, being the percentage of the probability of the image being nsfw\n
-        Example of AI response on a NSFW Image:````{ className: 'Hen***', probability: 0.5407443642616272 }\n{ className: 'Po**', probability: 0.5407443642616272 }````\n
-        The Probability being the percentage of the probability of the image being nsfw\nIf you are not good at maths, this is simple, probability = number between 0 and 100 divided by 100, 10% => 0.10\n
-        We recommend a value from 40% to 60% to avoid false positives or false negatives`,
+        _nsfw_threshold_: "Informations:\nThe threshold argument on this command is required to make sure that there is no false positive or at least limiting the risk of false positives\nThe range argument on this command is from 1 to 100, being the percentage of the probability of the image being nsfw\nExample of AI response on a NSFW Image:```{ className: 'Hen***', probability: 0.5407443642616272 }\n{ className: 'Po**', probability: 0.5407443642616272 }```\nThe Probability being the percentage of the probability of the image being nsfw\nIf you are not good at maths, this is simple, probability = number between 0 and 100 divided by 100, 10% => 0.10\nWe recommend a value from 60% to 80% to avoid false positives or false negatives",
 
         
 }
