@@ -42,10 +42,10 @@ exports.run = (message, args, prefix) => {
             })()
         }
         break;
-        case (args[1] === 'config'): {
-            if(args[2] === 'threshold'){
-            if(parseInt(args[3]) < 101 && parseInt(args[3]) > 0){
-                let threshold = parseInt(args[3])/100
+        case (args[1] === 'threshold'): {
+            if(args[2]){
+            if(parseInt(args[2]) < 101 && parseInt(args[2]) > 0){
+                let threshold = parseInt(args[2])/100
                 let before = new Date().getTime();
                 (async () => {
                     await db.set(`${message.guild.id}.nsfwThreshold`, threshold)
@@ -55,16 +55,14 @@ exports.run = (message, args, prefix) => {
                     let config = createEmbed('#0099ff', `${language('_nsfw_config')}`, `${language('_nsfw_success_threshold', threshold, ms)}`)
                     message.reply({ embeds: [config] })
                 })
+                
             }
             else {
                 let config = createEmbed('#0099ff', `${language('_nsfw_config')}`, `${language('_nsfw_config_NaN', args[3])}`)
                 message.reply({ embeds: [config] })
             }
         }
-            else {
-                let config = createEmbed('#0099ff', `${language('_nsfw_config')}`, `${language('_nsfw_message', argsList)}`)
-                message.reply({ embeds: [config] })
-            }
+            console.log('a')
         }
         
         break;
