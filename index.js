@@ -6,7 +6,8 @@ const dir = './scripts/';
 const config = require("./config.json");
 const prefix = config.prefix
 const isNsfwQ = require('./utils/nsfwdetector.js')
-const profanityChecker = require('./utils/profanity.js');
+const profanityImage = require('./utils/profanityImage.js');
+const profanityText = require('./utils/profanityText.js');
 const createEmbed = require('./utils/createEmbed.js')
 const getServerCount = require('./utils/getServerCount.js')
 
@@ -44,11 +45,12 @@ client.on('messageCreate', async message => {
             message.attachments.forEach(attachments => {
                 url = attachments.proxyURL
                 isNsfwQ(url, message)
-                profanityChecker(url, message)
+                profanityImage(url)
             })
             
         }
         spam_(message, client)
+        profanityText(message)
         let array = message.content.split(" ")
         for(let arr in array){
             if(array[arr].match(/(https?:\/\/.*\.(?:png|jpg))/i)){
