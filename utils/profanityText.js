@@ -1,6 +1,3 @@
-const ReadText = require('text-from-image')
-
-const axios = require('axios');
 const db = require('quick.db')
 const createEmbed = require('./createEmbed.js')
 
@@ -14,18 +11,17 @@ async function profanityText(message){
 
     var word = message.content
 if (word.match(w)) {
-    let ch
-    let channel
+    let ch_logs
     (async () => {
-        ch = await message.guild.channels.cache.find(c => c.id === db.get((`${message.guild.id}.logs`).replace(/['"]+/g, '')))
+        ch_logs = await message.guild.channels.cache.find(c => c.id === db.get((`${message.guild.id}.logs`).replace(/['"]+/g, '')))
         if(ch){
             let config = createEmbed('#0099ff', `${language('_profanity')}`, `${language('_profanity_', message.url)}`)
-            ch.send({ embeds: [config]})
+            ch_logs.send({ embeds: [config]})
         }
         else {
-            channel = message.guild.channels.cache.filter(c => c.type === 'text').find(x => x.position == 0);
+            ch_logs = message.guild.channels.cache.filter(c => c.type === 'text').find(x => x.position == 0);
             let config = createEmbed('#0099ff', `${language('_profanity')}`, `${language('_profanity_', message.url)}`)
-            channel.send({ embeds: [config]})
+            ch_logs.send({ embeds: [config]})
         }
         
     })()

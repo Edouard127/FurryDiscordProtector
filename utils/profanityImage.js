@@ -1,6 +1,5 @@
 const ReadText = require('text-from-image')
 
-const axios = require('axios');
 const db = require('quick.db')
 const createEmbed = require('./createEmbed.js')
 
@@ -13,7 +12,6 @@ async function profanityImage(url, message){
     const language = require(`../utils/languages/${guildLanguage}.js`);
 
 ReadText(url, message).then(text => {
-    console.log(text);
     if (text.match(w)) {
         let ch_logs
         (async () => {
