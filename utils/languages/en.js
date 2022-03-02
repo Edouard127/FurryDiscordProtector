@@ -31,8 +31,14 @@ const languageData = {
         _logs_bad_syntax: (log) => `❌ "${log}" is not a valid channel`,
         _raid_: `⚠️Raid⚠️`,
         _raid_message: `Warning\nA raid has been detected`,
+        _profanity_message: `🛡️ Profanity Checker`,
+        _profanity_success: (mode, ms) => `Successfully ${mode} profanity checker in ${ms} ms`,
         _profanity: `⚠️Profanity⚠️`,
-        _profanity_message: (message) => `${message} has been flagged as profanity in any kind`,
+        _profanity_: (message) => `${message} has been flagged as profanity in any kind`,
+        _spam_message: `🛡️ Anti-Spam`,
+        _spam_success: (mode, ms) => `Successfully ${mode} anti-spam in ${ms} ms`,
+        _spam: `⚠️Spam⚠️`,
+        _spam_: (message) => `${message} has been muted for spamming`,
         
 }
 const translate = (key, ...args) => {

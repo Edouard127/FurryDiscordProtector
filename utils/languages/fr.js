@@ -31,6 +31,8 @@ const languageData = {
         _logs_bad_syntax: (log) => `❌ "${log}" n'est pas un salon valide`,
         _raid_: `⚠️Raid⚠️`,
         _raid_message: `Attention\nUn raid a été détecté`,
+        _profanity_message : `🛡️ Vérificateur de blasphèmes`,
+        _profanity_success : (mode, ms) => `Le vérificateur de blasphèmes a été ${mode} en ${ms} ms`,
         _profanity: `⚠️Blasphème⚠️`,
         _profanity_message: (message) => `${message} a été qualifié de blasphème sous quelque forme que ce soit`,
         
