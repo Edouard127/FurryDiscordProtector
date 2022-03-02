@@ -56,40 +56,5 @@ ReadText(url).then(text => {
 }).catch(err => {
     console.log(err);
 })
-
-
-
-
-axios.get('https://api.sightengine.com/1.0/check.json', {
-    params: {
-        'url': `${url}`,
-        'models': 'wad,offensive,text-content,gore',
-        'api_user': '817805869',
-        'api_secret': 'jMPG5uUgRY34GXLacV6o',
-    }
-})
-    .then(response => {
-        console.log(response)
-        // on success: handle response
-        switch(true){
-            case (response.data.weapon >= 0.50): {
-                message.reply('Weapon detected')
-            }
-            break;
-            case (response.data.drugs >= 0.50): {
-                message.reply('Drugs detected')
-            }
-            break;
-            case (response.data.gore >= 0.40): {
-                message.reply('Gore detected')
-            }
-            break;
-        }
-    })
-    .catch(function (error) {
-        // handle error
-        if (error.response) console.log(error.response.data);
-        else console.log(error.message);
-    })
 }
 module.exports = profanity

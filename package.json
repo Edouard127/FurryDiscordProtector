@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/Edouard127/FurryDiscordProtector/issues"
   },
-  "homepage": "https://github.com/Edouard127/FurryDiscordProtector#readme"
+  "homepage": "https://github.com/Edouard127/FurryDiscordProtector#readme",
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^3.13.0",
+    "cross-env": "^7.0.3"
+  }
 }
