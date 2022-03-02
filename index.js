@@ -224,29 +224,15 @@ client.on('shardError', shard => {
     client.channels.fetch('948369400866684969').then(channel => channel.send(`Shard error: ${shard.message}`))
 })
 client.on('shardReady', shard => {
-    client.channels.fetch('948369400866684969').then(channel => channel.messages.fetch('948380114868125757').then(message => {
-        
-        client.shard.broadcastEval(client => [client.shard.ids, client.ws.status, client.ws.ping, client.guilds.cache.size])
-.then((results) =>{
-    const embed = new MessageEmbed()
-        .setTitle(`👨‍💻 Bot Shards (${client.shard.count})`)
-        .setColor('#ccd6dd')
-        .setTimestamp();
+
     
-    results.map((data) => {
-        embed.addField(`📡 Shard ${data[0]}`, `**Status:** ${data[1]}\n**Ping:** ${data[2]}ms\n**Guilds:** ${data[3]}`, false)
-    });
-    message.edit({ content: '_ _', embeds: [embed]})
+    
 })
-.catch((error) => {
-    console.error(error);
-});
-    }))
-})
+
 
 let memberCount = 0
 client.login(process.env.TOKEN).then(() => {
-    client.on('ready', () => {
+    client.once('ready', () => {
         
         client.user.setPresence({ activities: [{ name: `${client.guilds.cache.size} servers to protect`, type: 'WATCHING'}]});
         client.user.setStatus('dnd');
@@ -259,6 +245,26 @@ client.login(process.env.TOKEN).then(() => {
             console.log(`\n ${client.user.username}@Bot [Started] ${new Date()}
             --------------------------------------\n Users: ${memberCount}\n Servers: ${servers}\n --------------------------------------\n`) 
         })
+        setInterval(() => {
+            client.channels.fetch('948369400866684969').then(channel => channel.messages.fetch('948380114868125757').then(message => {
+                
+                client.shard.broadcastEval(client => [client.shard.ids, client.ws.status, client.ws.ping, client.guilds.cache.size])
+        .then((results) =>{
+            const embed = new MessageEmbed()
+                .setTitle(`👨‍💻 Bot Shards (${client.shard.count})`)
+                .setColor('#ccd6dd')
+                .setTimestamp();
+            
+            results.map((data) => {
+                embed.addField(`📡 Shard ${data[0]}`, `**Status:** ${data[1]}\n**Ping:** ${data[2]}ms\n**Guilds:** ${data[3]}`, false)
+            });
+            message.edit({ content: '_ _', embeds: [embed]})
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+            }))
+        }, 10000)
     })
        
 })
