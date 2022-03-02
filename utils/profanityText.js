@@ -19,12 +19,12 @@ if (word.match(w)) {
     (async () => {
         ch = await message.guild.channels.cache.find(c => c.id === db.get((`${message.guild.id}.logs`).replace(/['"]+/g, '')))
         if(ch){
-            let config = createEmbed('#0099ff', `${language('_raid_')}`, `${language('_raid_message', (await message.guild.fetchOwner()).id)}`)
+            let config = createEmbed('#0099ff', `${language('_profanity')}`, `${language('_profanity_message', message.url)}`)
             ch.send({ embeds: [config]})
         }
         else {
             channel = message.guild.channels.cache.filter(c => c.type === 'text').find(x => x.position == 0);
-            let config = createEmbed('#0099ff', `${language('_raid_')}`, `${language('_raid_message', (await message.guild.fetchOwner()).id)}`)
+            let config = createEmbed('#0099ff', `${language('_profanity')}`, `${language('_profanity_message', message.url)}`)
             channel.send({ embeds: [config]})
         }
         

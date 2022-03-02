@@ -9,7 +9,8 @@ const isNsfwQ = require('./utils/nsfwdetector.js')
 const profanityImage = require('./utils/profanityImage.js');
 const profanityText = require('./utils/profanityText.js');
 const createEmbed = require('./utils/createEmbed.js')
-const getServerCount = require('./utils/getServerCount.js')
+const getServerCount = require('./utils/getServerCount.js');
+const { message } = require("./utils/spamDetect.js");
 
 
 const client = new Client({autoReconnect: true, max_message_cache: 0, intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS"], partials: ['MESSAGE', 'CHANNEL', 'REACTION'],/*, disableEveryone: true*/});
@@ -45,7 +46,7 @@ client.on('messageCreate', async message => {
             message.attachments.forEach(attachments => {
                 url = attachments.proxyURL
                 isNsfwQ(url, message)
-                profanityImage(url)
+                profanityImage(url, message)
             })
             
         }
@@ -209,27 +210,13 @@ client.on('guildMemberAdd', member => {
                 }, 10000, canClear = false)
             }
             }
+            
         
             else {
                 member.send(`Hello ${member.user.username}, this server is currently under attack, please try again later`).then(member.kick())
             }
         })
     })
-
-client.on('shardDisconnect', shard => {
-    client.channels.fetch('948369400866684969').then(channel => channel.send(`Shard ${shard.code} unready`))
-})
-client.on('shardReconnecting', shard => {
-    client.channels.fetch('948369400866684969').then(channel => channel.send(`Shard ${shard} reconnecting`))
-})
-client.on('shardError', shard => {
-    client.channels.fetch('948369400866684969').then(channel => channel.send(`Shard error: ${shard.message}`))
-})
-client.on('shardReady', shard => {
-
-    
-    
-})
 
 
 let memberCount = 0
