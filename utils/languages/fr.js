@@ -34,7 +34,16 @@ const languageData = {
         _profanity_message : `🛡️ Vérificateur de blasphèmes`,
         _profanity_success : (mode, ms) => `Le vérificateur de blasphèmes a été ${mode} en ${ms} ms`,
         _profanity: `⚠️Blasphème⚠️`,
-        _profanity_message: (message) => `${message} a été qualifié de blasphème sous quelque forme que ce soit`,
+        _profanity_: (message) => `${message} a été qualifié de blasphème sous quelque forme que ce soit`,
+        _spam_message : `🛡️ Anti-Spam`,
+        _spam_success : (mode, ms) => `Succès de la modification de l'anti-spam en ${mode}en ${ms} ms`,
+        _spam : `⚠️Spam⚠️`,
+        _spam_ : (message) => `${message} a été mis en sourdine pour spamming`,
+        _nsfw_config : `🔞 Filtrage de contenu NSFW`,
+        _nsfw_success : (mode, ms) => `Succès de la modification du détecteur de contenu NSFW en ${mode} en ${ms} ms`,
+        _nsfw_message : (argsList) => `Cette fonction vous permet, à vous et à votre serveur, de maintenir un environnement sûr et propre à votre communauté\nCette fonction est basée sur un modèle d'apprentissage profond entraîné avec une reconnaissance des images nsfw\nPrécision de plus de 93%\n\nArguments : ${argsList}`,
+        _nsfw_config_NaN : (arg) => `${arg} n'est pas un nombre`
+
         
 }
 const translate = (key, ...args) => {

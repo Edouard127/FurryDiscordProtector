@@ -35,6 +35,14 @@ const languageData = {
         _profanity_success: (mode, ms) => `Exitosamente ${mode} comprobación de blasfemias para ${ms} ms`,
         _profanity: `⚠️Blasfemias⚠️`,
         _profanity_: (message) => `${message} ha sido marcado como blasfemia de cualquier tipo`,
+        _mensaje_spam: `🛡️ Antispam`,
+        _spam_success: (mode, ms) => `Con éxito ${mode} anti-spam en ${ms} ms`,
+        _spam: `⚠️Spam⚠️`,
+        _spam_: (mensaje) => `${mensaje} ha sido silenciado por spam`,
+        _nsfw_config: `🔞 Filtrado de contenido NSFW`,
+        _nsfw_success: (mode, ms) => `Filtrado de contenido con éxito ${mode} en ${ms} ms`,
+        _nsfw_message: (argsList) => `Esta función le permite a usted y a su servidor mantener un entorno seguro y adecuado para su comunidad\nEsto se basa en un modelo de aprendizaje profundo entrenado con reconocimiento de imágenes nsfw\nPrecisión de más del 93 %\n\nArgumentos: ${argsList}`,
+        _nsfw_config_NaN: (arg) => `${arg} no es un número`
         
 }
 const translate = (key, ...args) => {
