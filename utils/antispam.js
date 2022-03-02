@@ -1,8 +1,12 @@
 const spam = require("./spamDetect.js")
 const db = require("quick.db");
+const createEmbed = require('../utils/createEmbed.js')
 const { Permissions } = require("discord.js")
 
 function spam_(message, client){
+    const guildLanguages = require('./languages/config/languages.json')
+    const guildLanguage = guildLanguages[message.guild.id] || "en"; // "english" will be the default language
+    const language = require(`../utils/languages/${guildLanguage}.js`);
     spam.log(message)
     var thresh = 0
     try {
@@ -23,7 +27,9 @@ function spam_(message, client){
                                 message.guild.members.cache.get(message.author.id).timeout(1*30*1000, 'Protection')
                                 let ch_logs
                                 (async () => {
-                                    ch_logs = await message.guild.channels.cache.find(c => c.id === db.get((`${message.guild.id}.logs`).replace(/['"]+/g, '')))
+                                    ch_logs = await message.guild.channels.cache.find(c => c.id === db.get((`${message.guild.id}.logs`).replace(/['"]+/g, '')))                            
+                                })().then(() => {
+                                    console.log(ch_logs)
                                     if(ch_logs){
                                         let config = createEmbed('#0099ff', `${language('_spam')}`, `${language('_spam_', message.author.username)}`)
                                         ch_logs.send({ embeds: [config]})
@@ -33,7 +39,6 @@ function spam_(message, client){
                                         let config = createEmbed('#0099ff', `${language('_spam')}`, `${language('_spam_', message.author.username)}`)
                                         ch_logs.send({ embeds: [config]})
                                     }
-                                    
                                 })
                         
                     } catch (err) {
