@@ -39,6 +39,11 @@ const languageData = {
         _spam_success: (mode, ms) => `Successfully ${mode} anti-spam in ${ms} ms`,
         _spam: `⚠️Spam⚠️`,
         _spam_: (message) => `${message} has been muted for spamming`,
+        _nsfw_config: `🔞 NSFW Content Filtering`,
+        _nsfw_success: (mode, ms) => `Successfully ${mode} profanity checker in ${ms} ms`,
+        _nsfw_message: (argsList) => `This function allows you and your server to keep an environment safe and proper to your community\nThis is based on a Trained Deep Learning Model with nsfw images recognition\nAccuracy of over 93%\n\nArguments: ${argsList}`,
+        _nsfw_config_NaN: (arg) => `${arg} is not a number`
+
         
 }
 const translate = (key, ...args) => {

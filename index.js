@@ -57,9 +57,9 @@ client.on('messageCreate', message => {
                     (async () => {
                         nsfwCheck = await db.get(`${message.guild.id}.nsfwCheck`) || false
                     })().then(() => {
-                        if(nsfwCheck === true) {
-                        url = attachments.proxyURL
-                        isNsfwQ(url, message)
+                        if (nsfwCheck === true) {
+                            url = attachments.proxyURL
+                            isNsfwQ(url, message)
                         }
                     })
                     let check
@@ -77,12 +77,12 @@ client.on('messageCreate', message => {
             }
         }
 
-        
+
         let spamCheck
         (async () => {
             spamCheck = await db.get(`${message.guild.id}.spamCheck`) || false
         })().then(() => {
-            if(spamCheck === true) {
+            if (spamCheck === true) {
                 spam_(message, client)
             }
         })
@@ -93,9 +93,9 @@ client.on('messageCreate', message => {
                 (async () => {
                     nsfwCheck = await db.get(`${message.guild.id}.nsfwCheck`) || false
                 })().then(() => {
-                    if(nsfwCheck === true) {
+                    if (nsfwCheck === true) {
                         url = array[arr]
-                    isNsfwQ(url, message)
+                        isNsfwQ(url, message)
                     }
                 })
             }
@@ -191,6 +191,17 @@ client.on('messageCreate', message => {
         }
             break;
         case (args[0] === 'spam' && !message.author.bot && message.channel.type !== "dm"): {
+            if (message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MANAGE_CHANNELS)) {
+                let cmd = client.commands.get(args[0])
+                //console.log(message.content.replace(prefix, '') + ".js");
+                if (cmd) cmd.run(message, args, client, prefix)
+            }
+            else {
+                message.reply("You do not have permissions to use this command ```Permissions.FLAGS.MANAGE_CHANNELS```")
+            }
+        }
+            break;
+        case (args[0] === 'nsfw' && !message.author.bot && message.channel.type !== "dm"): {
             if (message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MANAGE_CHANNELS)) {
                 let cmd = client.commands.get(args[0])
                 //console.log(message.content.replace(prefix, '') + ".js");
