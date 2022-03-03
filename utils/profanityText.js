@@ -21,7 +21,9 @@ if (word.match(w)) {
         else {
             ch_logs = message.guild.channels.cache.filter(c => c.type === 'text').find(x => x.position == 0);
             let config = createEmbed('#0099ff', `${language('_profanity')}`, `${language('_profanity_', message.url)}`)
+            try {
             ch_logs.send({ embeds: [config]})
+            } catch {}
         }
         
     })()

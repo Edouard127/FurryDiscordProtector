@@ -251,7 +251,6 @@ client.on('guildMemberAdd', member => {
         }
     })().then(() => {
         if (raidmode[member.guild.id].raid === false) {
-            sus_members[member.guild.id].push({ member })
             let canClear = true
 
 
@@ -298,6 +297,10 @@ client.on('guildMemberAdd', member => {
             member.send(`Hello ${member.user.username}, this server is currently under attack, please try again later`).then(member.kick())
         }
     })
+})
+client.on('guildCreate', guild => {
+    client.user.setPresence({ activities: [{ name: `${client.guilds.cache.size} servers to protect`, type: 'WATCHING' }] });
+    client.user.setStatus('dnd');
 })
 
 

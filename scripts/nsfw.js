@@ -1,6 +1,6 @@
 const db = require("quick.db");
 const createEmbed = require('../utils/createEmbed.js')
-const argsList = ['interact', 'threshold', 'exclude']
+const argsList = ['interact', 'threshold']
 
 exports.name = "nsfw";
 exports.description = "NSFW Content Detection"
