@@ -1,9 +1,13 @@
 const db = require('quick.db')
 const createEmbed = require('../utils/createEmbed.js')
-
+let threshold = {}
+let c = {}
+let raidmode = {}
+let sus_members = []
 module.exports = {
     event: "guildMemberAdd",
     once: false,
+    
     run(member) {
         const guildLanguages = require('../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[member.guild.id] || "en"; // "english" will be the default language
