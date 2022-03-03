@@ -1,7 +1,6 @@
 const { Client, MessageEmbed } = require("discord.js");
 const fs = require('fs');
 const getServerCount = require('./utils/getServerCount.js');
-const { Player } = require("discord-player");
 
 fs.readdir('./events/', (err, files) => { // We use the method readdir to read what is in the events folder
     if (err) return console.error(err); // If there is an error during the process to read all contents of the ./events folder, throw an error in the console
@@ -25,10 +24,9 @@ fs.readdir('./events/', (err, files) => { // We use the method readdir to read w
 
 
 const client = new Client({ autoReconnect: true, max_message_cache: 0, intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS", "GUILD_VOICE_STATES",], partials: ['MESSAGE', 'CHANNEL', 'REACTION'],/*, disableEveryone: true*/ });
-const player = new Player(client);
 
-// add the trackStart event so when a song will be played this message will be sent
-player.on("trackStart", (queue, track) => queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`))
+
+
 // Read the Commands Directory, and filter the files that end with .js
 
 
@@ -38,51 +36,6 @@ process.on('unhandledRejection', error => {
 process.on('uncaughtException', error => {
     console.log('Uncaught Exception:', error);
 })
-
-client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isCommand()) return;
-
-    // /play track:Despacito
-    // will play "Despacito" in the voice channel
-    if (interaction.commandName === "play") {
-        if (!interaction.member.voice.channelId) return await interaction.reply({ content: "You are not in a voice channel!", ephemeral: true });
-        if (interaction.guild.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.me.voice.channelId) return await interaction.reply({ content: "You are not in my voice channel!", ephemeral: true });
-        const query = interaction.options.get("song").value;
-        const queue = player.createQueue(interaction.guild, {
-            metadata: {
-                channel: interaction.channel
-            }
-        });
-        
-        // verify vc connection
-        try {
-            if (!queue.connection) await queue.connect(interaction.member.voice.channel);
-        } catch {
-            queue.destroy();
-            return await interaction.reply({ content: "Could not join your voice channel!", ephemeral: true });
-        }
-
-        await interaction.deferReply();
-        const track = await player.search(query, {
-            requestedBy: interaction.user
-        }).then(x => x.tracks[0]);
-        if (!track) return await interaction.followUp({ content: `❌ | Track **${query}** not found!` });
-
-        queue.play(track);
-
-        return await interaction.followUp({ content: `⏱️ | Loading track **${track.title}**!` });
-    }
-});
-
-let threshold = {}
-let c = {}
-let raidmode = {}
-let sus_members = []
-client.on('guildMemberAdd', member => {
-    
-})
-
-
 
 let memberCount = 0
 client.login(process.env.TOKEN).then(() => {
