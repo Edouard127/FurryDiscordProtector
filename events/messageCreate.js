@@ -4,6 +4,7 @@ const db = require("quick.db");
 const spam_ = require("../utils/antispam.js")
 const config = require("../config.json");
 const prefix = config.prefix
+const dev = config.dev
 const isNsfwQ = require('../utils/nsfwdetector.js')
 const profanityImage = require('../utils/profanityImage.js');
 const profanityText = require('../utils/profanityText.js');

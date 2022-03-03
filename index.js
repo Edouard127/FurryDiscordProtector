@@ -1,7 +1,5 @@
 const { Client, MessageEmbed } = require("discord.js");
 const fs = require('fs');
-const db = require("quick.db");
-const createEmbed = require('./utils/createEmbed.js')
 const getServerCount = require('./utils/getServerCount.js');
 const { Player } = require("discord-player");
 
@@ -81,122 +79,9 @@ let c = {}
 let raidmode = {}
 let sus_members = []
 client.on('guildMemberAdd', member => {
-    const guildLanguages = require('./utils/languages/config/languages.json')
-    const guildLanguage = guildLanguages[member.guild.id] || "en"; // "english" will be the default language
-    const language = require(`./utils/languages/${guildLanguage}.js`);
-    (async () => {
-        if (await db.get(`${member.guild.id}.isRaid`) === true) {
-            raidmode[member.guild.id] = { "raid": true }
-        }
-        else {
-            raidmode[member.guild.id] = { "raid": false }
-        }
-
-        if (await db.get(`${member.guild.id}.raidmode.raidmode`)) {
-
-            threshold[member.guild.id] = await db.get((`${member.guild.id}.raidmode.raidmode`)).replace(/['"]+/g, '')
-            console.log(threshold)
-            console.log(threshold[member.guild.id])
-        }
-        else {
-
-            threshold[member.guild.id] = 5
-
-        }
-    })().then(() => {
-        if (raidmode[member.guild.id].raid === false) {
-            let canClear = true
-
-
-            if (c[member.guild.id]) {
-                c[member.guild.id].count = c[member.guild.id].count + 1
-            }
-            else if (!c[member.guild.id]) {
-                c[member.guild.id] = { count: 2 }
-            }
-
-
-            if (c[member.guild.id].count >= threshold[member.guild.id]) {
-
-                db.set(`${member.guild.id}.isRaid`, true)
-                console.log(sus_members)
-                    (async () => {
-                        if (await db.get(`${member.guild.id}.logs`)) {
-
-                            let ch = await member.guild.channels.cache.find(c => c.id === db.get((`${member.guild.id}.logs`).replace(/['"]+/g, '')))
-                            if (ch) {
-                                let config = createEmbed('#0099ff', `${language('_raid_'), `${language('_raid_message', (await member.guild.fetchOwner()).id)}`}`)
-                                ch.send({ embeds: [config] })
-                            }
-                            else {
-                                let channel = member.guild.channels.cache.filter(c => c.type === 'text').find(x => x.position == 0);
-                                let config = createEmbed('#0099ff', `${language('_raid_'), `${language('_raid_message', (await member.guild.fetchOwner()).id)}`}`)
-                                channel.send({ embeds: [config] })
-                            }
-                        }
-                    })
-            }
-            if (canClear) {
-                setTimeout(() => {
-
-                    canClear = true
-                    c[member.guild.id].count = 0
-
-                }, 10000, canClear = false)
-            }
-        }
-
-
-        else {
-            member.send(`Hello ${member.user.username}, this server is currently under attack, please try again later`).then(member.kick())
-        }
-    })
+    
 })
-client.on('guildCreate', async (guild) => {
-    client.user.setPresence({ activities: [{ name: `${client.guilds.cache.size} servers to protect`, type: 'WATCHING' }] });
-    client.user.setStatus('dnd');
-    try {
-    await guild.commands.set([
-        {
-            name: 'play',
-            description: 'Plays a song',
-            options: [
-                {
-                    name: 'song',
-                    type: 'STRING',
-                    description: 'The URL or the query of the song to play',
-                    required: true,
-                },
-            ],
-        },
-        {
-            name: 'skip',
-            description: 'Skip to the next song in the queue',
-        },
-        {
-            name: 'queue',
-            description: 'See the music queue',
-        },
-        {
-            name: 'pause',
-            description: 'Pauses the song that is currently playing',
-        },
-        {
-            name: 'resume',
-            description: 'Resume playback of the current song',
-        },
-        {
-            name: 'leave',
-            description: 'Leave the voice channel',
-        },
-    ])
-} catch {
-    let ownerid = guild.ownerId
-    let owner = guild.members.fetch(ownerid).then((owner) => {
-        let config = createEmbed('#0099ff')
-    })
-}
-})
+
 
 
 let memberCount = 0
