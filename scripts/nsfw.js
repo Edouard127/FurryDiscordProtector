@@ -1,10 +1,13 @@
 const db = require("quick.db");
 const createEmbed = require('../utils/createEmbed.js')
-const argsList = ['interact', 'threshold']
+const argsList = ['interact', 'threshold', 'exclude']
+const removeDuplicates = require('../utils/removeDuplicates.js')
+
 
 exports.name = "nsfw";
 exports.description = "NSFW Content Detection"
 exports.run = (message, args, prefix) => {
+    const { MessageMentions: { CHANNELS_PATTERN } } = require('discord.js');
     const guildLanguages = require('../utils/languages/config/languages.json')
     const guildLanguage = guildLanguages[message.guild.id] || "en"; // "english" will be the default language
     const language = require(`../utils/languages/${guildLanguage}.js`);
@@ -66,6 +69,31 @@ exports.run = (message, args, prefix) => {
             message.reply({ embeds: [config] })
         }
         
+        break;
+
+        case (args[1] === 'exclude'): {
+            if(args[2].match(CHANNELS_PATTERN)){
+                let arr
+                (async () => {
+                arr = await db.get(`${message.guild.id}.excludes`) || []
+                })().then(() => {
+                    message.mentions.channels.forEach(async function(channel){
+                        arr.push(channel.id)
+                        
+                        
+                        //await db.push(`${message.guild.id}.excludes`, channel.id)
+                    })
+                }).then(async () => {
+                    let new_arr = removeDuplicates(arr)
+                    await db.set(`${message.guild.id}`, new_arr)
+                })
+                
+            }
+            else {
+                let config = createEmbed('#0099ff', `${language('_nsfw_config')}`, `${language('_nsfw_invalid_chan', args[2])}`)
+                message.reply({ embeds: [config] })
+            }
+        }
         break;
 
         default: {

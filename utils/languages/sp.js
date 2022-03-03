@@ -45,6 +45,7 @@ const languageData = {
         _nsfw_config_NaN: (arg) => `${arg} no es un número o está fuera del rango permitido`,
         _nsfw_success_threshold: (threshold, ms) => `El umbral NSFW se actualizó con éxito a ${threshold} en ${ms} ms`,
         _nsfw_threshold_: "Informaciones:\nEl argumento de umbral en este comando es necesario para asegurarse de que no haya falsos positivos o al menos para limitar el riesgo de falsos positivos\nEl argumento de rango en este comando es de 1 a 100, siendo el porcentaje de la probabilidad de que la imagen sea nsfw\nEjemplo de respuesta de IA en una imagen NSFW:````{ className: 'Hen***', probability: 0.5407443642616272 }\n{ className: 'Po**', probability: 0.5407443642616272 }````\nLa probability es el porcentaje de la probabilidad de que la imagen sea nsfw\nSi no eres bueno en matemáticas, esto es simple, probabilidad = número entre 0 y 100 dividido por 100, 10 % => 0,10\nRecomendamos un valor del 60% al 80% para evitar falsos positivos o falsos negativos",
+        _nsfw_invalid_chan: (arg) => `❌ "${arg}" no es un canal válido`,
         
 }
 const translate = (key, ...args) => {
