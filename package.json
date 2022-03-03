@@ -22,7 +22,17 @@
   },
   "homepage": "https://github.com/Edouard127/FurryDiscordProtector#readme",
   "dependencies": {
+    "@discordjs/opus": "^0.5.3",
+    "@discordjs/voice": "^0.8.0",
     "@tensorflow/tfjs-node": "^3.13.0",
-    "cross-env": "^7.0.3"
+    "babel": "^6.23.0",
+    "cross-env": "^7.0.3",
+    "discord-music-player": "^8.3.1",
+    "discord-player": "^5.2.2",
+    "youtube-dl-exec": "^2.0.7",
+    "ytdl-core": "^4.10.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0"
   }
 }
