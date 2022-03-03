@@ -30,7 +30,7 @@ const languageData = {
         _logs_success: (log, ms) => `Mise à jour réussie du salon de logs pour **${log}** en ${ms} ms`,
         _logs_bad_syntax: (log) => `❌ "${log}" n'est pas un salon valide`,
         _raid_: `⚠️Raid⚠️`,
-        _raid_message: `Attention\nUn raid a été détecté`,
+        _raid_message: `Attention : un raid a été détecté. Assurez-vous de désactiver le mode raid avec &raidmode`,
         _profanity_message : `🛡️ Vérificateur de blasphèmes`,
         _profanity_success : (mode, ms) => `Le vérificateur de blasphèmes a été ${mode} en ${ms} ms`,
         _profanity: `⚠️Blasphème⚠️`,

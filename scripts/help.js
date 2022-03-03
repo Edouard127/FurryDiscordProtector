@@ -7,7 +7,6 @@ exports.run = (message, args, client, prefix) => {
     const guildLanguage = guildLanguages[message.guild.id] || "en"; // "english" will be the default language
     const language = require(`../utils/languages/${guildLanguage}.js`);
     var desc = ''
-    console.log(client.commands)
     client.commands.forEach(command => {
         desc += `\n${command.name}: ${command.description}\n`
     })
