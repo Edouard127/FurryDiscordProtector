@@ -24,7 +24,7 @@ if (!module_vars.model) {
     const guildLanguages = require('./languages/config/languages.json')
     const guildLanguage = guildLanguages[message.guild.id] || "en"; // "english" will be the default language
     const language = require(`./languages/${guildLanguage}.js`);
-    let pic;
+    let pic; 
     let result = {};
   
     const { model } = module_vars;
