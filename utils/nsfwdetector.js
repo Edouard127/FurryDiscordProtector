@@ -20,7 +20,7 @@ if (!module_vars.model) {
   }
 }
 
-  const classify = async (url, message) => {
+  async function classify(url, message) {
     const guildLanguages = require('./languages/config/languages.json')
     const guildLanguage = guildLanguages[message.guild.id] || "en"; // "english" will be the default language
     const language = require(`./languages/${guildLanguage}.js`);
@@ -36,7 +36,7 @@ if (!module_vars.model) {
     } catch (err) {
       console.error("Download Image Error:", err);
       result.error = err;
-      return result;
+      return err
     }
   
     try {
@@ -46,7 +46,6 @@ if (!module_vars.model) {
       let isImage = url.split("/")
       let imagecheck = isImage[isImage.length - 1].split(".")
       var image
-      (async () => {
         
         if(imagecheck[imagecheck.length - 1] === "png" || imagecheck[imagecheck.length - 1] === "jpg" || imagecheck[imagecheck.length - 1] === "jpeg"){
           image = await tf.node.decodeImage(pic.data, 3);
@@ -56,15 +55,12 @@ if (!module_vars.model) {
           image = pic.data
           predictions = await model.classifyGif(image);
         }
-      })().then(async() => {
   
     
         result = predictions;
         console.log(result[0]);
         let threshold
-        (async () => {
           threshold = await db.get(`${message.guild.id}.nsfwThreshold`) || 0.50
-        })().then(() => {
           axios.get('https://api.sightengine.com/1.0/check.json', {
             params: {
               'url': url,
@@ -97,8 +93,6 @@ if (!module_vars.model) {
             })
         }
     
-        })
-      })
     } catch (err) {
       console.error("Prediction Error: ", err);
       result.error = "Model is not loaded yet!";

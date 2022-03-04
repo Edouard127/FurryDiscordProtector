@@ -86,7 +86,7 @@ module.exports = {
             })
             let array = message.content.split(" ")
             for (let arr in array) {
-                if (array[arr].match(/(https?:\/\/.*\.(?:png|jpg))/i)) {
+                if (array[arr].match(/(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i)) {
                     let nsfwCheck
                     (async () => {
                         nsfwCheck = await db.get(`${message.guild.id}.nsfwCheck`) || false
