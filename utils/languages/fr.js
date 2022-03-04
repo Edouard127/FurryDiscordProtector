@@ -45,7 +45,9 @@ const languageData = {
         _nsfw_config_NaN : (arg) => `${arg} n'est pas un nombre ou est au-delà de l'intervalle autorisé`,
         _nsfw_success_threshold : (threshold, ms) => `Le seuil NSFW a été mis à jour avec succès à ${threshold} en ${ms} ms`,
         _nsfw_threshold_: "Informations:\NL'argument de seuil de cette commande est nécessaire pour s'assurer qu'il n'y a pas de faux positif ou du moins limiter le risque de faux positif\nL'argument range de cette commande va de 1 à 100, soit le pourcentage de probabilité que l'image soit NSF.Exemple de réponse de l'IA sur une image NSFW:```{ className : 'Hen***', probability : 0.5407443642616272 }{ className : Po**', probability : 0.5407443642616272 }```\nLa probability étant le pourcentage de la probabilité que l'image soit nsfw\nSi vous n'êtes pas bon en maths, c'est simple, probabilité = nombre entre 0 et 100 divisé par 100, 10% => 0.10\nNous recommandons une valeur comprise entre 60% et 80% pour éviter les faux positifs et les faux négatifs.",
-        _nsfw_invalid_chan: (arg) => `❌ "${arg}" n'est pas un salon valide`
+        _nsfw_invalid_chan: (arg) => `❌ "${arg}" n'est pas un salon valide`,
+        _gore_warning: `Votre image a été signalée comme étant gore, veuillez vous abstenir de poster ce genre de choses pour éviter que votre compte soit banni de Discord.`,
+        _nsfw_warning: `Votre image a été signalée comme NSFW, veuillez vous abstenir de poster ce genre de choses.`
 
         
 }

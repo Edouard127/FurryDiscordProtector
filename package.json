@@ -4,7 +4,7 @@
   "description": "Protect your server from haters",
   "main": "shards.js",
   "scripts": {
-    "start": "cross-env TOKEN='insert token' node ./shards.js"
+    "start": "cross-env TOKEN='insert token' API_S='https://dashboard.sightengine.com/signup (enter aoi_key)' API_U='https://dashboard.sightengine.com/signup (enter api user)' node ./shards.js"
   },
   "repository": {
     "type": "git",
@@ -24,15 +24,10 @@
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
     "@discordjs/voice": "^0.8.0",
-    "@google-cloud/vision": "^2.4.2",
     "@tensorflow/tfjs-node": "^3.13.0",
-    "babel": "^6.23.0",
     "cross-env": "^7.0.3",
-    "discord-music-player": "^8.3.1",
     "discord-player": "^5.2.2",
-    "youtube-dl-exec": "^2.0.7",
-    "ytdl-core": "^4.10.1",
-    "zcatalyst-sdk-node": "^2.1.0"
+    "tesseract.js": "^2.1.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0"
