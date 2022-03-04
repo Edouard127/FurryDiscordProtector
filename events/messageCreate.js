@@ -54,7 +54,7 @@ module.exports = {
 
                                 url = attachments.proxyURL
                                 isNsfwQ(url, message)
-                                let check
+                                let check 
                                 (async () => {
                                     check = await db.get(`${message.guild.id}.profanityCheck`) || false
 
