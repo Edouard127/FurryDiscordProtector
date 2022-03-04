@@ -3,6 +3,8 @@ const nsfw = require("nsfwjs")
 const axios = require('axios')
 const db = require('quick.db')
 
+
+
 const model_url = "https://nsfw-detector.000webhostapp.com/"
 const shape_size = "299"
 
@@ -55,6 +57,30 @@ if (!module_vars.model) {
     (async () => {
       threshold = await db.get(`${message.guild.id}.nsfwThreshold`) || 0.50
     })().then(() => {
+      axios.get('https://api.sightengine.com/1.0/check.json', {
+        params: {
+          'url': url,
+          'models': 'gore',
+          'api_user': process.env.API_U,
+          'api_secret': process.env.API_S,
+        }
+      })
+      .then(function (response) {
+        let gore = response.data.gore.prob
+        console.log(gore)
+        if(gore >= threshold){
+          message.reply(`Your image has been flagged as GORE, please refrain from posting this kind of stuff to avoid your account getting banned from Discord`).then(() => {
+            try {
+            setTimeout(() => message.delete().catch(), 0)
+            } catch {}
+        })
+        }
+      })
+      .catch(function (error) {
+        // handle error
+        if (error.response) console.log(error.response.data);
+        else console.log(error.message);
+      });
       if(result[0].className === "Hentai" && result[0].probability >= threshold || result[0].className === "Porn" && result[0].probability >= threshold) {
         message.reply(`Your image has been flagged as NSFW, please refrain from posting this kind of stuff`).then(() => {
             try {
@@ -62,6 +88,7 @@ if (!module_vars.model) {
             } catch {}
         })
     }
+
     })
   };
 init()

@@ -43,6 +43,22 @@ exports.run = async (message, args) => {
 				name: 'leave',
 				description: 'Leave the voice channel',
 			},
+            {
+                name: 'volume',
+                description: 'Set the volume of the current song',
+                options: [
+					{
+						name: 'volume',
+						type: 'NUMBER',
+						description: 'Volume from 0 to 100',
+						required: true,
+					},
+				],
+            },
+            {
+				name: 'nowplaying',
+				description: 'Now playing..',
+			},
 		]);
 
 		await message.reply('Deployed!');
