@@ -176,11 +176,16 @@ module.exports = {
             }
                 break;
             case (args[0] === 'raidmode' && !message.author.bot && message.channel.type !== "dm"): {
+                if (message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
                 try {
                 let cmd = client.commands.get(args[0])
                 //console.log(message.content.replace(prefix, '') + ".js");
                 if (cmd) cmd.run(message, args, client, prefix)
                 } catch (err) {console.log(err)}
+            }
+            else {
+                message.reply("You do not have permissions to use this command ```Permissions.FLAGS.MANAGE_GUILD```")
+            }
             }
                 break;
             case (args[0] === 'profanity' && !message.author.bot && message.channel.type !== "dm"): {
