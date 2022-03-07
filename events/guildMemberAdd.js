@@ -12,6 +12,20 @@ module.exports = {
         const guildLanguages = require('../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[member.guild.id] || "en"; // "english" will be the default language
         const language = require(`../utils/languages/${guildLanguage}.js`);
+        let ch_logs
+        (async () => {
+            ch_logs = await message.guild.channels.cache.find(c => c.id === db.get((`${message.guild.id}.logs`).replace(/['"]+/g, '')))                            
+        })().then(() => {
+            if(ch_logs){
+                let config = createEmbed('#0099ff', `New member join`, `Username: ${member.displayName}\nID: ${member.id}\nAccount creation: ${member.user.createdAt}\n`)
+                ch_logs.send({ embeds: [config]})
+            }
+            else {
+                ch_logs = message.guild.channels.cache.filter(c => c.type === 'text').find(x => x.position == 0);
+                let config = createEmbed('#0099ff', `New member join`, `Username: ${member.displayName}\nID: ${member.id}\nAccount creation: ${member.user.createdAt}\n`)
+                ch_logs.send({ embeds: [config]})
+            }
+        })
         (async () => {
             if (await db.get(`${member.guild.id}.isRaid`) === true) {
                 raidmode[member.guild.id] = { "raid": true }

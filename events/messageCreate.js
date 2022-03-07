@@ -54,13 +54,19 @@ module.exports = {
 
                                 url = attachments.proxyURL
                                 isNsfwQ(url, message)
-                                let check 
+                                let check
+                                let uwu
                                 (async () => {
                                     check = await db.get(`${message.guild.id}.profanityCheck`) || false
+                                    uwu = await db.get(`${message.guild.id}.excludes`) || false
 
                                 })().then(() => {
-                                    if (check === true) {
-                                        profanityImage(url, message)
+                                    if (Array.isArray(uwu) || !Array.isArray(uwu)) {
+                                        if (!uwu.includes(message.channel.id)) {
+                                            if (check === true) {
+                                                profanityImage(url, message)
+                                            }
+                                        }
                                     }
                                 })
                             })
@@ -93,7 +99,18 @@ module.exports = {
                     })().then(() => {
                         if (nsfwCheck === true) {
                             url = array[arr]
-                            isNsfwQ(url, message)
+                            let uwu
+                            (async () => {
+                                uwu = await db.get(`${message.guild.id}.nsfw.excludes`) || "uwu"
+                                if (Array.isArray(uwu) || !Array.isArray(uwu)) {
+                                    if (!uwu.includes(message.channel.id)) {
+                                isNsfwQ(url, message)
+                                    }
+                                }
+                            })().then(() => {
+                                console.log(uwu)
+                            })
+
                         }
                     })
                 }
@@ -154,20 +171,20 @@ module.exports = {
                 break;
             case (args[0] === 'help' && !message.author.bot && message.channel.type !== "dm"): {
                 try {
-                let cmd = client.commands.get(args[0])
-                //console.log(message.content.replace(prefix, '') + ".js");
-                if (cmd) cmd.run(message, args, client, prefix)
-                } catch (err) {console.log(err)}
+                    let cmd = client.commands.get(args[0])
+                    //console.log(message.content.replace(prefix, '') + ".js");
+                    if (cmd) cmd.run(message, args, client, prefix)
+                } catch (err) { console.log(err) }
 
             }
                 break;
             case (args[0] === 'lang' && !message.author.bot && message.channel.type !== "dm"): {
                 if (message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
                     try {
-                    let cmd = client.commands.get(args[0])
-                    //console.log(message.content.replace(prefix, '') + ".js");
-                    if (cmd) cmd.run(message, args, client, prefix)
-                    } catch (err) {console.log(err)}
+                        let cmd = client.commands.get(args[0])
+                        //console.log(message.content.replace(prefix, '') + ".js");
+                        if (cmd) cmd.run(message, args, client, prefix)
+                    } catch (err) { console.log(err) }
                 }
                 else {
                     message.reply("You do not have permissions to use this command ```Permissions.FLAGS.MANAGE_GUILD```")
@@ -177,24 +194,24 @@ module.exports = {
                 break;
             case (args[0] === 'raidmode' && !message.author.bot && message.channel.type !== "dm"): {
                 if (message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
-                try {
-                let cmd = client.commands.get(args[0])
-                //console.log(message.content.replace(prefix, '') + ".js");
-                if (cmd) cmd.run(message, args, client, prefix)
-                } catch (err) {console.log(err)}
-            }
-            else {
-                message.reply("You do not have permissions to use this command ```Permissions.FLAGS.MANAGE_GUILD```")
-            }
+                    try {
+                        let cmd = client.commands.get(args[0])
+                        //console.log(message.content.replace(prefix, '') + ".js");
+                        if (cmd) cmd.run(message, args, client, prefix)
+                    } catch (err) { console.log(err) }
+                }
+                else {
+                    message.reply("You do not have permissions to use this command ```Permissions.FLAGS.MANAGE_GUILD```")
+                }
             }
                 break;
             case (args[0] === 'profanity' && !message.author.bot && message.channel.type !== "dm"): {
                 if (message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
                     try {
-                    let cmd = client.commands.get(args[0])
-                    //console.log(message.content.replace(prefix, '') + ".js");
-                    if (cmd) cmd.run(message, args, client, prefix)
-                    } catch (err) {console.log(err)}
+                        let cmd = client.commands.get(args[0])
+                        //console.log(message.content.replace(prefix, '') + ".js");
+                        if (cmd) cmd.run(message, args, client, prefix)
+                    } catch (err) { console.log(err) }
                 }
                 else {
                     message.reply("You do not have permissions to use this command ```Permissions.FLAGS.MANAGE_GUILD```")
@@ -204,10 +221,10 @@ module.exports = {
             case (args[0] === 'spam' && !message.author.bot && message.channel.type !== "dm"): {
                 if (message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MANAGE_CHANNELS)) {
                     try {
-                    let cmd = client.commands.get(args[0])
-                    //console.log(message.content.replace(prefix, '') + ".js");
-                    if (cmd) cmd.run(message, args, client, prefix)
-                    } catch (err) {console.log(err)}
+                        let cmd = client.commands.get(args[0])
+                        //console.log(message.content.replace(prefix, '') + ".js");
+                        if (cmd) cmd.run(message, args, client, prefix)
+                    } catch (err) { console.log(err) }
                 }
                 else {
                     message.reply("You do not have permissions to use this command ```Permissions.FLAGS.MANAGE_CHANNELS```")
@@ -217,10 +234,10 @@ module.exports = {
             case (args[0] === 'nsfw' && !message.author.bot && message.channel.type !== "dm"): {
                 if (message.guild.members.cache.get(message.author.id).permissions.has(Permissions.FLAGS.MANAGE_CHANNELS)) {
                     try {
-                    let cmd = client.commands.get(args[0])
-                    //console.log(message.content.replace(prefix, '') + ".js");
-                    if (cmd) cmd.run(message, args, client, prefix)
-                    } catch (err) {console.log(err)}
+                        let cmd = client.commands.get(args[0])
+                        //console.log(message.content.replace(prefix, '') + ".js");
+                        if (cmd) cmd.run(message, args, client, prefix)
+                    } catch (err) { console.log(err) }
                 }
                 else {
                     message.reply("You do not have permissions to use this command ```Permissions.FLAGS.MANAGE_CHANNELS```")
@@ -229,10 +246,10 @@ module.exports = {
                 break;
             case (args[0] === 'play' && !message.author.bot && message.channel.type !== "dm"): {
                 try {
-                let cmd = client.commands.get(args[0])
-                //console.log(message.content.replace(prefix, '') + ".js");
-                if (cmd) cmd.run(message, args, client, prefix)
-                } catch (err) {console.error(err)}
+                    let cmd = client.commands.get(args[0])
+                    //console.log(message.content.replace(prefix, '') + ".js");
+                    if (cmd) cmd.run(message, args, client, prefix)
+                } catch (err) { console.error(err) }
 
             }
                 break;

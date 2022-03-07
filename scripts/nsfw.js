@@ -81,7 +81,7 @@ exports.run = (message, args, prefix) => {
                         arr.push(channel.id)
                         
                         
-                        //await db.push(`${message.guild.id}.excludes`, channel.id)
+                        await db.push(`${message.guild.id}.excludes`, channel.id)
                     })
                 }).then(async () => {
                     let new_arr = removeDuplicates(arr)
