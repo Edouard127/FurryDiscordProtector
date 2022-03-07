@@ -1,5 +1,6 @@
 const createEmbed = require('../utils/createEmbed.js')
-
+const { Client, MessageEmbed } = require("discord.js");
+const client = new Client({ autoReconnect: true, max_message_cache: 0, intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS", "GUILD_VOICE_STATES",], partials: ['MESSAGE', 'CHANNEL', 'REACTION'],/*, disableEveryone: true*/ });
 module.exports = {
     event: "guildCreate",
     once: false,

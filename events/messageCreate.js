@@ -31,7 +31,7 @@ for (const file of commands) {
 module.exports = {
     event: "messageCreate",
     once: false,
-    run(message) {
+    async run(message) {
         if (!message.author.bot && message.channel.type !== "dm") {
             if (!message.channel.nsfw) {
                 let check

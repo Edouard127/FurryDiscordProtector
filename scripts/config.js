@@ -164,7 +164,7 @@ exports.run = (message, args, prefix) => {
                 })
             }
             else {
-                let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_bad_syntax', args[2]))
+                let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_bad_syntax', args[2], ms))
                 message.reply({ embeds: [config] })
             }
         }

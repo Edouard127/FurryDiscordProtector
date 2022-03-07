@@ -8,8 +8,6 @@ exports.name = "play"
 exports.description = "Play your favorite music"
 
 exports.run = async (message, args) => {
-    console.log(args)
-	if (args[1] === 'deploy') {
 		await message.guild.commands.set([
 			{
 				name: 'play',
@@ -61,9 +59,8 @@ exports.run = async (message, args) => {
 			},
 		]);
 
-		await message.reply('Deployed!');
+		await message.reply('Slash commands deployed !');
 	}
-}
 
 /**
  * Maps guild IDs to music subscriptions, which exist if the bot has an active VoiceConnection to the guild.

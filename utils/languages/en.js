@@ -27,7 +27,7 @@ const languageData = {
         _raidmode_raidmode: '🛡️ Raidmode',
         _raidmode_success: (mode, ms) => `Successfully ${mode} raidmode in ${ms} ms`,
         _logs_logs: `⚙️ Logs Configuration`,
-        _logs_success: (log, ms) => `Successfully updared the log channel for **${log}** in ${ms} ms`,
+        _logs_success: (log, ms) => `Successfully updated the log channel for **${log}** in ${ms} ms`,
         _logs_bad_syntax: (log) => `❌ "${log}" is not a valid channel`,
         _raid_: `⚠️Raid⚠️`,
         _raid_message: `Warning\nA raid has been detected\nMake sure to disable the raidmode with &raidmode`,

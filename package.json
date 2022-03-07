@@ -27,7 +27,8 @@
     "@tensorflow/tfjs-node": "^3.13.0",
     "cross-env": "^7.0.3",
     "discord-player": "^5.2.2",
-    "tesseract.js": "^2.1.5"
+    "tesseract.js": "^2.1.5",
+    "ytdl-core": "^4.11.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0"

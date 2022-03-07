@@ -1,6 +1,7 @@
-const { Client, MessageEmbed } = require("discord.js");
+const { Client, MessageEmbed, Collection, User } = require("discord.js");
 const fs = require('fs');
 const getServerCount = require('./utils/getServerCount.js');
+
 
 fs.readdir('./events/', (err, files) => { // We use the method readdir to read what is in the events folder
     if (err) return console.error(err); // If there is an error during the process to read all contents of the ./events folder, throw an error in the console
@@ -24,8 +25,16 @@ fs.readdir('./events/', (err, files) => { // We use the method readdir to read w
 
 
 const client = new Client({ autoReconnect: true, max_message_cache: 0, intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS", "GUILD_VOICE_STATES",], partials: ['MESSAGE', 'CHANNEL', 'REACTION'],/*, disableEveryone: true*/ });
-
-
+const { Player } = require("discord-player");
+const player = new Player(client);
+player.on("channelEmpty", async (queue) => {
+    queue.metadata.send("❌ | Nobody is in the voice channel, leaving...");
+    queue.destroy()
+})
+player.on("botDisconnect", (queue) => {
+    queue.metadata.send("❌ | I was manually disconnected from the voice channel, clearing queue!");
+    queue.destroy()
+})
 
 // Read the Commands Directory, and filter the files that end with .js
 
@@ -37,20 +46,21 @@ process.on('uncaughtException', error => {
     console.log('Uncaught Exception:', error);
 })
 
-let memberCount = 0
 client.login(process.env.TOKEN).then(() => {
     client.once('ready', () => {
-
         client.user.setPresence({ activities: [{ name: `${client.guilds.cache.size} servers to protect`, type: 'WATCHING' }] });
         client.user.setStatus('dnd');
-        client.guilds.cache.map(guild => memberCount = +guild.memberCount)
+        
         let servers
+        let members
         (async () => {
+            members = await client.shard.broadcastEval(c => c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0))
             servers = await getServerCount(client)
 
         })().then(() => {
-            console.log(`\n ${client.user.username}@Bot [Started] ${new Date()}
-            --------------------------------------\n Users: ${memberCount}\n Servers: ${servers}\n --------------------------------------\n`)
+                console.log(`\n ${client.user.username}@Bot [Started] ${new Date()}
+                --------------------------------------\n Users: ${members}\n Servers: ${servers}\n --------------------------------------\n`)
+           
         })
         setInterval(() => {
             client.channels.fetch('948369400866684969').then(channel => channel.messages.fetch('948380114868125757').then(message => {
