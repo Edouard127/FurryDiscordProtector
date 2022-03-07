@@ -14,18 +14,12 @@ module.exports = {
         const language = require(`../utils/languages/${guildLanguage}.js`);
         let ch_logs
         (async () => {
-            ch_logs = await message.guild.channels.cache.find(c => c.id === db.get((`${message.guild.id}.logs`).replace(/['"]+/g, '')))                            
+            ch_logs = await member.guild.channels.cache.find(c => c.id === db.get((`${member.guild.id}.logs`).replace(/['"]+/g, ''))) || await member.guild.channels.cache.filter(c => c.type === 'GUILD_TEXT').find(x => x.position == 0);                                              
         })().then(() => {
-            if(ch_logs){
-                let config = createEmbed('#0099ff', `New member join`, `Username: ${member.displayName}\nID: ${member.id}\nAccount creation: ${member.user.createdAt}\n`)
-                ch_logs.send({ embeds: [config]})
-            }
-            else {
-                ch_logs = message.guild.channels.cache.filter(c => c.type === 'text').find(x => x.position == 0);
-                let config = createEmbed('#0099ff', `New member join`, `Username: ${member.displayName}\nID: ${member.id}\nAccount creation: ${member.user.createdAt}\n`)
-                ch_logs.send({ embeds: [config]})
-            }
-        })
+            console.log(ch_logs)
+            let config = createEmbed('#0099ff', `New member join`, `Username: ${member.displayName}\nID: ${member.id}\nAccount creation: ${member.user.createdAt}\n`)
+            ch_logs.send({ embeds: [config]})
+        });
         (async () => {
             if (await db.get(`${member.guild.id}.isRaid`) === true) {
                 raidmode[member.guild.id] = { "raid": true }
@@ -70,7 +64,7 @@ module.exports = {
                                     ch.send({ embeds: [config] })
                                 }
                                 else {
-                                    let channel = member.guild.channels.cache.filter(c => c.type === 'text').find(x => x.position == 0);
+                                    let channel = member.guild.channels.cache.filter(c => c.type === 'GUILD_TEXT').find(x => x.position == 0);
                                     let config = createEmbed('#0099ff', `${language('_raid_'), `${language('_raid_message', (await member.guild.fetchOwner()).id)}`}`)
                                     channel.send({ embeds: [config] })
                                 }

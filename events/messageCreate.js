@@ -58,16 +58,14 @@ module.exports = {
                                 let uwu
                                 (async () => {
                                     check = await db.get(`${message.guild.id}.profanityCheck`) || false
-                                    uwu = await db.get(`${message.guild.id}.excludes`) || false
+                                    uwu = await db.get(`${message.guild.id}.excludes`) || []
 
                                 })().then(() => {
-                                    if (Array.isArray(uwu) || !Array.isArray(uwu)) {
                                         if (!uwu.includes(message.channel.id)) {
                                             if (check === true) {
                                                 profanityImage(url, message)
                                             }
                                         }
-                                    }
                                 })
                             })
                         }
@@ -101,12 +99,10 @@ module.exports = {
                             url = array[arr]
                             let uwu
                             (async () => {
-                                uwu = await db.get(`${message.guild.id}.nsfw.excludes`) || "uwu"
-                                if (Array.isArray(uwu) || !Array.isArray(uwu)) {
+                                uwu = await db.get(`${message.guild.id}.nsfw.excludes`) || []
                                     if (!uwu.includes(message.channel.id)) {
                                 isNsfwQ(url, message)
                                     }
-                                }
                             })().then(() => {
                                 console.log(uwu)
                             })
