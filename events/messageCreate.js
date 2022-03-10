@@ -114,7 +114,8 @@ module.exports = {
         }
 
 
-        const args = message.content.slice(prefix.length).trim().split(/ +/);
+        const args = message.content.split(' ')
+        args[0] = args[0].replace(prefix, '')
 
         switch (true) {
 
