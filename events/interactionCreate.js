@@ -12,6 +12,8 @@ module.exports = {
     async run(interaction) {
         if (!interaction.isCommand()) return;
         const command = interaction.commandName
+
+        
         switch (true) {
             case (command === 'play'): {
                 if (!interaction.member.voice.channelId) return await interaction.reply({ content: "You are not in a voice channel!", ephemeral: true });

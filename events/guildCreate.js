@@ -10,6 +10,10 @@ module.exports = {
     try {
     await guild.commands.set([
         {
+            name: 'ping',
+            description: ''
+        },
+        {
             name: 'play',
             description: 'Plays a song',
             options: [

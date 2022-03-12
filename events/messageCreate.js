@@ -15,6 +15,7 @@ if (!fs.existsSync(__dirname + '\\../\/utils/languages/config/languages.json')) 
 }
 const client = new Client({ autoReconnect: true, max_message_cache: 0, intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS", "GUILD_VOICE_STATES",], partials: ['MESSAGE', 'CHANNEL', 'REACTION'],/*, disableEveryone: true*/ });
 client.commands = new Collection();
+
 // Loop over the Command files
 for (const file of commands) {
     // Get the command name from splitting the file

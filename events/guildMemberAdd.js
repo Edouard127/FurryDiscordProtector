@@ -30,8 +30,7 @@ module.exports = {
 
             if (await db.get(`${member.guild.id}.raidmode.raidmode`)) {
 
-                threshold[member.guild.id] = await db.get((`${member.guild.id}.raidmode.raidmode`)).replace(/['"]+/g, '')
-                threshold[member.guild.id] = parseInt(threshold[member.guild.id])
+                threshold[member.guild.id] = parseInt(await db.get((`${member.guild.id}.raidmode.raidmode`)))
             }
             else {
 
