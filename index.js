@@ -26,6 +26,13 @@ fs.readdir('./events/', (err, files) => { // We use the method readdir to read w
 
 const client = new Client({ autoReconnect: true, max_message_cache: 0, intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS", "GUILD_VOICE_STATES",], partials: ['MESSAGE', 'CHANNEL', 'REACTION'],/*, disableEveryone: true*/ });
 const { Player } = require("discord-player");
+
+client.commands = new Collection();
+client.slash = new Collection();
+client.aliases = new Collection();
+["commands", "events", "slash"].forEach(handler => {
+    require(`./handlers/${handler}`)(client);
+});
 const player = new Player(client);
 player.on("channelEmpty", async (queue) => {
     queue.metadata.send("❌ | Nobody is in the voice channel, leaving...");

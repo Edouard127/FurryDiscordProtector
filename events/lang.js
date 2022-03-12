@@ -11,7 +11,7 @@ const command = interaction.commandName
 
 
 if(command === 'lang'){
-    const subcommand = interaction.options.getSubcommand()
+    const subcommand = interaction.options.get('value').value
     const guildLanguages = require('../utils/languages/config/languages.json') //<------------------------------------------------------------ FIX IF THE LANGUAGE IN THE JSON FILE IS NOT VALID, PUT THE DEFAULT VARIABLE
 const guildLanguage = guildLanguages[interaction.guildId] || "en"; // "english" will be the default language
 const language = require(`../utils/languages/${guildLanguage}.js`);

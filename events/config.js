@@ -3,16 +3,14 @@ const { ChannelType } = require('discord-api-types/v9');
 const argsList = ['raidmode', 'antispam', 'logs']
 const createEmbed = require('../utils/createEmbed.js')
 
-module.exports = {
-    event: "interactionCreate",
-    once: false,
-    async run(interaction) {
+module.exports = async(interaction) => {
 
         const guildLanguages = require('../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[interaction.guildID] || "en"; // "english" will be the default language
         const language = require(`../utils/languages/${guildLanguage}.js`);
         //console.log(message)
-        const command = interaction.options.getSubcommand()
+        const command = interaction.options.getSubcommand() || interaction.options.get('value').value 
+        console.log(command)
         //const command = interaction.commandName
         const args = interaction.options.get('value').value 
         console.log(args)
@@ -113,4 +111,3 @@ module.exports = {
             }
         }
     }
-}

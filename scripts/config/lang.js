@@ -8,8 +8,8 @@ exports.description = "Change the language of the bot"
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('lang')
-    .setDescription('lang')
-    //.addStringOption(string => { return string.setName('value').setDescription('languages').addChoice('en').addChoice('fr').addChoice('ru').addChoice('sp')}),
+    .setDescription('language')
+    .addStringOption(string => { return string.setName('value').setDescription('languages').addChoice('english', 'en').addChoice('français', 'fr').addChoice('русский', 'ru').addChoice('español', 'sp')}),
 
 }
 
