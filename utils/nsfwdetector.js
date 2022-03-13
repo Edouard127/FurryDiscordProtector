@@ -9,8 +9,8 @@ async function classify(url, message){
   const guildLanguage = guildLanguages[message.guild.id] || "en"; // "english" will be the default language
   const language = require(`./languages/${guildLanguage}.js`);
   let req = await axios.get(`http://localhost:3000/api/classify?url=${url}`);
-  let className = req.data.data[0].className; let prob = req.data.data[0].probability; let gore = req.data.gore
-  if(className === 'Hentai' && prob >= threshold || className === "Porn" && prob >= threshold || gore >= 0.60){
+  let className = req.data.data[0].className; let prob = req.data.data[0].probability;
+  if(className === 'Hentai' && prob >= threshold || className === "Porn" && prob >= threshold){
     message.reply(`${language('_nsfw_warning')}`).then(() => {
       try {
       setTimeout(() => message.delete().catch(), 0)

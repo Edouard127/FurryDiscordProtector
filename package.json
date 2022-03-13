@@ -4,7 +4,7 @@
   "description": "Protect your server from haters",
   "main": "shards.js",
   "scripts": {
-    "start": "cross-env TOKEN='insert token' API_S='https://dashboard.sightengine.com/signup (enter aoi_key)' API_U='https://dashboard.sightengine.com/signup (enter api user)' node ./shards.js"
+    "start": "cross-env TOKEN='insert token' node ./shards.js"
   },
   "repository": {
     "type": "git",
@@ -28,7 +28,10 @@
     "@tensorflow/tfjs-node": "^3.13.0",
     "cross-env": "^7.0.3",
     "discord-api-types": "^0.29.0",
+    "discord-logs": "^2.0.1",
     "discord-player": "^5.2.2",
+    "discord.js": "^13.6.0",
+    "humanize-duration": "^3.27.1",
     "tesseract.js": "^2.1.5",
     "ytdl-core": "^4.11.0"
   },
