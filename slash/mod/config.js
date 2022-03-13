@@ -108,7 +108,6 @@ module.exports = {
             }
                 break;
             case (logs !== null && logs !== undefined): {
-                console.log(logs)
                     let before = (new Date().getTime()).toFixed(2);
                     (async () => {
                         before = new Date().getTime()
