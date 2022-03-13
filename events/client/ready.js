@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js')
 const slash = require('../../slash');
 
 module.exports = async client => {   
-      client.user.setActivity('Code Surgery', { type: 'LISTENING' });
+      client.user.setActivity(`${client.guilds.cache.size} servers to protect`, { type: 'WATCHING' });
       console.log(`[Discord API] Logged in as ${client.user.tag}`.magenta);
       slash(client);
       setInterval(() => {
