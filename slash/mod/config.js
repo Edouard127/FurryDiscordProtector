@@ -8,12 +8,6 @@ module.exports = {
 	permissions: 'MANAGE_MEMBERS',
 	example: `/config [argument]`,
 	options: [
-        {
-            name: 'summary',
-            description: 'config summary for the server',
-            type: 1,
-            required: false,
-        },
 		{
 			name: 'raidmode',
 			description: 'number of joins in 10 seconds before triggering the Anti-Raid Mode',
@@ -34,9 +28,10 @@ module.exports = {
         },
 
 	],
-	timeout: 5000,
+	timeout: 3000,
 	category: 'mod',
 	run: async (interaction, client) => {
+        let conf = await db.get(`${interaction.guildId}`)
         const raidmode = interaction.options.get('raidmode')
         const antispam = interaction.options.get('antispam')
         const logs = interaction.options.get('logs')
@@ -124,10 +119,11 @@ module.exports = {
             }
                 break;
             default: {
+                
                 let config = createEmbed('#0099ff',
                     `${language('_config_default')}`,
 
-                    `${language('_config_default_syntax', exports.name, argsList)}`)
+                    `${language('_config_raid_configuration', JSON.stringify(conf))}`)
 
                 interaction.reply({ embeds: [config] })
             }

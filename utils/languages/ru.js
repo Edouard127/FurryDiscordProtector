@@ -8,7 +8,7 @@ const languageData = {
     _config_raid_raidmode: ':gear: Конфигурация режима Raidmode',
     _config_success: (ms) => `✅ Операция завершена через ${ms} миллисекунд`,
     _config_no_configuration: 'Конфигурация для этого сервера не обнаружена',
-    _config_raid_configuration: (configuration, prefix, exports) => `Текущая конфигурация:\n${configuration}\nСинтаксис: ${prefix}${exports} raidmode [ номер ] => Количество объединений за 10 секунд до срабатывания режима антирейда`,
+    _config_raid_configuration: (configuration) => `Текущая конфигурация:\n${configuration}`,
     _config_nspam_config: ':gear: Настройка антиспама',
     _config_nspam_configuration: (configuration, prefix, exports) => `Текущая конфигурация:\n${configuration}\nСинтаксис: ${prefix}${exports} antispam [ номер ] => Количество сообщений за 3 секунд до срабатывания антиспама`,
     _config_default: `⚙️ Конфигурация`,

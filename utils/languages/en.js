@@ -8,7 +8,7 @@ const languageData = {
         _config_raid_raidmode: '⚙️ Raidmode Configuration',
         _config_success: (ms) => `✅ Operation Completed in ${ms} ms`,
         _config_no_configuration: '```No configuration detected for this server```',
-        _config_raid_configuration: (configuration, prefix, exports) => `Current configuration:\n${configuration}\nSyntax: ${prefix}${exports} raidmode [ number ] => Number of joins in 10 seconds before triggering the Anti-Raid Mode`,
+        _config_raid_configuration: (configuration) => `Current configuration:\n${configuration}`,
         _config_nspam_config: '⚙️ Anti-Spam Configuration',
         _config_nspam_configuration: (configuration, prefix, exports) => `Current configuration:\n${configuration}\nSyntax: ${prefix}${exports} antispam [ number ] => Number of messages in 3 seconds before triggering the Anti-Spam`,
         _config_default: `⚙️ Config`,
