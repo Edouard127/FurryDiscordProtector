@@ -39,8 +39,12 @@ require('colors');
 
   
   process.on('uncaughtException', (err) => {
-	console.error(`Uncaught Exception: ${err}`);
+	console.log(`Uncaught Exception: ${err}`);
   });
+  process.on('unhandledRejection', (error) => {
+    console.log(`Unhandled promise rejection: ${error}`);
+  });
+
   //client.on('debug', console.log);
   
 client.login(process.env.TOKEN);
