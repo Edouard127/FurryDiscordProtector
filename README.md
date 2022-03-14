@@ -3,6 +3,8 @@
 
 A well coded JavaScript project made by a 14 years old pationated furry developer
 
+Contacts: Kamigen#0001 (385441179069579265)
+
 This bot currently haves:
 
 Mass join detection (Raid)\
@@ -10,7 +12,15 @@ Anti-Spam\
 NSFW Content detection\
 Anti Furry Speech and images detector (public API ?)\
 Multi languages\
-And more soon
+
+General commands like:\n
+Music\
+Avatar\
+Banner\
+An epic help command\
+And more
+
+And more function will be coded soon
 
 
 
