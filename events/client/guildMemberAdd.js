@@ -6,9 +6,9 @@ let raidmode = {}
 let sus_members = []
 
 module.exports = async(client, member) => {
-    const guildLanguages = require('../utils/languages/config/languages.json')
+    const guildLanguages = require('../../utils/languages/config/languages.json')
     const guildLanguage = guildLanguages[member.guild.id] || "en"; // "english" will be the default language
-    const language = require(`../utils/languages/${guildLanguage}.js`);
+    const language = require(`../../utils/languages/${guildLanguage}.js`);
     let ch_logs
     (async () => {
         ch_logs = await member.guild.channels.cache.find(c => c.id === db.get((`${member.guild.id}.logs`).replace(/['"]+/g, ''))) || await member.guild.channels.cache.filter(c => c.type === 'GUILD_TEXT').find(x => x.position == 0);                                              
