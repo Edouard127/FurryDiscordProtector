@@ -38,9 +38,24 @@ And more function will be coded soon
 
 ## Installation
 
-Currently no Installation steps are provided
+
 
 ```bash
 
+Windows:
+
+        npm i
+        cross-env TOKEN="insert your discord bot token here" BOT_ID="insert bot id here" node .\shards.js
+```
+
+```bash
+Linux:
+        npm i
+        TOKEN="insert your discord bot token here" BOT_ID="insert bot id here" node .\shards.js
+```
+
+```
+Please give me all credits to the project, my goal is the get knowed as a good developer among furries
+If you enjoy this project, you can tip me !
 ``` 
     
