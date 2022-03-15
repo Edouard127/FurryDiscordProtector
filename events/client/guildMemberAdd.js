@@ -27,7 +27,7 @@ module.exports = async(client, member) => {
 
         if (await db.get(`${member.guild.id}.raidmode.raidmode`)) {
 
-            threshold[member.guild.id] = await db.get((`${member.guild.id}.raidmode.raidmode`)).replace(/['"]+/g, '')
+            threshold[member.guild.id] = await db.get((`${member.guild.id}.raidmode.raidmode`))
             threshold[member.guild.id] = parseInt(threshold[member.guild.id])
         }
         else {

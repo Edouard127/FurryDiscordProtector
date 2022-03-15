@@ -1,4 +1,4 @@
-const { Discord, Embed } = require('discord.js');
+const { Discord, MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
 	name: 'channel-info',
@@ -18,7 +18,7 @@ module.exports = {
 	 */
 	run: async (interaction) => {
 		const channel = interaction.options.getChannel('channel');
-		const embed = new Embed().setTitle(`${channel.name} Info`);
+		const embed = new MessageEmbed().setTitle(`${channel.name} Info`);
 		if (channel.isText && channel.topic) {
 			embed.setDescription(channel.topic);
 		}
@@ -68,8 +68,8 @@ module.exports = {
 		embed.addField('Channel Created At:', `<t:${Math.floor(channel.createdTimestamp / 1000)}:R>`, true);
 		embed.setColor(interaction.guild.me.displayHexColor);
 		embed.setFooter(channel.id);
-		const row = new Discord.MessageActionRow().addComponents(
-			new Discord.MessageButton()
+		const row = new MessageActionRow().addComponents(
+			new MessageButton()
 				.setCustomId('members')
 				.setStyle('PRIMARY')
 				.setLabel('Members With Access To Channel')

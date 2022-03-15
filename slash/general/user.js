@@ -1,4 +1,4 @@
-const { Discord, Embed, MessageActionRow } = require('discord.js');
+const { Discord, MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
 	name: 'user',
@@ -17,7 +17,7 @@ module.exports = {
 		const userCreated = Date.now() - member.user.createdTimestamp;
 		const joinedTime = Date.now() - member.joinedTimestamp;
 		const memberAvatar = member.avatarURL({ dynamic: true }) || member.user.displayAvatarURL({ dynamic: true });
-		const embed = new Embed()
+		const embed = new MessageEmbed()
 			.setAuthor({ name: member.user.tag, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
 			.setThumbnail(memberAvatar)
 			.setFooter(member.id, member.displayAvatarURL({ dynamic: true }))
@@ -59,7 +59,7 @@ module.exports = {
 			);
 		}
 		const row = new MessageActionRow().addComponents(
-			new Discord.MessageButton()
+			new MessageButton()
 				.setStyle('LINK')
 				.setURL(member.user.displayAvatarURL({ dynamic: true }))
 				.setLabel('User Avatar'),
