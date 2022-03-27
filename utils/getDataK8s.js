@@ -11,13 +11,13 @@ class GetKubernetes {
         this.message = message
     }
     async k8s() {
-        console.log(((this.message.guildId).replace(/\["']/g, '')))
+        //console.log(((this.message.guildId).replace(/\["']/g, '')))
         await client.client.loadSpec()
         let before = new Date().getTime()
         try {
         var __ = await client.client.apis["stable.storage.com"].v1.ns("config").kamiplurial(this.message.guildId).get()
         } catch {
-            console.log('0')
+            //console.log('0')
             default_c.metadata.name = this.message.guildId
             default_c.spec.id = ((this.message.guildId).replace(/\["']/g, ''))
 

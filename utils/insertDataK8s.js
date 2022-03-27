@@ -13,7 +13,7 @@ class InsertKubernetes {
         this.data = data
     }
     async k8s() {
-        console.log(((this.message.guildId).replace(/\["']/g, '')))
+        //console.log(((this.message.guildId).replace(/\["']/g, '')))
         await client.client.loadSpec()
         
         try {
@@ -32,7 +32,7 @@ class InsertKubernetes {
         let newObj = Object.assign({}, this.data, result);
         default_c.spec = newObj
         default_c.metadata.name = this.message.guildId
-        console.log(default_c.spec)
+        //console.log(default_c.spec)
         let w = await client.client.apis["stable.storage.com"].v1.ns("config").kamiplurial(this.message.guildId).patch({ body: { spec: default_c.spec } })
         let after = new Date().getTime()
         let lapse = after - before
