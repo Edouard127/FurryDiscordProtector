@@ -1,17 +1,19 @@
 const db = require('quick.db')
 const createEmbed = require('../../utils/createEmbed.js')
+const getDataK8s = require('../../utils/getDataK8s.js')
 let threshold = {}
 let c = {}
 let raidmode = {}
 let sus_members = []
 
 module.exports = async(client, member) => {
+    var __ = new getDataK8s(member).k8s()
     const guildLanguages = require('../../utils/languages/config/languages.json')
     const guildLanguage = guildLanguages[member.guild.id] || "en"; // "english" will be the default language
     const language = require(`../../utils/languages/${guildLanguage}.js`);
     let ch_logs
     (async () => {
-        ch_logs = await member.guild.channels.cache.find(c => c.id === db.get((`${member.guild.id}.logs`).replace(/['"]+/g, ''))) || await member.guild.channels.cache.filter(c => c.type === 'GUILD_TEXT').find(x => x.position == 0);                                              
+        ch_logs = await member.guild.channels.cache.find(c => c.id === __.data.spec.logs) || await member.guild.channels.cache.filter(c => c.type === 'GUILD_TEXT').find(x => x.position == 0);                                              
     })().then(() => {
         //
         console.log(ch_logs)
@@ -26,16 +28,9 @@ module.exports = async(client, member) => {
             raidmode[member.guild.id] = { "raid": false }
         }
 
-        if (await db.get(`${member.guild.id}.raidmode.raidmode`)) {
 
-            threshold[member.guild.id] = await db.get((`${member.guild.id}.raidmode.raidmode`))
+            threshold[member.guild.id] = __.data.spec.raidmode || 5
             threshold[member.guild.id] = parseInt(threshold[member.guild.id])
-        }
-        else {
-
-            threshold[member.guild.id] = 5
-
-        }
     })().then(() => {
         if (raidmode[member.guild.id].raid === false) {
             let canClear = true
@@ -56,16 +51,8 @@ module.exports = async(client, member) => {
                     (async () => {
                         if (await db.get(`${member.guild.id}.logs`)) {
 
-                            let ch = await member.guild.channels.cache.find(c => c.id === db.get((`${member.guild.id}.logs`).replace(/['"]+/g, '')))
-                            if (ch) {
-                                let config = createEmbed('#0099ff', `${language('_raid_'), `${language('_raid_message', (await member.guild.fetchOwner()).id)}`}`)
-                                ch.send({ embeds: [config] })
-                            }
-                            else {
-                                let channel = member.guild.channels.cache.filter(c => c.type === 'GUILD_TEXT').find(x => x.position == 0);
-                                let config = createEmbed('#0099ff', `${language('_raid_'), `${language('_raid_message', (await member.guild.fetchOwner()).id)}`}`)
-                                channel.send({ embeds: [config] })
-                            }
+                            let ch = await member.guild.channels.cache.find(c => c.id === __.data.spec.logs) || member.guild.channels.cache.filter(c => c.type === 'GUILD_TEXT').find(x => x.position == 0);
+                            ch.send({ embeds: [config] })
                         }
                     })
             }

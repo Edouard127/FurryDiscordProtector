@@ -26,6 +26,7 @@ module.exports = {
             name: 'logs',
             description: 'logs channel for logging events',
             type: 7,
+            channel_types: 0,
             required: false,
         },
 

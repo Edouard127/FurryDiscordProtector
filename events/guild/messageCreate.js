@@ -14,7 +14,7 @@ module.exports = async (client , message) => {
     if (!message.author.bot && message.channel.type !== "dm") {
         if (!message.channel.nsfw) {
             var __ = await new _K8s(message).k8s()
-            console.log(__)
+            //console.log(__)
             //console.log(checks)
                 var check = __.data.spec
                 //console.log(message)
