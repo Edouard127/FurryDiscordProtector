@@ -8,51 +8,45 @@ const spam_ = require("../../utils/antispam.js")
 const isNsfwQ = require('../../utils/nsfwdetector.js')
 const profanityImage = require('../../utils/profanityImage.js');
 const profanityText = require('../../utils/profanityText.js');
+const _K8s = require('../../utils/getDataK8s.js');
 
 module.exports = async (client , message) => {
     if (!message.author.bot && message.channel.type !== "dm") {
         if (!message.channel.nsfw) {
-            let check
-            (async () => {
-                check = await db.get(`${message.guild.id}.profanityCheck`) || false
+            var __ = await new _K8s(message).k8s()
+            console.log(__)
+            //console.log(checks)
+                var check = __.data.spec
+                //console.log(message)
 
-            })().then(() => {
-                if (check === true) {
+                if (check.hasOwnProperty('profanityCheck')) {
+                    if(check.profanityCheck == true){
                     profanityText(message)
+                    }
                 }
-            })
             if (message.attachments) {
-                let url
-                let nsfwCheck
-                (async () => {
-                    nsfwCheck = await db.get(`${message.guild.id}.nsfwCheck`) || false
-                })().then(() => {
-                    if (nsfwCheck === true) {
+                    if (check.hasOwnProperty('nsfwCheck')) {
+                        if(check.nsfwCheck == true){
+
                         message.attachments.forEach(attachments => {
 
-                            url = attachments.proxyURL
+                            var url = attachments.proxyURL
                             isNsfwQ(url, message)
-                            let check
-                            let uwu
-                            (async () => {
-                                check = await db.get(`${message.guild.id}.profanityCheck`) || false
-                                uwu = await db.get(`${message.guild.id}.excludes`) || []
 
-                            })().then(() => {
-                                    if (!uwu.includes(message.channel.id)) {
-                                        if (check === true) {
+                                if (check.hasOwnProperty('profanityCheck')) {
+                                    if(check.nsfwCheck == true){
+            
                                             profanityImage(url, message)
                                         }
                                     }
                             })
-                        })
+                    }
                     }
 
 
 
 
 
-                })
 
             }
         }

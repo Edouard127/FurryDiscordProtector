@@ -2,6 +2,8 @@
 const db = require("quick.db");
 const argsList = ['raidmode', 'antispam', 'logs']
 const createEmbed = require('../../utils/createEmbed.js')
+const insert_K8s = require('../../utils/insertDataK8s.js');
+const get_K8s = require('../../utils/getDataK8s.js');
 module.exports = {
 	name: 'config',
 	description: 'edit your server bot configuration',
@@ -30,8 +32,8 @@ module.exports = {
 	],
 	timeout: 3000,
 	category: 'mod',
-	run: async (interaction, client) => {
-        let conf = await db.get(`${interaction.guildId}`)
+	run: async (interaction) => {
+        
         const raidmode = interaction.options.get('raidmode')
         const antispam = interaction.options.get('antispam')
         const logs = interaction.options.get('logs')
@@ -41,89 +43,51 @@ module.exports = {
         //console.log(message)
         switch (true) {
             case (raidmode !== null && raidmode !== undefined): {
-                
-                        let before = (new Date().getTime()).toFixed(2);
-                        (async () => {
-                            if (!await db.get(interaction.guildId)) {
-                                try {
-                                    await db.set(`${interaction.guildId}.raidmode`, {
-                                        raidmode: raidmode.value,
-                                    })
-                                } catch { }
-                            }
-                            else {
-                                (async () => {
-                                    try {
-                                        await db.set(`${interaction.guildId}.raidmode`, {
-                                            raidmode: raidmode.value,
-                                        })
-                                    } catch { }
-                                })();
-
-                            }
-
-
-                        })().then(() => {
-                            var after = (new Date().getTime()).toFixed(2)
-                            var lapsedTime = after - before
+                let data = {
+                    raidmode: raidmode.value
+                }
+                let __ = await new insert_K8s(interaction, data).k8s()
                             var config = createEmbed('#0099ff',
                                 `${language("_config_raid_raidmode")}`,
-                                `${language("_config_success", lapsedTime)}`)
+                                `${language("_config_success", __.lapse)}`)
                             interaction.reply({ embeds: [config] })
 
-                        })
                     
 
             }
 
                 break;
             case (antispam !== null && antispam !== undefined): {
-                console.log(antispam.value)
+                let data = {
+                    antispam: antispam.value
+                }
                 
-                        let before = (new Date().getTime()).toFixed(2);
-                        (async () => {
-                                    try {
-                                        await db.set(`${interaction.guildId}.antispam`, {
-                                            antispam: antispam.value,
-                                        })
-                                    } catch { }
-
-                            
-
-
-                        })().then(() => {
-                            let after = (new Date().getTime()).toFixed(2)
-                            let lapsedTime = after - before
+                        let __ = await new insert_K8s(interaction, data).k8s()
                             let config = createEmbed('#0099ff',
                                 `${language('_config_nspam_config')}`,
-                                `${language('_config_success', lapsedTime)}`)
+                                `${language('_config_success', __.lapse)}`)
                             interaction.reply({ embeds: [config] })
-                        })
                     
             }
                 break;
             case (logs !== null && logs !== undefined): {
-                    let before = (new Date().getTime()).toFixed(2);
-                    (async () => {
-                        before = new Date().getTime()
-                        await db.set(`${interaction.guildId}.logs`, logs.value)
-
-                    })().then(() => {
-                        let after = (new Date().getTime()).toFixed(2)
-                        let ms = after - before
+                let data = {
+                    logs: logs.value
+                }
+                
+                    let __ = await new insert_K8s(interaction, data).k8s()
                         let log = logs.value
-                        let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_success', log, ms))
+                        let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_success', log, __.lapse))
                         interaction.reply({ embeds: [config] })
-                    })
                 
             }
                 break;
             default: {
-                
+                let __ = await new get_K8s(interaction).k8s()
                 let config = createEmbed('#0099ff',
                     `${language('_config_default')}`,
 
-                    `${language('_config_raid_configuration', JSON.stringify(conf))}`)
+                    `${language('_config_raid_configuration', `\`\`\`${JSON.stringify(__.data.spec)}\`\`\``)}`)
 
                 interaction.reply({ embeds: [config] })
             }

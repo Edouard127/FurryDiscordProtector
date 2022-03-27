@@ -36,11 +36,15 @@
     "discord-player": "^5.2.2",
     "discord.js": "^13.6.0",
     "distube": "^3.3.2",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
     "humanize-duration": "^3.27.1",
+    "js-yaml": "^4.1.0",
+    "kubernetes-client": "^9.0.0",
+    "mysql": "^2.18.1",
     "play-dl": "^1.9.1",
     "tesseract.js": "^2.1.5",
     "ytdl-core": "^4.11.0"
-    
   },
   "devDependencies": {
     "babel-cli": "^6.26.0"

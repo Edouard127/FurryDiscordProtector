@@ -38,11 +38,11 @@ require('colors');
 
 
   
-  process.on('uncaughtException', (err) => {
-	console.log(`Uncaught Exception: ${err}`);
+  process.on('uncaughtException', (reason, p) => {
+	console.log(`Uncaught Exception: ${reason}\nAt: ${(p)}`);
   });
-  process.on('unhandledRejection', (error) => {
-    console.log(`Unhandled promise rejection: ${error}`);
+  process.on('unhandledRejection', (reason, p) => {
+    console.log(`Unhandled promise rejection: ${reason}\nAt: ${p}`);
   });
 
   //client.on('debug', console.log);

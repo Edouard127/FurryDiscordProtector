@@ -1,3 +1,4 @@
+const GetKubernetesHealth = require('../../utils/k8sStatus.js')
 
 const createEmbed = require('../../utils/createEmbed.js')
 module.exports = {
@@ -6,6 +7,7 @@ module.exports = {
 	timeout: 5000,
 	category: 'general',
 	run: async (interaction, client) => {
+		console.log(await GetKubernetesHealth())
 		const guildLanguages = require('../../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[interaction.guildID] || "en"; // "english" will be the default language
         const language = require(`../../utils/languages/${guildLanguage}.js`);
@@ -13,7 +15,7 @@ module.exports = {
 		const msg = await interaction.fetchReply();
 		let ws = msg.createdTimestamp - interaction.createdTimestamp
 		let api = Math.round(client.ws.ping)
-		let ping = createEmbed('$0099ff', `${language('_ping_answer')}`, `${language('_ping_response', ws, api)}`)
+		let ping = createEmbed('$0099ff', `${language('_ping_answer')}`, `${language('_ping_response', ws, api, await (await GetKubernetesHealth()).data)}`)
 		interaction.editReply({ embeds: [ping], content: `<@${interaction.user.id}>` });
 	},
 };

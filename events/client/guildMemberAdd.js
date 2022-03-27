@@ -13,6 +13,7 @@ module.exports = async(client, member) => {
     (async () => {
         ch_logs = await member.guild.channels.cache.find(c => c.id === db.get((`${member.guild.id}.logs`).replace(/['"]+/g, ''))) || await member.guild.channels.cache.filter(c => c.type === 'GUILD_TEXT').find(x => x.position == 0);                                              
     })().then(() => {
+        //
         console.log(ch_logs)
         let config = createEmbed('#0099ff', `New member join`, `Username: ${member.displayName}\nID: ${member.id}\nAccount creation: ${member.user.createdAt}\n`)
         ch_logs.send({ embeds: [config]})
