@@ -29,7 +29,7 @@ class InsertKubernetes {
         //console.log(map)
         let before = new Date().getTime()
         let result = ___.body.spec
-        let newObj = Object.assign({}, this.data, result);
+        let newObj = Object.assign({}, result, this.data);
         default_c.spec = newObj
         default_c.metadata.name = this.message.guildId
         //console.log(default_c.spec)

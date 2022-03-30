@@ -1,12 +1,16 @@
-const db = require("quick.db");
 const createEmbed = require('../../utils/createEmbed.js')
 const argsList = ['interact', 'threshold', 'exclude']
 const removeDuplicates = require('../../utils/removeDuplicates.js')
+const subArrays = require('../../utils/subArrays.js')
+const getDataK8s = require('../../utils/getDataK8s.js')
+const insertDataK8s = require('../../utils/insertDataK8s.js')
+const base64 = require('../../utils/base64.js')
+
 
 module.exports = {
     name: 'nsfw',
     description: 'nsfw content detection',
-    permissions: 'MANAGE_MEMBERS',
+    permissions: 'MANAGE_GUILD',
     example: '/nsfw interact true/false -> enable/disable\n/nsfw threshold 60 -> If image is detected as 60% nsfw\n',
     options: [
         {
@@ -54,70 +58,53 @@ module.exports = {
     const language = require(`../../utils/languages/${guildLanguage}.js`);
     switch (true) {
         case (interact !== null && interact !== undefined): {
-            
-            (async () => {
-        
-                    let before = new Date().getTime()
-                    await db.set(`${interaction.guildId}.nsfwCheck`, interact.value)
-                    let after = new Date().getTime()
-                    let ms = after - before
-        
-                    let config = createEmbed('#0099ff', `${language('_nsfw_config')}`, `${language('_nsfw_success', interact.value, ms)}`)
-                    interaction.reply({ embeds: [config] })
-                    
-        
-        
-            })();
+            let data = {
+                nsfwCheck: interact.value
+            }
+        await new insertDataK8s(interaction, data).k8s().then((result) => {
+            let config = createEmbed('#0099ff', `${language('_nsfw_config')}`, `${language('_nsfw_success', interact.value, result.lapse)}`)
+            interaction.reply({ embeds: [config] })
+        })  
         }
         break;
         case (threshold !== null && threshold !== undefined): {
                 let threshold_ = parseInt(threshold.value)/100
-                let before = new Date().getTime();
-                (async () => {
-                    await db.set(`${interaction.guildId}.nsfwThreshold`, threshold_)
-                })().then(() => {
-                    let after = new Date().getTime()
-                    let ms = after - before
-                    let config = createEmbed('#0099ff', `${language('_nsfw_config')}`, `${language('_nsfw_success_threshold', threshold_, ms)}`)
-                    interaction.reply({ embeds: [config] })
-                })
+                let data = {
+                    nsfwThreshold: threshold_
+                }
+                let a = await new insertDataK8s(interaction, data).k8s()
+                let config = createEmbed('#0099ff', `${language('_nsfw_config')}`, `${language('_nsfw_success_threshold', threshold_, a.lapse)}`)
+                interaction.reply({ embeds: [config] })
                 
     }        
         break;
 
         case (excludes !== null && excludes !== undefined): {
-            console.log(excludes.value)
-                let arr
-                (async () => {
-                arr = await db.get(`${interaction.guildId}.excludes`) || []
-                
-                })().then(async () => {
-                    arr.push(excludes.value)
-                    let new_arr = removeDuplicates(arr)
-                    await db.set(`${interaction.guildId}.excludes`, new_arr)
-                    
-                })
+            let ___ = removeDuplicates(await new getDataK8s(interaction).k8s().then((data) => { if(typeof data.data.spec?.excludes !== "undefined") { (data.data.spec.excludes).push(excludes.value); return data.data.spec.excludes } else { let a = []; a.push(excludes.value); return a } }))
+            let data = {
+                excludes: ___
+            }
+            await new insertDataK8s(interaction, data).k8s().then(() => {
                 interaction.reply('Success')
+            }).catch(err => {
+                interaction.reply(`❌ || \`\`\`${err}\`\`\``)
+            })
+            
         }
         break;
         case (includes !== null && includes !== undefined): {
-            console.log('owo')
-            let arr
-            (async () => {
-            arr = await db.get(`${interaction.guildId}.excludes`) || []
-            })()
-                
-            .then(async () => {
-                arr.splice(arr.indexOf(includes.value), 1);
-                let new_arr = removeDuplicates(arr)
-
-
-
-                await db.set(`${interaction.guildId}.excludes`, new_arr)
-                
-            }).then(() => {
+            let ___ = subArrays(await removeDuplicates(await new getDataK8s(interaction).k8s().then(data => { if(typeof data.data.spec?.excludes !== "undefined"){ (data.data.spec.excludes).push(includes.value); return data.data.spec.excludes } else { return []} })), [includes.value])
+            if(typeof ___ === "undefined") { console.log(0); return }
+            let data = {
+                excludes: ___
+            }
+            await new insertDataK8s(interaction, data).k8s().then(() => {
                 interaction.reply('Success')
+            }).catch(err => {
+                console.log(_arr_)
+                interaction.reply(`❌ || \`\`\`${err}\`\`\``)
             })
+            
             
             
     }

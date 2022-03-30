@@ -1,5 +1,5 @@
 
-const { Client, Collection } = require('discord.js');
+const { Client, Collection, Permissions } = require('discord.js');
 const { GatewayIntentBits } = require('discord-api-types/v10')
 const client = new Client({ intents: [
 	GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates

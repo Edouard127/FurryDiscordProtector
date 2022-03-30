@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageAttachment } = require('discord.js');
 
 module.exports = {
 	name: 'channels',
@@ -35,10 +35,11 @@ module.exports = {
 				.filter((r) => r.type === 'GUILD_TEXT')
 				.forEach((channel) => {
 					num++;
-					loop += `**#${num}** - ${channel}\n`;
+					loop += `**#${num}** - ${channel.name}\nID: ${channel.id}\nRaw Position: ${channel.rawPosition}\nnsfw ?: ${channel.nsfw}\n\n\n`;
 				});
+				let file = new MessageAttachment(Buffer.from(loop, 'utf-8'), 'channels.txt')
 			return interaction.reply({
-				content: `**\`💬\` ${interaction.guild.name}** Text Channels :\n${loop}`,
+				content: `**\`💬\` ${interaction.guild.name}** Text Channels :`, files: [file],
 			});
 		}
 		if (type === 'voice') {
@@ -48,10 +49,11 @@ module.exports = {
 				.filter((r) => r.type === 'GUILD_VOICE')
 				.forEach((channel) => {
 					num++;
-					loop += `**#${num}** - ${channel}\n`;
+					loop += `**#${num}** - ${channel.name}\nID: ${channel.id}\nRaw Position: ${channel.rawPosition}\nRegion: ${channel.rtcRegion}\nBitrate: ${channel.bitrate}\nUser limit: ${channel.userLimit}\n\n\n`;
 				});
+				let file = new MessageAttachment(Buffer.from(loop, 'utf-8'), 'channels.txt')
 			return interaction.reply({
-				content: `**\`🔊\` ${interaction.guild.name}** Voice Channels :\n${loop}`,
+				content: `**\`🔊\` ${interaction.guild.name}** Voice Channels :`, files: [file]
 			});
 		}
 		if (type === 'category') {
@@ -61,10 +63,11 @@ module.exports = {
 				.filter((r) => r.type === 'GUILD_CATEGORY')
 				.forEach((channel) => {
 					num++;
-					loop += `**#${num}** - ${channel.name}\n`;
+					loop += `**#${num}** - ${channel.name}\nID: ${channel.id}\nRaw Position: ${channel.rawPosition}\n\n\n`;
 				});
+			let file = new MessageAttachment(Buffer.from(loop, 'utf-8'), 'channels.txt')
 			interaction.reply({
-				content: `**\`📂\` ${interaction.guild.name}** Category Channels : \n${loop}`,
+				content: `**\`📂\` ${interaction.guild.name}** Category Channels :`, files: [file]
 			});
 		}
 	},

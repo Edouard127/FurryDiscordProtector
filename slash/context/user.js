@@ -30,7 +30,7 @@ module.exports = {
 					value: message.author.id,
 				},
 				{
-					name: 'is it a bot?',
+					name: 'Is it a bot?',
 					value: message.author.bot.toString(),
 				},
 			);

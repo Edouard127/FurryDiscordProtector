@@ -23,7 +23,7 @@ module.exports = {
 			embed.setDescription(channel.topic);
 		}
 		if (channel.rateLimitPerUser) {
-			embed.addField('Slow Mode:', `${channel.rateLimitPerUser} Secounds`, true);
+			embed.addField('Slow Mode:', `${channel.rateLimitPerUser} Seconds`, true);
 		}
 		if (channel.parent) {
 			embed.addField('Catgory Name:', channel.parent.name);

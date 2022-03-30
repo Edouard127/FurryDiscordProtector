@@ -26,6 +26,7 @@ module.exports = {
 		if (member.id === client.user.id) {
 			return interaction.reply({ content: `:x: You can\'t kick me!` });
 		}
+		if(!interaction.guild.me.permissions.has('MANAGE_MESSAGES')) return await interaction.reply({ content: `❌ I don't have permission to kick members` });
 		const botRole = interaction.guild.me.roles.highest.position;
 		const role = member.roles.highest.position;
 		const authorRole = interaction.member.roles.highest.position;

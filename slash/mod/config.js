@@ -7,7 +7,7 @@ const get_K8s = require('../../utils/getDataK8s.js');
 module.exports = {
 	name: 'config',
 	description: 'edit your server bot configuration',
-	permissions: 'MANAGE_MEMBERS',
+	permissions: 'MANAGE_GUILD',
 	example: `/config [argument]`,
 	options: [
 		{
@@ -20,24 +20,27 @@ module.exports = {
             name: 'antispam',
             description: 'number of messages in 3 seconds before triggering the Anti-Spam',
             type: 4,
-            required: false,
         },
         {
             name: 'logs',
             description: 'logs channel for logging events',
             type: 7,
-            channel_types: 0,
-            required: false,
+            channel_types: [0],
+        },
+        {
+            name: 'default_role',
+            description: 'default role if not @everyone, example: @Members',
+            type: 8,
         },
 
 	],
 	timeout: 3000,
 	category: 'mod',
 	run: async (interaction) => {
-        
         const raidmode = interaction.options.get('raidmode')
         const antispam = interaction.options.get('antispam')
         const logs = interaction.options.get('logs')
+        const default_role = interaction.options.get('default_role')
         const guildLanguages = require('../../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[interaction.guildID] || "en"; // "english" will be the default language
         const language = require(`../../utils/languages/${guildLanguage}.js`);
@@ -83,6 +86,14 @@ module.exports = {
                 
             }
                 break;
+            case(default_role !== null && default_role !== undefined): {
+                let data = {
+                    defaultrole: default_role.value || interaction.guildId
+                }
+                
+                    let __ = await new insert_K8s(interaction, data).k8s()
+                        interaction.reply({ content: 'success' })
+            }
             default: {
                 let __ = await new get_K8s(interaction).k8s()
                 let config = createEmbed('#0099ff',

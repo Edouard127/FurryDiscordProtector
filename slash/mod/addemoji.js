@@ -23,13 +23,18 @@ module.exports = {
 		const emoji = interaction.options.getString('emoji');
 		const emojiName = interaction.options.getString('emoji_name');
 		const parseCustomEmoji = Discord.Util.parseEmoji(emoji);
+		if(!interaction.guild.me.permissions.has('MANAGE_EMOJIS_AND_STICKERS')) return await interaction.reply({ content: `❌ I don't have the permission to manage emojis` });
 		if (parseCustomEmoji.id) {
 			const emojiLink = `https://cdn.discordapp.com/emojis/${parseCustomEmoji.id}.${
 				parseCustomEmoji.animated ? 'gif' : 'png'
 			}`;
-			const createEmoji = await interaction.guild.emojis.create(emojiLink, emojiName || parseCustomEmoji.name);
+			try {
+			var createEmoji = await interaction.guild.emojis.create(emojiLink, emojiName || parseCustomEmoji.name)
+			} catch (err) {
+				return await interaction.reply({ content: err.toString() })
+			}
 			interaction.reply({
-				content: `Added <:${createEmoji.name}:${createEmoji.id}> emoji`,
+				content: `Added <a:${createEmoji.name}:${createEmoji.id}> emoji`,
 			});
 		} else {
 			interaction.reply({

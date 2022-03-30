@@ -5,7 +5,7 @@ module.exports = {
     name: 'raidmode',
     description: 'enable/disable raidmode',
     type: 1,
-    permissions: 'MANAGE_MEMBERS',
+    permissions: 'MODERATE_MEMBERS',
     example: '/raidmode interact [false/true]\n',
     options: [{
         name: 'interact',

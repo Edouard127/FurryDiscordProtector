@@ -22,6 +22,11 @@ module.exports = {
 	run: async (interaction) => {
 		const member = interaction.options.getMember('user');
 		const time = interaction.options.getString('time');
+		const botRole = interaction.guild.me.roles.highest.position;
+		const role = member.roles.highest.position;
+		const authorRole = interaction.member.roles.highest.position;
+		if(botRole <= role) return await interaction.reply({ content: `:x: I don't have permission to moderate this user`})
+		if(authorRole <= role) return await interaction.reply({ content: `:x: You don't have permission to moderate this user`})
 		if (member.permissions.has('ADMINISTRATOR')) {
 			return interaction
 				.reply({

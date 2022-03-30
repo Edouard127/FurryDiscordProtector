@@ -1,7 +1,6 @@
-
-const db = require("quick.db");
-const argsList = ['raidmode', 'antispam', 'logs']
 const createEmbed = require('../../utils/createEmbed.js')
+const getDataK8s = require('../../utils/getDataK8s.js')
+const insertDataK8s = require('../../utils/insertDataK8s.js')
 module.exports = {
 	name: 'antispam',
 	description: 'enable/disable antispam',
@@ -24,24 +23,19 @@ module.exports = {
         const guildLanguage = guildLanguages[interaction.guildID] || "en"; // "english" will be the default language
         const language = require(`../../utils/languages/${guildLanguage}.js`);
         //console.log(message)
-        let before = new Date().getTime();
-        (async () => {
-            try {
-                await db.set(`${interaction.guildId}.spamCheck`, spam.value)
-            } catch (err){
-                console.log(err)
-             }
+        //let data = await new getDataK8s(interaction).k8s()
+        let data = {
+            spamCheck: spam.value
+        }
+        await new insertDataK8s(interaction, data).k8s().then((result) => {
+            let config = createEmbed('#0099ff', `${language('_spam_message')}`, `${language('_spam_success', spam.value, result.lapse)}`)
+            interaction.reply({ embeds: [config] })
+        })
 
     
 
 
-})().then(() => {
-            let after = new Date().getTime()
-            let ms = after - before
 
-            let config = createEmbed('#0099ff', `${language('_spam_message')}`, `${language('_spam_success', spam.value, ms)}`)
-            interaction.reply({ embeds: [config] })
-        })
     }
 }
 

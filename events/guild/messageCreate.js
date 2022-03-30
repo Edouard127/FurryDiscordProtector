@@ -8,15 +8,14 @@ const spam_ = require("../../utils/antispam.js")
 const isNsfwQ = require('../../utils/nsfwdetector.js')
 const profanityImage = require('../../utils/profanityImage.js');
 const profanityText = require('../../utils/profanityText.js');
-const _K8s = require('../../utils/getDataK8s.js');
+const getDataK8s = require('../../utils/getDataK8s.js');
 
 module.exports = async (client , message) => {
+    var __ = await new getDataK8s(message).k8s()
+    var check = __.data.spec
     if (!message.author.bot && message.channel.type !== "dm") {
         if (!message.channel.nsfw) {
-            var __ = await new _K8s(message).k8s()
-            //console.log(__)
-            //console.log(checks)
-                var check = __.data.spec
+
                 //console.log(message)
 
                 if (check.hasOwnProperty('profanityCheck')) {
@@ -31,7 +30,7 @@ module.exports = async (client , message) => {
                         message.attachments.forEach(attachments => {
 
                             var url = attachments.proxyURL
-                            isNsfwQ(url, message)
+                            isNsfwQ(url, message, client)
 
                                 if (check.hasOwnProperty('profanityCheck')) {
                                     if(check.nsfwCheck == true){
@@ -52,33 +51,22 @@ module.exports = async (client , message) => {
         }
 
 
-        let spamCheck
-        (async () => {
-            spamCheck = await db.get(`${message.guild.id}.spamCheck`) || false
-        })().then(() => {
-            if (spamCheck === true) {
+            if (check.hasOwnProperty('spamCheck')) {
                 spam_(message, client)
             }
-        })
         let array = message.content.split(" ")
         for (let arr in array) {
             if (array[arr].match(/(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i)) {
-                let nsfwCheck
-                (async () => {
-                    nsfwCheck = await db.get(`${message.guild.id}.nsfwCheck`) || false
-                })().then(() => {
-                    if (nsfwCheck === true) {
-                        url = array[arr]
-                        let uwu
-                        (async () => {
-                            uwu = await db.get(`${message.guild.id}.excludes`) || []
-                                if (!uwu.includes(message.channel.id)) {
-                            isNsfwQ(url, message)
-                                }
-                        })()
-
+                    if (check.hasOwnProperty('nsfwCheck')) {
+                        let url = array[arr]
+                        if(check.hasOwnProperty('excludes'))
+                        check.forEach(data => {
+                            if(data == message.channel.id){
+                                
+                                isNsfwQ(url, message, client) 
+                            }
+                        })
                     }
-                })
             }
         }
     }

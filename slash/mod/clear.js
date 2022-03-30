@@ -25,6 +25,7 @@ module.exports = {
 	timeout: 5000,
 	category: 'mod',
 	run: async (interaction, client) => {
+		if(!interaction.guild.me.permissions.has('MANAGE_MESSAGES')) return await interaction.reply({ content: `❌ I don't have the permission to manage messages` });
 		let deleteAmount = interaction.options.getNumber('number_of_messages');
 		const user = interaction.options.getUser('user');
 		const role = interaction.options.getRole('role');

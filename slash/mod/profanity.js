@@ -4,7 +4,7 @@ const insertDataK8s = require('../../utils/insertDataK8s.js')
 module.exports = {
 	name: 'profanity',
 	description: 'enable/disable profanity detection',
-	permissions: 'MANAGE_MEMBERS',
+	permissions: 'MODERATE_MEMBERS',
 	example: `/profanity [argument]`,
 	options: [
         {

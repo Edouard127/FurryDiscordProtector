@@ -26,14 +26,15 @@ module.exports = {
 		if (!member.banable) {
 			return interaction.reply({ content: "i can't ban this user", ephemeral: true });
 		}
+		if(!interaction.guild.me.permissions.has('BAN_MEMBERS')) return await interaction.reply({ content: `❌ I don't have the permission to ban` });
 		const botRole = interaction.guild.me.roles.highest.position;
 		const role = member.roles.highest.position;
 		const authorRole = interaction.member.roles.highest.position;
 		if (authorRole <= role) {
-			return interaction.reply({ content: `🙄 **You can\'t ban @${member.user.username}**`, ephemeral: true });
+			return interaction.reply({ content: `:x: **You can\'t ban @${member.user.username}**`, ephemeral: true });
 		}
 		if (botRole <= role) {
-			return interaction.reply({ content: `🙄 **You can\'t ban @${member.user.username}**`, ephemeral: true });
+			return interaction.reply({ content: `:x: **I can\'t ban @${member.user.username}**`, ephemeral: true });
 		}
 		try {
 			let reason;

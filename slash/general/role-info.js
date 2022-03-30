@@ -66,7 +66,6 @@ module.exports = {
 				new MessageButton()
 					.setCustomId('members')
 					.setLabel('Members With This Role')
-					.setEmoji('👨‍👩‍👦')
 					.setStyle('SECONDARY'),
 			);
 		interaction.reply({ embeds: [embed], components: [row] });
@@ -84,10 +83,10 @@ module.exports = {
 			}
 			if (i.customId === 'members') {
 				await i.deferReply();
-				if (role.members.size === 0) {
+				if ((await interaction.guild.members.fetch()).filter(m => m.roles.cache.has(role.id)).size == 0) {
 					return i.editReply({ content: 'There are 0 members with this role', embeds: [], components: [] });
 				}
-				const roleMembers = role.members.map((r) => r.user.tag).join('\n');
+				const roleMembers = (await interaction.guild.members.fetch()).filter(m => m.roles.cache.has(role.id)).map((r) => r.user.tag).join('\n');
 				return await i.editReply({
 					content: `**${role.name} Members ( ${role.members.size} )** :\n\`\`\`${roleMembers}\`\`\``,
 					embeds: [],

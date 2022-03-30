@@ -2,7 +2,7 @@
 module.exports = {
     name: 'lang',
 	description: 'change bot language',
-	permissions: 'MANAGE_SERVER',
+	permissions: 'MANAGE_GUILD',
 	options: [
 		{
 			name: 'en',
