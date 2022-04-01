@@ -1,9 +1,0 @@
-{
-    "guildId": "943385959679025162",
-    "event": "messageCreate",
-    "command_1": {
-        "arg": "*test",
-        "response": "ok"
-    }
-
-}

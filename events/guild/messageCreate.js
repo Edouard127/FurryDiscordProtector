@@ -11,6 +11,17 @@ const profanityText = require('../../utils/profanityText.js');
 const getDataK8s = require('../../utils/getDataK8s.js');
 
 module.exports = async (client , message) => {
+    if (message.author.bot) return;
+    if (message.channel.type === 'dm') return;
+    if (!message.content.toLowerCase().startsWith(prefix)) return;
+    if (!message.member) message.member = await message.guild.members.fetch(message.member.id);
+    if (!message.guild) return;
+        const dir_ = __dirname + '\\..\\../\/generated/';
+        /*fs.readdirSync(dir_).forEach(command => {
+            var cum = require(`../../generated/${command}`)
+            cum(message)
+        })*/
+
     var __ = await new getDataK8s(message).k8s()
     var check = __.data.spec
     if (!message.author.bot && message.channel.type !== "dm") {
@@ -70,11 +81,7 @@ module.exports = async (client , message) => {
             }
         }
     }
-    if (message.author.bot) return;
-    if (message.channel.type === 'dm') return;
-    if (!message.content.toLowerCase().startsWith(prefix)) return;
-    if (!message.member) message.member = await message.guild.members.fetch(message.member.id);
-    if (!message.guild) return;
+
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
     if (cmd.length === 0) return; 

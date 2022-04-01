@@ -1,0 +1,5 @@
+guildId: '943385959679025162'
+event: 'messageCreate'
+prefix: '%'
+arg: 'test'
+response: '<@${message.author.id}> OWO'

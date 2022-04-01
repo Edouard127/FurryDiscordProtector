@@ -32,9 +32,16 @@ client.aliases = new Collection();
 require('discord-logs');
 require('colors');
 
-["handlers", "events", "slash", "generate_commands"].forEach(handler => {
+let p = 0;
+["handlers", "events", "slash", "generate_commands"].forEach((handler, array) => {
     require(`./handlers/${handler}`)(client);
-});
+	p++
+	if(p == array.length){
+		["generated"].forEach(command => {
+			require(`./generated/${command}`)(client)
+		})
+	}
+})
 
 
   
