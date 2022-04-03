@@ -29,7 +29,7 @@ module.exports = async (client , message) => {
         })*/
         //console.log(await (client_r.get("toggled"?.["944261872335609887"])))
     var _____ = new Map(Object.entries(JSON.parse(await (client_r.get("toggled"?.[message.author.id])))))
-    console.log(_____)
+    //console.log(_____)
         for (const key of _____) {
             let _ = Object.entries(key[1])
         }
