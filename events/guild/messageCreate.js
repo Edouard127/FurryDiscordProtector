@@ -9,18 +9,33 @@ const isNsfwQ = require('../../utils/nsfwdetector.js')
 const profanityImage = require('../../utils/profanityImage.js');
 const profanityText = require('../../utils/profanityText.js');
 const getDataK8s = require('../../utils/getDataK8s.js');
+const { createClient } = require('redis');
+
+const client_r = createClient({ url: `redis://default:${process.env.REDIS_MASTER_PASSWORD}@192.168.0.66:6379` });
+
 
 module.exports = async (client , message) => {
+    client_r.connect()
+    console.log(message.author.id)
     if (message.author.bot) return;
     if (message.channel.type === 'dm') return;
-    if (!message.content.toLowerCase().startsWith(prefix)) return;
-    if (!message.member) message.member = await message.guild.members.fetch(message.member.id);
+    //if (!message.content.toLowerCase().startsWith(prefix)) return;
+    //if (!message.member) message.member = await message.guild.members.fetch(message.member.id);
     if (!message.guild) return;
         const dir_ = __dirname + '\\..\\../\/generated/';
         /*fs.readdirSync(dir_).forEach(command => {
             var cum = require(`../../generated/${command}`)
             cum(message)
         })*/
+        //console.log(await (client_r.get("toggled"?.["944261872335609887"])))
+    var _____ = new Map(Object.entries(JSON.parse(await (client_r.get("toggled"?.[message.author.id])))))
+    console.log(_____)
+        for (const key of _____) {
+            let _ = Object.entries(key[1])
+        }
+        delete _____
+        client_r.disconnect()
+
 
     var __ = await new getDataK8s(message).k8s()
     var check = __.data.spec

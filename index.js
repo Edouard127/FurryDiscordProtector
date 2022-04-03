@@ -29,6 +29,8 @@ client.distube = new DisTube(client, {
 client.commands = new Collection();
 client.slash = new Collection();
 client.aliases = new Collection();
+client.toggle = new Collection();
+client.toggle.set({})
 require('discord-logs');
 require('colors');
 
@@ -45,7 +47,7 @@ let p = 0;
 
 
   
-  process.on('uncaughtException', (reason, p) => {
+  process.on('uncaughtException', (reason, p) => {http://192.168.0.66:6379
 	console.log(`Uncaught Exception: ${reason}\nAt: ${(p)}`);
   });
   process.on('unhandledRejection', (reason, p) => {
