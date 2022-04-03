@@ -16,7 +16,7 @@ const client_r = createClient({ url: `redis://default:${process.env.REDIS_MASTER
 
 module.exports = async (client , message) => {
     client_r.connect()
-    console.log(message.author.id)
+    //console.log(message.author.id)
     if (message.author.bot) return;
     if (message.channel.type === 'dm') return;
     //if (!message.content.toLowerCase().startsWith(prefix)) return;
