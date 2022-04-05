@@ -358,26 +358,17 @@ module.exports = {
             if(oldData.has(name) == false) { 
                 return await interaction.reply({ content: `Proxy \`${name}\`not found`, ephemeral: true})
             }
-            try {
-            var _____ = bot.commands
-            console.log(_____)
-            } catch (e){
-                console.log(e)
-                //await client.set("toggled"[interaction.user.id], JSON.stringify({ [interaction.user.id]: { [name]: false }}))
-            }
-            //bot.commands,set(interaction.user.id, { [name]: false })
-            try {
-                var _______ = !Object.entries(bot.commands.get(interaction.user.id))[0][1] || false
-                if(_______ === null) _______ = false
-            } catch {}
-            bot.commands.set(interaction.user.id, { [name]: _______ })
-            console.log(Object.entries(bot.commands.get(interaction.user.id))[0][1])
+                var _______ = Object.entries((JSON.parse(await client.get(`toggled_${interaction.user.id}`))))[0][1];
+                _______ = _______ === false ? true : false
+                
+            await client.set(`toggled_${interaction.user.id}`, JSON.stringify({[name]: _______ }))
+            
             try {
                 await client.disconnect();
             } catch (e) {
                 return await interaction.reply({ content: `Error while disconnecting\nThe error has been handled by the bot\nThe actions before the errors are successfully registered`, ephemeral: true })
             }
-            if(_______ == false){
+            if(_______ == true){
                 return await interaction.reply({ content: `Successfully enabled`, ephemeral: true})
             }
             else {

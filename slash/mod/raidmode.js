@@ -1,5 +1,6 @@
 const db = require("quick.db");
 const createEmbed = require('../../utils/createEmbed.js')
+const insertDataK8s = require('../../utils/insertDataK8s')
 
 module.exports = {
     name: 'raidmode',
@@ -14,26 +15,17 @@ module.exports = {
         required: true,
     }],
 
-    run: async(interaction, client) => {
+    run: async (interaction, client) => {
         const raidmode = interaction.options.get('interact')
         const guildLanguages = require('../../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[interaction.guildID] || "en"; // "english" will be the default language
         const language = require(`../../utils/languages/${guildLanguage}.js`);
-        //console.log(message)
-        (async () => {
-            
-                
-                let before = new Date().getTime()
-                await db.set(`${interaction.guildID}.isRaid`, raidmode.value)
-                let after = new Date().getTime()
-                let ms = after - before
-    
-                let config = createEmbed('#0099ff', `${language('_raidmode_raidmode')}`, `${language('_raidmode_success', raidmode.value, ms)}`)
-                interaction.reply({ embeds: [config] })
-                
-    
-            
-    
-        })()
+        let data = {
+            isRaid: raidmode.value
+        }
+        let _ = await new insertDataK8s(interaction, data).k8s()
+        let config = createEmbed('#0099ff', `${language('_raidmode_raidmode')}`, `${language('_raidmode_success', raidmode.value, _.lapse)}`)
+        interaction.reply({ embeds: [config] })
+
     }
 }

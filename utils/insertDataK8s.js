@@ -8,7 +8,8 @@ const Error = require('./errors/extensibleErrors.js')
 
 class InsertKubernetes {
     constructor(message, data) {
-        if(data.constructor !== Object) return new Error(`Data must be an Array\nReceived: ${data.constructor}`)
+        if(typeof data === "undefined") return new Error(`Data must not be empty\nReceived: ${typeof data}`)
+        if(data.constructor !== Object) return new Error(`Data must be an Object\nReceived: ${typeof data}`)
         this.message = message
         this.data = data
     }

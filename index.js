@@ -30,7 +30,6 @@ client.commands = new Collection();
 client.slash = new Collection();
 client.aliases = new Collection();
 client.toggle = new Collection();
-client.toggle.set({})
 require('discord-logs');
 require('colors');
 

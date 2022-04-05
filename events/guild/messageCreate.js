@@ -12,10 +12,14 @@ const getDataK8s = require('../../utils/getDataK8s.js');
 const { createClient } = require('redis');
 
 const client_r = createClient({ url: `redis://default:${process.env.REDIS_MASTER_PASSWORD}@192.168.0.66:6379` });
+try {
+    client_r.connect()
+} catch {}
 
 
 module.exports = async (client , message) => {
-    client_r.connect()
+
+    //client_r.connect()
     //console.log(message.author.id)
     if (message.author.bot) return;
     if (message.channel.type === 'dm') return;
@@ -27,15 +31,65 @@ module.exports = async (client , message) => {
             var cum = require(`../../generated/${command}`)
             cum(message)
         })*/
-        //console.log(await (client_r.get("toggled"?.["944261872335609887"])))
+    /*console.log(await (client_r.get("toggled")))
+    
     var _____ = new Map(Object.entries(JSON.parse(await (client_r.get("toggled"?.[message.author.id])))))
     //console.log(_____)
         for (const key of _____) {
             let _ = Object.entries(key[1])
         }
         delete _____
-        client_r.disconnect()
+        client_r.disconnect()*/
+        var _______ = Object.entries((JSON.parse(await client_r.get(`toggled_${message.author.id}`))))[0];
+        async function proxy_avatar() {
+            let _ = new Map(Object.entries(JSON.parse(await client_r.get(message.author.id))))
+            for (key of _) {
+                console.log(key)
+                let re = new RegExp('^'+_______[1]+'$', "gm");
+                if (key[0].match(re)) {
+                    return key[1].avatar
+                }
+                else {
+                    await client_r.set(`toggled_${message.author.id}`, JSON.stringify({[_______[0]]: false }))
+                    return await message.reply({ content: `No proxy found for \`${_______[0]}\`, disabling`, ephemeral: true })
+    
+                }
+            }
+    
+        }
+        console.log(_______[1])
+        if(_______[1] === true) {
+        let oldData = new Map(Object.entries(JSON.parse(await client_r.get(message.author.id).catch(()=> {}))))
+        if(oldData.has(_______[0]) == false) { 
+            await client_r.set(`toggled_${message.author.id}`, JSON.stringify({[_______[0]]: false }))
+            return await message.reply({ content: `Proxy \`${_______}\`not found, disabling`, ephemeral: true})
+        }
+        else {
+            console.log('else')
+            let webhookCollection = await message.channel.fetchWebhooks();
+            if (webhookCollection.size > 0) {
+                for (key of webhookCollection) {
+                    if (key?.owner?.id == message.author.id) {
+                        let wb = key[1]
+                        await wb.edit({ name: _______[0], avatar: await proxy_avatar() })
+                        try {
+                            wb.send({ content: message.content, allowedMentions: { "users": [] } })
+                            return await message.delete()
+                        } catch {}
+                    }
+                }
+            }
+            else {
+                let wb = await message.channel.createWebhook("Proxies");
+                await wb.edit({ name: _______[1], avatar: await proxy_avatar() })
+                try {
+                    wb.send({ content: message.content, allowedMentions: { "users": [] } })
+                    await message.delete()
+                } catch {}
 
+            }
+        }
+    }
 
     var __ = await new getDataK8s(message).k8s()
     var check = __.data.spec
