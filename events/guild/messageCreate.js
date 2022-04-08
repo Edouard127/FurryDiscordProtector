@@ -40,36 +40,35 @@ module.exports = async (client , message) => {
         }
         delete _____
         client_r.disconnect()*/
+        try {
         var _______ = Object.entries((JSON.parse(await client_r.get(`toggled_${message.author.id}`))))[0];
+        } catch {}
         async function proxy_avatar() {
-            let _ = new Map(Object.entries(JSON.parse(await client_r.get(message.author.id))))
-            for (key of _) {
-                console.log(key)
-                let re = new RegExp('^'+_______[1]+'$', "gm");
+            try {
+            var ___ = new Map(Object.entries(JSON.parse(await client_r.get(message.author.id))))
+            } catch {}
+            for (var key of ___) {
+                let re = new RegExp('^'+_______[0]+'$', "gm");
                 if (key[0].match(re)) {
-                    return key[1].avatar
-                }
-                else {
-                    await client_r.set(`toggled_${message.author.id}`, JSON.stringify({[_______[0]]: false }))
-                    return await message.reply({ content: `No proxy found for \`${_______[0]}\`, disabling`, ephemeral: true })
-    
+                    return key[1]?.avatar
                 }
             }
+            await client_r.set(`toggled_${message.author.id}`, JSON.stringify({[_______[0]]: false }))
+            return await message.reply({ content: `No proxy found for \`${_______[0]}\`, disabling`, ephemeral: true })
     
         }
-        console.log(_______[1])
+        if(typeof _______ !== "undefined"){
         if(_______[1] === true) {
         let oldData = new Map(Object.entries(JSON.parse(await client_r.get(message.author.id).catch(()=> {}))))
         if(oldData.has(_______[0]) == false) { 
             await client_r.set(`toggled_${message.author.id}`, JSON.stringify({[_______[0]]: false }))
-            return await message.reply({ content: `Proxy \`${_______}\`not found, disabling`, ephemeral: true})
+            return await message.reply({ content: `Proxy \`${_______[0]}\`not found, disabling`, ephemeral: true})
         }
         else {
-            console.log('else')
             let webhookCollection = await message.channel.fetchWebhooks();
             if (webhookCollection.size > 0) {
                 for (key of webhookCollection) {
-                    if (key?.owner?.id == message.author.id) {
+                    if (key?.owner?.id == message.client.id) {
                         let wb = key[1]
                         await wb.edit({ name: _______[0], avatar: await proxy_avatar() })
                         try {
@@ -81,7 +80,7 @@ module.exports = async (client , message) => {
             }
             else {
                 let wb = await message.channel.createWebhook("Proxies");
-                await wb.edit({ name: _______[1], avatar: await proxy_avatar() })
+                await wb.edit({ name: _______[0], avatar: await proxy_avatar() })
                 try {
                     wb.send({ content: message.content, allowedMentions: { "users": [] } })
                     await message.delete()
@@ -90,6 +89,7 @@ module.exports = async (client , message) => {
             }
         }
     }
+}
 
     var __ = await new getDataK8s(message).k8s()
     var check = __.data.spec

@@ -9,6 +9,7 @@ client.on('error', (err) => { console.log('Redis Client Error', err); client.dis
 const unallowed = ["clyde", "system", "support", "discord", "hypesquad", "kamigen", "furry protector"]
 
 
+
 module.exports = {
 
     name: 'proxy',
@@ -31,6 +32,12 @@ module.exports = {
                     type: 3,
                     required: false,
                 },
+                /*{
+                    name: 'avatar_image',
+                    description: 'Proxy user avatar',
+                    type: 11,
+                    required: false,
+                },*/
             ]
         },
         {
@@ -138,6 +145,7 @@ module.exports = {
 
     ],
     run: async (interaction, bot) => {
+        if(await new getDataK8s(interaction).isAlive() === false) return await interaction.reply({ content: 'There was an error while trying to connect to the Kubernetes Cluster. Please try again later.\nIf the error persists, please contact Kamigen#0001' })
         
         client.connect();
         
@@ -156,6 +164,8 @@ module.exports = {
         }
 
         const avatar = interaction.options.get('avatar')?.value || 'https://cdn.discordapp.com/embed/avatars/0.png'
+        /*const avatar_file = interaction.options
+        console.log(avatar_file)*/
         try {
         var check = await axios.get(avatar)
         if(!check.headers['content-type'].match(/(image)+\//gm)) return await interaction.reply({ content: 'Invalid image URL', ephemeral: true })
@@ -223,16 +233,13 @@ module.exports = {
             async function proxy_avatar() {
                 let _ = new Map(Object.entries(JSON.parse(await client.get(interaction.user.id))))
                 for (key of _) {
-                    console.log(key)
+                    
                     let re = new RegExp('^'+name+'$', "gm");
                     if (key[0].match(re)) {
                         return key[1].avatar
                     }
-                    else {
-                        return await interaction.reply({ content: `No proxy found for ${name}`, ephemeral: true })
-
-                    }
                 }
+                return await interaction.reply({ content: `No proxy found for ${name}`, ephemeral: true })
 
             }
             let webhookCollection = await interaction.channel.fetchWebhooks();
@@ -315,10 +322,17 @@ module.exports = {
             _ = _.map(function(index) {
                 __[index.name] = { avatar: index.avatar_url || 'https://cdn.discordapp.com/embed/avatars/0.png' }
             })
+            let _o = []
+            let old = Object.entries(__).forEach(key => {
+                _o.push(key[0])
+            })
+            delete old
             __ = Object.assign(__, JSON.parse(await client.get(interaction.user.id)))
             await client.set(interaction.user.id, JSON.stringify(__))
+            
             try {
                 await client.disconnect();
+                return await interaction.reply({ content: `Successfully added:\n\`${_o.join('\n')}\``})
             } catch (e) {
                 return await interaction.reply({ content: `Error while disconnecting\nThe error has been handled by the bot\nThe actions before the errors are successfully registered`, ephemeral: true })
             }
@@ -358,7 +372,11 @@ module.exports = {
             if(oldData.has(name) == false) { 
                 return await interaction.reply({ content: `Proxy \`${name}\`not found`, ephemeral: true})
             }
+            try {
                 var _______ = Object.entries((JSON.parse(await client.get(`toggled_${interaction.user.id}`))))[0][1];
+            } catch (e) {
+                console.log(e)
+            }
                 _______ = _______ === false ? true : false
                 
             await client.set(`toggled_${interaction.user.id}`, JSON.stringify({[name]: _______ }))

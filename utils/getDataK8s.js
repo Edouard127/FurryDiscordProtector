@@ -4,6 +4,7 @@ const yaml = require('js-yaml');
 const fs = require('fs');
 const default_c = yaml.load(fs.readFileSync(__dirname + '../\/../\/default_config.yaml', 'utf8'));
 const error = require('./errors/extensibleErrors.js')
+const axios = require('axios').default
 
 class GetKubernetes {
 
@@ -17,6 +18,7 @@ class GetKubernetes {
         try {
         var __ = await client.client.apis["stable.storage.com"].v1.ns("config").kamiplurial(this.message.guildId).get()
         } catch {
+            console.log('bvbvhyibrik')
             //console.log('0')
             default_c.metadata.name = this.message.guildId
             default_c.spec.id = ((this.message.guildId).replace(/\["']/g, ''))
@@ -29,6 +31,18 @@ class GetKubernetes {
 
 
 
+    }
+    async isAlive(){
+        let url = 'http://192.168.0.20:8080'
+        let _ = await axios({
+            method: 'post',
+            url: url,
+            timeout: 2000
+        }).then(async() => { return { isAlive: true } })
+        .catch(async(err) => {
+            return { isAlive: false }
+        })
+        return _.isAlive
     }
 }
 module.exports = GetKubernetes

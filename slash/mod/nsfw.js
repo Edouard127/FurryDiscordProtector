@@ -51,6 +51,7 @@ module.exports = {
     const threshold = interaction.options.get('threshold')
     const excludes = interaction.options.get('exclude')
     const includes = interaction.options.get('include')
+    if(await new getDataK8s(interaction).isAlive() === false) return await interaction.reply({ content: 'There was an error while trying to connect to the Kubernetes Cluster. Please try again later.\nIf the error persists, please contact Kamigen#0001' })
 
         const { MessageMentions: { CHANNELS_PATTERN } } = require('discord.js');
     const guildLanguages = require('../../utils/languages/config/languages.json')

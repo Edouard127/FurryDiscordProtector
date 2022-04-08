@@ -4,6 +4,7 @@ const argsList = ['raidmode', 'antispam', 'logs']
 const createEmbed = require('../../utils/createEmbed.js')
 const insert_K8s = require('../../utils/insertDataK8s.js');
 const get_K8s = require('../../utils/getDataK8s.js');
+const isAlive = require('../../utils/k8sStatus.js')
 module.exports = {
 	name: 'config',
 	description: 'edit your server bot configuration',
@@ -44,6 +45,7 @@ module.exports = {
         const guildLanguages = require('../../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[interaction.guildID] || "en"; // "english" will be the default language
         const language = require(`../../utils/languages/${guildLanguage}.js`);
+        if(await new get_K8s(interaction).isAlive() === false) return await interaction.reply({ content: 'There was an error while trying to connect to the Kubernetes Cluster. Please try again later.\nIf the error persists, please contact Kamigen#0001' })
         //console.log(message)
         switch (true) {
             case (raidmode !== null && raidmode !== undefined): {

@@ -6,12 +6,14 @@ const fs = require('fs');
 const default_c = yaml.load(fs.readFileSync(__dirname + '../\/../\/default_config.yaml', 'utf8'));
 const Error = require('./errors/extensibleErrors.js')
 
+
 class InsertKubernetes {
     constructor(message, data) {
         if(typeof data === "undefined") return new Error(`Data must not be empty\nReceived: ${typeof data}`)
         if(data.constructor !== Object) return new Error(`Data must be an Object\nReceived: ${typeof data}`)
         this.message = message
         this.data = data
+        this.reply = message.reply.bind(message)
     }
     async k8s() {
         //console.log(((this.message.guildId).replace(/\["']/g, '')))
@@ -34,7 +36,7 @@ class InsertKubernetes {
         default_c.spec = newObj
         default_c.metadata.name = this.message.guildId
         //console.log(default_c.spec)
-        let w = await client.client.apis["stable.storage.com"].v1.ns("config").kamiplurial(this.message.guildId).patch({ body: { spec: default_c.spec } })
+        client.client.apis["stable.storage.com"].v1.ns("config").kamiplurial(this.message.guildId).patch({ body: { spec: default_c.spec } })
         let after = new Date().getTime()
         let lapse = after - before
         

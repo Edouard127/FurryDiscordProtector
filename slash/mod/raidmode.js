@@ -1,6 +1,7 @@
 const db = require("quick.db");
 const createEmbed = require('../../utils/createEmbed.js')
 const insertDataK8s = require('../../utils/insertDataK8s')
+const getDataK8s = require('../../utils/getDataK8s')
 
 module.exports = {
     name: 'raidmode',
@@ -20,6 +21,7 @@ module.exports = {
         const guildLanguages = require('../../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[interaction.guildID] || "en"; // "english" will be the default language
         const language = require(`../../utils/languages/${guildLanguage}.js`);
+        if(await new getDataK8s(interaction).isAlive() === false) return await interaction.reply({ content: 'There was an error while trying to connect to the Kubernetes Cluster. Please try again later.\nIf the error persists, please contact Kamigen#0001' })
         let data = {
             isRaid: raidmode.value
         }
