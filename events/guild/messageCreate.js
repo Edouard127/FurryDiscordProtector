@@ -139,13 +139,10 @@ module.exports = async (client , message) => {
             if (array[arr].match(/(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i)) {
                     if (check.hasOwnProperty('nsfwCheck')) {
                         let url = array[arr]
-                        if(check.hasOwnProperty('excludes'))
-                        check.forEach(data => {
-                            if(data == message.channel.id){
-                                
-                                isNsfwQ(url, message, client) 
-                            }
-                        })
+                        //if(check.hasOwnProperty('excludes'))
+                        if((check?.excludes).includes(message.channel.id) === false){
+                            isNsfwQ(url, message, client) 
+                        }
                     }
             }
         }
