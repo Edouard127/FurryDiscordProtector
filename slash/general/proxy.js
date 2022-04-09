@@ -145,7 +145,7 @@ module.exports = {
 
     ],
     run: async (interaction, bot) => {
-        if(await new getDataK8s(interaction).isAlive() === false) return await interaction.reply({ content: 'There was an error while trying to connect to the Kubernetes Cluster. Please try again later.\nIf the error persists, please contact Kamigen#0001' })
+        if(await new getDataK8s(interaction).isAlive() === false) return await interaction.reply({ content: await new getDataK8s(interaction).timeout() })
         
         client.connect();
         

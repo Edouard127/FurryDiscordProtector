@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageSelectMenu, MessageButton } = require('discord.js');
 const humanizeDuration = require('humanize-duration');
 
 module.exports = {
@@ -14,6 +14,14 @@ module.exports = {
 	usage: '/ping',
 	category: 'general',
 	run: async (interaction, client) => {
+		console.log(interaction)
+		const mainMenu = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId('help_menu_main')
+					.setLabel('Return to main menu')
+					.setStyle('PRIMARY'),
+			);
 		try {
 			const command = interaction.options.getString('command');
 			if (command) {
@@ -46,7 +54,6 @@ module.exports = {
 						{
 							label: 'Fun',
 							description: 'Show all commands in fun category.',
-							emoji: '😂',
 							value: 'fun',
 						},
 						{
@@ -63,14 +70,45 @@ module.exports = {
 						},
 					]),
 			);
-			interaction.reply({ content: '**👋 Select Category You Need Help For**', components: [row] });
-			const filter = (i) => i.customId === 'help_menu' || ('selected_command' && i.user.id === interaction.user.id);
+			const row2 = new MessageActionRow().addComponents(
+				new MessageSelectMenu()
+					.setCustomId('help_menu')
+					.setPlaceholder('Select Command Category.')
+					.setMinValues(1)
+					.setMaxValues(1)
+					.addOptions([
+						{
+							label: 'Fun',
+							description: 'Show all commands in fun category.',
+							value: 'fun',
+						},
+						{
+							label: 'General',
+							description: 'Show all commands in general category.',
+							emoji: '🔎',
+							value: 'general',
+						},
+						{
+							label: 'Mod',
+							description: 'Show all commands in mod category.',
+							emoji: '🔨',
+							value: 'mod',
+						},
+					]),
+			);
+			interaction.reply({ content: '**Select Category You Need Help For**', components: [row] });
+			const filter = (i) => i.customId === 'help_menu' || ('selected_command' && i.user.id === interaction.user.id) || 'help_menu_main';
 			const collector = interaction.channel.createMessageComponentCollector({
 				filter: filter,
-				max: 2,
-				componentType: 'SELECT_MENU',
+				max: 99,
+				
 			});
 			collector.on('collect', async (i) => {
+				console.log(i)
+				if(i.customId === 'help_menu_main') {
+					await i.deferUpdate();
+					interaction.editReply({ content: '**Select Category You Need Help For**', components: [row2] });
+				}
 				if (i.values.includes('fun')) {
 					await i.deferUpdate();
 					const loopArray = [];
@@ -83,7 +121,7 @@ module.exports = {
 							label: cmd.name,
 							value: cmd.name,
 							description: cmd.description,
-							emoji: '😂',
+							
 						});
 					});
 					const commandRow = row.setComponents(
@@ -95,8 +133,8 @@ module.exports = {
 							.addOptions(loopArray),
 					);
 					return i.editReply({
-						content: '**😂 Select what command you need help for.**',
-						components: [commandRow],
+						content: '**Select what command you need help for.**',
+						components: [commandRow, mainMenu],
 					});
 				}
 				if (i.values.includes('general')) {
@@ -124,7 +162,7 @@ module.exports = {
 					);
 					return i.editReply({
 						content: '**🔎 Select what command you need help for.**',
-						components: [commandRow],
+						components: [commandRow, mainMenu],
 					});
 				}
 				if (i.values.includes('mod')) {
@@ -152,12 +190,11 @@ module.exports = {
 					);
 					return i.editReply({
 						content: '**🔨 Select what command you need help for.**',
-						components: [commandRow],
+						components: [commandRow, mainMenu],
 					});
 				}
 			});
-		} catch (e) {
-			console.error(e);
+		} catch {
 			return false;
 		}
 	},

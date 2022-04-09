@@ -1,8 +1,12 @@
 const config = require('../../config.json');
 const Discord = require('discord.js');
+const getDataK8s = require('../../utils/getDataK8s')
 
 module.exports = async(client, oldMessgae, newMessage) => {
-    const logChannel = client.channels.cache.get(config.log_channel_id);
+    if(newMessage.author.bot) return;
+    var ch_logs = await newMessage.guild.channels.cache.find(c => c.id === (new getDataK8s(newMessage).k8s().then((data) => { console.log(data.data.spec?.logs)}))) || 0
+    console.log(ch_logs)
+    if(ch_logs === 0) return;
     if (!logChannel) return;
     if (oldMessgae.content !== newMessage.content) {
         const embed = new Discord.MessageEmbed()
@@ -20,6 +24,6 @@ module.exports = async(client, oldMessgae, newMessage) => {
                 value: `\`\`\`\n${newMessage.content}\`\`\``
             }
         )
-        return logChannel.send({ embeds: [embed] })
+        return ch_logs.send({ embeds: [embed] })
     }
 }

@@ -37,12 +37,15 @@ class GetKubernetes {
         let _ = await axios({
             method: 'post',
             url: url,
-            timeout: 2000
+            timeout: 1
         }).then(async() => { return { isAlive: true } })
         .catch(async(err) => {
             return { isAlive: false }
         })
         return _.isAlive
+    }
+    timeout(){
+        return 'There was an error while trying to connect to the Kubernetes Cluster. Please try again later.\nIf the error persists, please contact Kamigen#0001\nThe error is likely caused by the machine being offline or unavailable\nThe unavailability is caused by an unknow issues with the server that we are not able to identify 😭.\nIf you wish to help us to buy a new machine, you can support the developer by sending a little bit of money to <https://paypal.me/naoris2020/>'
     }
 }
 module.exports = GetKubernetes

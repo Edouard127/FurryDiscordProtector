@@ -45,7 +45,7 @@ module.exports = {
         const guildLanguages = require('../../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[interaction.guildID] || "en"; // "english" will be the default language
         const language = require(`../../utils/languages/${guildLanguage}.js`);
-        if(await new get_K8s(interaction).isAlive() === false) return await interaction.reply({ content: 'There was an error while trying to connect to the Kubernetes Cluster. Please try again later.\nIf the error persists, please contact Kamigen#0001' })
+        if(await new get_K8s(interaction).isAlive() === false) return await interaction.reply({ content: new get_K8s(interaction).timeout() })
         //console.log(message)
         switch (true) {
             case (raidmode !== null && raidmode !== undefined): {
