@@ -25,7 +25,9 @@ module.exports = async(client) => {
 				Routes.applicationGuildCommands(process.env.BOT_ID, guild.id),
 				{ body: commands },
 			);   
-			} catch {}
+			} catch (e){
+				console.log(e)
+			}
 			
 })
 		console.log('[Discord API] Successfully reloaded application (/) commands.'.green);

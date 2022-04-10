@@ -18,6 +18,7 @@ module.exports = {
 
     run: async (interaction, client) => {
         const raidmode = interaction.options.get('interact')
+        if(raidmode?.value === undefined) return await interaction.reply('Please specify a value')
         const guildLanguages = require('../../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[interaction.guildID] || "en"; // "english" will be the default language
         const language = require(`../../utils/languages/${guildLanguage}.js`);

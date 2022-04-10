@@ -18,6 +18,7 @@ module.exports = {
 	 */
 	run: async (interaction) => {
 		const channel = interaction.options.getChannel('channel');
+		console.log(channel)
 		const embed = new EmbedBuilder().setTitle(`${channel.name} Info`);
 		if (channel.isText && channel.topic) {
 			embed.setDescription(channel.topic);
@@ -38,35 +39,36 @@ module.exports = {
 		}
 		let channelTypes;
 		switch (channel.type) {
-			case 'GUILD_TEXT':
+			case 0:
 				channelTypes = 'Text Channel';
 				break;
-			case 'GUILD_VOICE':
+			case 2:
 				channelTypes = 'Voice Channel';
 				break;
-			case 'GUILD_CATEGORY':
+			case 4:
 				channelTypes = 'Category Channel';
 				break;
-			case 'GUILD_NEWS':
+			case 5:
 				channelTypes = 'News Channel';
 				break;
-			case 'GUILD_STORE':
-				channelTypes = 'Store Channel';
-				break;
-			case 'GUILD_NEWS_THREAD':
+			case 10:
 				channelTypes = 'News Thread Channel';
 				break;
-			case 'GUILD_PUBLIC_THREAD':
+			case 11:
 				channelTypes = 'Public Thread Channel';
 				break;
-			case 'GUILD_PRIVATE_THREAD':
+			case 12:
 				channelTypes = 'Private Thread Channel';
 				break;
-			case 'GUILD_STAGE_VOICE':
+			case 13:
 				channelTypes = 'Stage Channel';
 				break;
+			default: 
+				channelTypes = 'Cannot find channel type'
+				break;
 		}
-		embed.addFields({ name: 'Channel Type:', value: 'to fix', inline: true })
+		console.log(channelTypes)
+		embed.addFields({ name: 'Channel Type:', value: channelTypes, inline: true })
 		embed.addFields({ name: 'Channel Created At:', value: `<t:${Math.floor(channel.createdTimestamp / 1000)}:R>`, inline: true });
 		embed.setColor(interaction.guild.me.displayHexColor);
 		

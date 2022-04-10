@@ -9,7 +9,6 @@ module.exports = async (client) => {
     slash(client);
     setInterval(() => {
         client.channels.fetch('948369400866684969').then(channel => channel.messages.fetch('948380114868125757').then(message => {
-            client.user.setActivity('a', { type: 'WATCHING' });
 
             client.shard.broadcastEval(client => [client.shard.ids, client.ws.status, client.ws.ping, client.guilds.cache.size])
                 .then((results) => {

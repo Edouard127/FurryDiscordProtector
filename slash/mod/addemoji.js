@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { PermissionFlagsBits, Util }= require('discord.js');
 
 module.exports = {
 	name: 'addemoji',
@@ -22,8 +22,8 @@ module.exports = {
 	run: async (interaction) => {
 		const emoji = interaction.options.getString('emoji');
 		const emojiName = interaction.options.getString('emoji_name');
-		const parseCustomEmoji = Discord.Util.parseEmoji(emoji);
-		if(!interaction.guild.me.permissions.has('MANAGE_EMOJIS_AND_STICKERS')) return await interaction.reply({ content: `❌ I don't have the permission to manage emojis` });
+		const parseCustomEmoji = Util.parseEmoji(emoji);
+		if(!interaction.guild.me.permissions.has(PermissionFlagsBits.ManageEmojisAndStickers)) return await interaction.reply({ content: `❌ I don't have the permission to manage emojis` });
 		if (parseCustomEmoji.id) {
 			const emojiLink = `https://cdn.discordapp.com/emojis/${parseCustomEmoji.id}.${
 				parseCustomEmoji.animated ? 'gif' : 'png'

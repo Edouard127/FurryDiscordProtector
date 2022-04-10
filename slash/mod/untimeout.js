@@ -1,3 +1,5 @@
+const { PermissionFlagsBits } = require('discord.js')
+
 module.exports = {
 	name: 'untimeout',
 	description: 'Remove timeout from user.',
@@ -11,6 +13,7 @@ module.exports = {
 	],
 	permissions: 'MODERATE_MEMBERS',
 	run: async (interaction) => {
+		if(!interaction.guild.me.permissions.has(PermissionFlagsBits.ModerateMembers)) return await interaction.reply('I don\'t have permissions to moderate members')
 		const member = interaction.options.getMember('user');
 		if (!member.isCommunicationDisabled()) {
 			return interaction

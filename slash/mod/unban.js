@@ -1,23 +1,39 @@
+const { PermissionFlagsBits } = require('discord.js')
+
 module.exports = {
 	name: 'unban',
 	permissions: 'BAN_MEMBERS',
-	description: 'Unban user from this server',
+	description: 'unban user from this server',
 	options: [
 		{
-			name: 'input',
+			name: 'all',
+			description: 'unban all users from this server',
+			type: 1,
+		},
+		{
+			name: 'id',
 			description: 'user to unban',
-			type: 3,
-			required: true,
+			type: 1,
+			options: [
+				{
+					name: 'user_id',
+					description: 'user ID to unban',
+					type: 4,
+					required: true,
+				}
+			]
 		},
 	],
 	timeout: 3000,
 	category: 'mod',
 	run: async (interaction) => {
-		if(!interaction.guild.me.permissions.has('BAN_MEMBERS')) return await interaction.reply({ content: `❌ I don't have the permission to unban` });
-		const input = interaction.options.getString('input');
-		if (input === 'all') {
+		if(!interaction.guild.me.permissions.has(PermissionFlagsBits.BanMembers)) return await interaction.reply({ content: `❌ I don't have the permission to unban` });
+		if(!interaction.member.permissions.has(PermissionFlagsBits.BanMembers)) return await interaction.reply({ content: `❌ You don't have the permission to unban` });
+		const command = interaction.options.getSubcommand()
+		const input = interaction.options.getInteger('user_id');
+		if (command === 'all') {
 			const fetchBans = await interaction.guild.bans.fetch();
-			if (!fetchBans) {
+			if (fetchBans.size === 0) {
 				return interaction.reply('There are no banned users.');
 			}
 			const usersBanned = fetchBans.map((r) => r.user.id);
@@ -26,12 +42,15 @@ module.exports = {
 			});
 			return interaction.reply(`✅ **${fetchBans.size}** members being unbanned`);
 		}
+		if(command === 'id'){
 		try {
+			if(!interaction.guild.bans.resolve(input)) return await interaction.reply('This user is not banned')
 			const user = await interaction.guild.bans.remove(input, `By: ${interaction.user.tag}`);
 			interaction.reply({ content: `✅ **@${user.username} has been unbanned**` });
 		} catch (e) {
 			console.error(e);
-			return interaction.reply({ content: `Error: ${e}` });
+			return interaction.reply({ content: `There was an error trying to unban.` });
 		}
+	}
 	},
 };

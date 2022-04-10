@@ -33,13 +33,11 @@ module.exports = {
 			let num = 0;
 			let loop = '';
 			interaction.guild.channels.cache
-				.filter((r) => r.type === 'GUILD_TEXT')
+				.filter((r) => r.type === 0)
 				.forEach((channel) => {
-					console.log(channel)
 					num++;
 					loop += `**#${num}** - ${channel.name}\nID: ${channel.id}\nRaw Position: ${channel.rawPosition}\nnsfw ?: ${channel.nsfw}\n\n\n`;
 				});
-				console.log(loop)
 				let file = new MessageAttachment(Buffer.from(loop, 'utf-8'), 'channels.txt')
 			return await interaction.reply({
 				content: `**\`💬\` ${interaction.guild.name}** Text Channels :`, files: [file],
@@ -49,7 +47,7 @@ module.exports = {
 			let num = 0;
 			let loop = '';
 			interaction.guild.channels.cache
-				.filter((r) => r.type === 'GUILD_VOICE')
+				.filter((r) => r.type === 2)
 				.forEach((channel) => {
 					num++;
 					loop += `**#${num}** - ${channel.name}\nID: ${channel.id}\nRaw Position: ${channel.rawPosition}\nRegion: ${channel.rtcRegion}\nBitrate: ${channel.bitrate}\nUser limit: ${channel.userLimit}\n\n\n`;
@@ -63,12 +61,10 @@ module.exports = {
 			let num = 0;
 			let loop = '';
 			await interaction.guild.channels.cache
-				.filter((r) => r.type === 'GUILD_CATEGORY')
+				.filter((r) => r.type === 4)
 				.forEach((channel) => {
-					console.log(channel)
 					num++;
 					loop += `**#${num}** - ${channel.name}\nID: ${channel.id}\nRaw Position: ${channel.rawPosition}\n\n\n`;
-					console.log(loop)
 				})
 			let file = new MessageAttachment(Buffer.from(loop, 'utf-8'), 'channels.txt')
 			return await interaction.reply({

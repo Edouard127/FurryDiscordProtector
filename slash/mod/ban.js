@@ -40,9 +40,7 @@ module.exports = {
 		if (member.id === client.user.id) {
 			return interaction.reply({ content: ":x: You can't ban me!", ephemeral: true });
 		}
-		if (member.banable === false) {
-			return interaction.reply({ content: ":x: I can't ban this user", ephemeral: true });
-		}
+
 		if(!interaction.guild.me.permissions.has(PermissionFlagsBits.BanMembers)) return await interaction.reply({ content: `❌ I don't have the permission to ban` });
 		const botRole = interaction.guild.me.roles.highest.position;
 		const role = member.roles.highest.position;

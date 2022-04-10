@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
 	name: 'role',
@@ -89,6 +89,7 @@ module.exports = {
 		
 		const user = interaction.options.getMember('user'); // access to guild member obj <https://discord.js.org/#/docs/main/stable/class/GuildMember>
 		const role = interaction.options.getRole('role'); // access to role obj <https://discord.js.org/#/docs/main/stable/class/Role>
+		if(!interaction.guild.me.permissions.has(PermissionFlagsBits.ManageRoles)) return await interaction.reply('I don\'t have the permission to manage roles.')
 		if(role.id == interaction.guildId) return await interaction.reply({ content: 'You can\'t give or remove everyone to everyone.' })
 		// User Sub Command
 		if (interaction.options.getSubcommand() === 'user') {
@@ -153,6 +154,9 @@ module.exports = {
 		}
 		// role all sub command
 		if (interaction.options.getSubcommand() === 'all') {
+			const botRole = interaction.guild.me.roles.highest.position;
+			if(!role.editable) return await interaction.reply('I cannot interact with this role')
+			if(botRole <= role.position) return await interaction.reply('The role is higher than my highest role')
 			if (interaction.options._hoistedOptions.find((r) => r.value === 'give')) {
 				(await interaction.guild.members.fetch()).forEach((member) => {
 					member.roles.add(role, `By: ${interaction.user.tag}`);

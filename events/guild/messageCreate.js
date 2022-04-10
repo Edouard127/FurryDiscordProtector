@@ -96,13 +96,10 @@ module.exports = async (client , message) => {
     if (!message.author.bot && message.channel.type !== "dm") {
         if (!message.channel.nsfw) {
 
-                //console.log(message)
 
-                if (check.hasOwnProperty('profanityCheck')) {
-                    if(check.profanityCheck == true){
+                    if(check?.profanityCheck == true){
                     profanityText(message)
                     }
-                }
             if (message.attachments) {
                     if (check.hasOwnProperty('nsfwCheck')) {
                         if(check.nsfwCheck == true){

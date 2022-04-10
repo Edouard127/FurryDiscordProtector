@@ -51,9 +51,9 @@ module.exports = {
     const threshold = interaction.options.get('threshold')
     const excludes = interaction.options.get('exclude')
     const includes = interaction.options.get('include')
-    if(await new getDataK8s(interaction).isAlive() === false) return await interaction.reply({ content: 'There was an error while trying to connect to the Kubernetes Cluster. Please try again later.\nIf the error persists, please contact Kamigen#0001' })
+    if(await new getDataK8s(interaction).isAlive() === false) return interaction.reply({ content: new getDataK8s(interaction).timeout(), ephemeral: true })
 
-        const { MessageMentions: { CHANNELS_PATTERN } } = require('discord.js');
+    const { MessageMentions: { CHANNELS_PATTERN } } = require('discord.js');
     const guildLanguages = require('../../utils/languages/config/languages.json')
     const guildLanguage = guildLanguages[interaction.guildId] || "en"; // "english" will be the default language
     const language = require(`../../utils/languages/${guildLanguage}.js`);
@@ -113,7 +113,7 @@ module.exports = {
 
         default: {
                 let config = createEmbed('#0099ff', `${language('_nsfw_config')}`, `${language('_nsfw_message', argsList)}`)
-                interaction.reply({ embeds: [config] })
+                return await interaction.reply({ embeds: [config] })
         }
     }
     }

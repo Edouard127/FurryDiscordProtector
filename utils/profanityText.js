@@ -15,12 +15,11 @@ async function profanityText(message){
     var word = message.content
 if (word.match(w)) {
     var __ = await new _K8s(message).k8s()
-    //console.log('matched')
+
     //console.log(__.data.spec.logs)
             var ch_logs =  await message.guild.channels.cache.find(c => c.id === __.data.spec.logs) || 0
             if(ch_logs === 0) return;
             let config = createEmbed('#0099ff', `${language('_profanity')}`, `${language('_profanity_', message.url)}`)
-            console.log(ch_logs)
             ch_logs.send({ embeds: [config]})
 
         }

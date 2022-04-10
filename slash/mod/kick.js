@@ -28,10 +28,10 @@ module.exports = {
 			if (member.id === client.user.id) {
 				return interaction.reply({ content: ":x: You can't kick me!", ephemeral: true });
 			}
-			if (member.banable === false) {
+			if (member.banable === false || member.user.bot) {
 				return interaction.reply({ content: ":x: I can't kick this user", ephemeral: true });
 			}
-			if(member.user.bot) return await interaction.reply({ content: ":x: I can't message this bot", ephemeral: true });
+			//if(member.user.bot) return await interaction.reply({ content: ":x: I can't message this bot", ephemeral: true });
 
 			if(!interaction.guild.me.permissions.has(PermissionFlagsBits.KickMembers)) return await interaction.reply({ content: `❌ I don't have the permission to kick` });
 			const botRole = interaction.guild.me.roles.highest.position;

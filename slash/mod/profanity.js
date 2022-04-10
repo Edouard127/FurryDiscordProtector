@@ -12,7 +12,7 @@ module.exports = {
             name: 'interact',
             description: 'enable/disable profanity detection',
             type: 5,
-            required: false,
+            required: true,
         },
 
 	],
@@ -23,6 +23,7 @@ module.exports = {
         const guildLanguages = require('../../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[interaction.guildID] || "en"; // "english" will be the default language
         const language = require(`../../utils/languages/${guildLanguage}.js`);
+        if(profanity?.value === undefined) return await interaction.reply('Please specify a value')
         if(await new getDataK8s(interaction).isAlive() === false) return await interaction.reply({ content: await new getDataK8s(interaction).timeout() })
         let data = {
                 profanityCheck: profanity.value

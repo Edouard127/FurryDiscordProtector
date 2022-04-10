@@ -11,7 +11,7 @@ module.exports = {
             name: 'interact',
             description: 'enable/disable antispam',
             type: 5,
-            required: false,
+            required: true,
         },
 
 	],
@@ -22,6 +22,7 @@ module.exports = {
         const guildLanguages = require('../../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[interaction.guildID] || "en"; // "english" will be the default language
         const language = require(`../../utils/languages/${guildLanguage}.js`);
+        if(spam?.value === undefined) return await interaction.reply('Please specify a value')
         //console.log(message)
         //let data = await new getDataK8s(interaction).k8s()
         let data = {

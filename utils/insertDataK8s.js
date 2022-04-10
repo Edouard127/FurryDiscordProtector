@@ -25,8 +25,11 @@ class InsertKubernetes {
                 
                 default_c.metadata.name = this.message.guildId
                 default_c.spec.id = ((this.message.guildId).replace(/\["']/g, ''))
-    
+                try {
                 await client.client.apis["stable.storage.com"].v1.ns("config").kamiplurial.post({ body: default_c })
+                } catch {
+                    this.reply(`Uh oh, something went wrong. Please try again later.`)
+                }
             }
 
         //console.log(map)

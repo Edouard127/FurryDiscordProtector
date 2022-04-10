@@ -7,12 +7,12 @@ module.exports = {
 	permissions: 'MANAGE_CHANNELS',
 	description: '🔒 Disables role from sending messages in specific channel',
 	options: [
-		{
+		/*{
 			name: 'all',
 			description: 'Lock all channels',
 			type: 1,
 			
-		},
+		},*/
 		{
 			name: 'channel',
 			description: 'Channel to lock',
@@ -30,7 +30,8 @@ module.exports = {
 	timeout: 3000,
 	category: 'mod',
 	run: async (interaction) => {
-		if(await new getDataK8s(interaction).isAlive() === false) return await interaction.reply({ content: new getDataK8s(interaction).timeout() })
+		if(await new getDataK8s(interaction).isAlive() === false) return interaction.reply({ content: new getDataK8s(interaction).timeout() })
+		if(!interaction.guild.me.permissions.has(PermissionFlagsBits.ManageChannels)) return await interaction.reply('I don\'t have permissions to manage channels')
 		const ___ = await new getDataK8s(interaction).k8s()
 		const default_role = ___.data.spec.defaultrole || interaction.guildId
 		const channel = interaction.options.getChannel('channel') || interaction.channel;

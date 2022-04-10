@@ -22,11 +22,13 @@ async function GetKubernetesHealth() {
               response.headers['request-duration'] = milliseconds
               return response
           })
-    let data = await instance.get('https://192.168.0.20:6443/livez', { httpsAgent: agent })
+    var data = await instance({ method: 'get',
+    url: 'http://192.168.0.20:8080',
+    timeout: 2000 }, { httpsAgent: agent }).catch(() => { return { success: false, data: 'NOT OK: No response from cluster' } })
     //console.log(data)
     return { success: true, data: `OK: ${data.headers['request-duration']} MS` }
     } catch (err){
-        return { success: false, data: 'No response from cluster, aborting' }
+        return { success: false, data: 'NOT OK: No response from cluster' }
     }
 }
 module.exports = GetKubernetesHealth
