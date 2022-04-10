@@ -11,7 +11,7 @@ async function profanityImage(url, message){
     const guildLanguage = guildLanguages[message.guild.id] || "en"; // "english" will be the default language
     const language = require(`../utils/languages/${guildLanguage}.js`);
 
-ReadText(url, message).then(text => {
+/*ReadText(url, message).then(text => {
     if (text.match(w)) {
         let ch_logs
         (async () => {
@@ -32,6 +32,6 @@ ReadText(url, message).then(text => {
     }
 }).catch(err => {
     console.log(err);
-})
+})*/
 }
 module.exports = profanityImage

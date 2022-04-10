@@ -43,7 +43,12 @@ let p = 0;
 	}
 })
 
-
+process.on('uncaughtException', (reason, p) => {
+	console.log(`Uncaught Exception: ${reason}\nAt: ${(p)}`);
+  });
+  process.on('unhandledRejection', (reason, p) => {
+    console.log(`Unhandled promise rejection: ${reason}\nAt: ${p}`);
+  });
 
 
   //client.on('debug', console.log);
