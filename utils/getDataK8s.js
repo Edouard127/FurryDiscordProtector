@@ -37,7 +37,7 @@ class GetKubernetes {
         let _ = await axios({
             method: 'post',
             url: url,
-            timeout: 1
+            timeout: 2000
         }).then(async() => { return { isAlive: true } })
         .catch(async(err) => {
             return { isAlive: false }

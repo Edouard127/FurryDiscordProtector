@@ -1,4 +1,4 @@
-const { Discord, MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { Discord, EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
 module.exports = {
 	name: 'user',
@@ -17,11 +17,11 @@ module.exports = {
 		const userCreated = Date.now() - member.user.createdTimestamp;
 		const joinedTime = Date.now() - member.joinedTimestamp;
 		const memberAvatar = member.avatarURL({ dynamic: true }) || member.user.displayAvatarURL({ dynamic: true });
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setAuthor({ name: member.user.tag, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
 			.setThumbnail(memberAvatar)
-			.setFooter(member.id, member.displayAvatarURL({ dynamic: true }))
-			.setColor('RANDOM')
+			.setFooter({ text: member.id, iconURL: member.displayAvatarURL({ dynamic: true })})
+			.setColor('Random')
 			.addFields(
 				{
 					name: 'User Created At:',
@@ -58,9 +58,9 @@ module.exports = {
 				)}:R>**`,
 			);
 		}
-		const row = new MessageActionRow().addComponents(
-			new MessageButton()
-				.setStyle('LINK')
+		const row = new ActionRowBuilder().addComponents(
+			new ButtonBuilder()
+				.setStyle('Link')
 				.setURL(member.user.displayAvatarURL({ dynamic: true }))
 				.setLabel('User Avatar'),
 		);

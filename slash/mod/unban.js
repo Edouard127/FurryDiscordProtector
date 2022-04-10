@@ -13,6 +13,7 @@ module.exports = {
 	timeout: 3000,
 	category: 'mod',
 	run: async (interaction) => {
+		if(!interaction.guild.me.permissions.has('BAN_MEMBERS')) return await interaction.reply({ content: `❌ I don't have the permission to unban` });
 		const input = interaction.options.getString('input');
 		if (input === 'all') {
 			const fetchBans = await interaction.guild.bans.fetch();

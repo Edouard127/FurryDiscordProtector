@@ -61,9 +61,9 @@ module.exports = {
 		const badges = interaction.options.getString('badge');
 		const role = interaction.options.getRole('role');
 		if (badges === 'staff') {
-			const getMemberWithRole = role?.members.filter((r) => r.user.flags?.has('DISCORD_EMPLOYEE'));
+			const getMemberWithRole = role?.members.filter((r) => r.user.flags?.has('Staff'));
 			const staffBadges = (await interaction.guild.members.fetch()).filter((r) =>
-				r.user.flags?.has('DISCORD_EMPLOYEE'),
+				r.user.flags?.has('Staff'),
 			);
 			if (staffBadges.size === 0) {
 				return interaction.reply({
@@ -84,9 +84,9 @@ module.exports = {
 			}
 		}
 		if (badges === 'partnerd') {
-			const getMemberWithRole = role?.members.filter((r) => r.user.flags?.has('PARTNERED_SERVER_OWNER'));
+			const getMemberWithRole = role?.members.filter((r) => r.user.flags?.has('Partner'));
 			const partnerdBadge = (await interaction.guild.members.fetch()).filter((r) =>
-				r.user.flags?.has('PARTNERED_SERVER_OWNER'),
+				r.user.flags?.has('Partner'),
 			);
 			if (partnerdBadge.size === 0) {
 				return interaction.reply({
@@ -107,9 +107,9 @@ module.exports = {
 			}
 		}
 		if (badges === 'HYPESQUAD_EVENTS') {
-			const getMemberWithRole = role?.members.filter((r) => r.user.flags?.has('HYPESQUAD_EVENTS'));
+			const getMemberWithRole = role?.members.filter((r) => r.user.flags?.has('Hypesquad'));
 			const hypeSquadBadge = (await interaction.guild.members.fetch()).filter((r) =>
-				r.user.flags?.has('HYPESQUAD_EVENTS'),
+				r.user.flags?.has('Hypesquad'),
 			);
 			if (hypeSquadBadge.size === 0) {
 				return interaction.reply({
@@ -132,9 +132,9 @@ module.exports = {
 			}
 		}
 		if (badges === 'BUGHUNTER_LEVEL_1') {
-			const getMemberWithRole = role?.members.filter((r) => r.user.flags?.has('BUGHUNTER_LEVEL_1'));
+			const getMemberWithRole = role?.members.filter((r) => r.user.flags?.has('BugHunterLevel1'));
 			const bughunter1 = (await interaction.guild.members.fetch()).filter((r) =>
-				r.user.flags?.has('BUGHUNTER_LEVEL_1'),
+				r.user.flags?.has('BugHunterLevel1'),
 			);
 			if (bughunter1.size === 0) {
 				return interaction.reply({
@@ -157,7 +157,7 @@ module.exports = {
 			}
 		}
 		if (badges === 'HOUSE_BRAVERY') {
-			const houseBravery = (await interaction.guild.members.fetch()).filter((r) => r.user.flags?.has('HOUSE_BRAVERY'));
+			const houseBravery = (await interaction.guild.members.fetch()).filter((r) => r.user.flags?.has('HypeSquadOnlineHouse1'));
 			if (houseBravery.size === 0) {
 				return interaction.reply({
 					content: ':x: No one in this server has `House Bravery`',
@@ -179,7 +179,7 @@ module.exports = {
 			}
 		}
 		if (badges === 'EARLY_SUPPORTER') {
-			const earlyBadge = (await interaction.guild.members.fetch()).filter((r) => r.user.flags?.has('EARLY_SUPPORTER'));
+			const earlyBadge = (await interaction.guild.members.fetch()).filter((r) => r.user.flags?.has('PremiumEarlySupporter'));
 			if (earlyBadge.size === 0) {
 				return interaction.reply({
 					content: ':x: No one in this server has `Early Supporter`',
@@ -202,7 +202,7 @@ module.exports = {
 		}
 		if (badges === 'BUGHUNTER_LEVEL_2') {
 			const bughunter2 = (await interaction.guild.members.fetch()).filter((r) =>
-				r.user.flags?.has('BUGHUNTER_LEVEL_2'),
+				r.user.flags?.has('BugHunterLevel2'),
 			);
 			if (bughunter2.size === 0) {
 				return interaction.reply({
@@ -219,7 +219,7 @@ module.exports = {
 			}
 			if (bughunter2) {
 				const filterBadges = (await interaction.guild.members.fetch())
-					.filter((r) => r.user.flags?.has('BUGHUNTER_LEVEL_2'))
+					.filter((r) => r.user.flags?.has('BugHunterLevel2'))
 					.map((r) => r.user)
 					.join('\n');
 				interaction.reply({
@@ -229,7 +229,7 @@ module.exports = {
 		}
 		if (badges === 'VERIFIED_BOT') {
 			const verifiedBotBadge = (await interaction.guild.members.fetch()).filter((r) =>
-				r.user.flags?.has('VERIFIED_BOT'),
+				r.user.flags?.has('VerifiedBot'),
 			);
 			if (verifiedBotBadge.size === 0) {
 				return interaction.reply({
@@ -252,9 +252,9 @@ module.exports = {
 			}
 		}
 		if (badges === 'EARLY_VERIFIED_BOT_DEVELOPER') {
-			const getMemberWithRole = role?.members.filter((r) => r.user.flags?.has('EARLY_VERIFIED_BOT_DEVELOPER'));
+			const getMemberWithRole = role?.members.filter((r) => r.user.flags?.has('VerifiedDeveloper'));
 			const devsBadges = (await interaction.guild.members.fetch()).filter((r) =>
-				r.user.flags?.has('EARLY_VERIFIED_BOT_DEVELOPER'),
+				r.user.flags?.has('VerifiedDeveloper'),
 			);
 			if (devsBadges.size === 0) {
 				return interaction.reply({
@@ -277,9 +277,9 @@ module.exports = {
 			}
 		}
 		if (badges === 'DISCORD_CERTIFIED_MODERATOR') {
-			const getMemberWithRole = role?.members.filter((r) => r.user.flags?.has('DISCORD_CERTIFIED_MODERATOR'));
+			const getMemberWithRole = role?.members.filter((r) => r.user.flags?.has('CertifiedModerator'));
 			const moderatorBadge = (await interaction.guild.members.fetch()).filter((r) =>
-				r.user.flags?.has('DISCORD_CERTIFIED_MODERATOR'),
+				r.user.flags?.has('CertifiedModerator'),
 			);
 			if (moderatorBadge.size === 0) {
 				return interaction.reply({

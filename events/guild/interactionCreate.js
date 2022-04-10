@@ -1,17 +1,17 @@
 const Timeout = new Set()
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
 const config = require('../../config.json');
 
 module.exports = async(client, interaction) => {
-    if (interaction.isCommand() || interaction.isContextMenu()) {
+    if (interaction.isCommand() || interaction.isContextMenuCommand()) {
 		if (!client.slash.has(interaction.commandName)) return;
 		if (!interaction.guild) return;
 		const command = client.slash.get(interaction.commandName)
 		try {
 			if (command.timeout) {
 				if (Timeout.has(`${interaction.user.id}${command.name}`)) {
-					const embed = new MessageEmbed()
+					const embed = new EmbedBuilder()
 					.setTitle('You are in timeout!')
 					.setDescription(`You need to wait **${humanizeDuration(command.timeout, { round: true })}** to use command again`)
 					.setColor('#ff0000')
@@ -20,7 +20,7 @@ module.exports = async(client, interaction) => {
 			}
 			if (command.permissions) {
 				if (!interaction.member.permissions.has(command.permissions)) {
-					const embed = new MessageEmbed()
+					const embed = new EmbedBuilder()
 					.setTitle('Missing Permission')
 					.setDescription(`:x: You need \`${command.permissions}\` to use this command`)
 					.setColor('#ff0000')
@@ -59,9 +59,9 @@ module.exports = async(client, interaction) => {
 			const selectedValues = interaction.values;
 			const command = client.slash.find(r => r.name === selectedValues[0]);
 			if (selectedValues.includes(command.name)) {
-				const embed = new MessageEmbed()
-				.setColor(interaction.guild.me.displayHexColor)
-				.setFooter(`Requested by ${interaction.user.tag}`, interaction.user.displayAvatarURL({ dynamic: true }))
+				const embed = new EmbedBuilder()
+				.setColor('Random')
+				.setFooter({ text: `Requested by ${interaction.user.tag}`, icon_url: interaction.user.displayAvatarURL({ dynamic: true })})
 				if (command.name) {
 					embed.setTitle(`Command: ${command.name}`)
 				}
@@ -69,13 +69,13 @@ module.exports = async(client, interaction) => {
 					embed.setDescription(command.description)
 				}
 				if (command.example) {
-					embed.addField('Examples:', command.example.replaceAll('<@>', `<@${interaction.user.id}>`))
+					embed.addFields({ name: 'Examples:', value: command.example.replaceAll('<@>', `<@${interaction.user.id}>`)})
 				}
 				if (command.usage) {
-					embed.addField('Usage:', command.usage)
+					embed.addFields({ name: 'Usage:', value: command.usage})
 				}
 				if (command.timeout) {
-					embed.addField('Timeout:', humanizeDuration(command.timeout, { round: true }))
+					embed.addFields({ name: 'Timeout:', value: humanizeDuration(command.timeout, { round: true })})
 				}
 				interaction.reply({
 					embeds: [embed],

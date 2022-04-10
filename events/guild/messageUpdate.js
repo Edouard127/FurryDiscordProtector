@@ -4,8 +4,7 @@ const getDataK8s = require('../../utils/getDataK8s')
 
 module.exports = async(client, oldMessgae, newMessage) => {
     if(newMessage.author.bot) return;
-    var ch_logs = await newMessage.guild.channels.cache.find(c => c.id === (new getDataK8s(newMessage).k8s().then((data) => { console.log(data.data.spec?.logs)}))) || 0
-    console.log(ch_logs)
+    var ch_logs = await newMessage.guild.channels.cache.find(c => c.id === (new getDataK8s(newMessage).k8s().then((data) => { return data.data.spec?.logs }))) || 0
     if(ch_logs === 0) return;
     if (!logChannel) return;
     if (oldMessgae.content !== newMessage.content) {

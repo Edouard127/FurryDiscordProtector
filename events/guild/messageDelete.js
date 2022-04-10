@@ -4,8 +4,8 @@ const getDataK8s = require('../../utils/getDataK8s')
 
 module.exports = async(client, message) => {
     message.guildId = message.guild.id
-    var ch_logs = await member.guild.channels.cache.find(c => c.id === (new getDataK8s(message).k8s().then((data) => { return data.data.spec?.logs || 0}))) || 0
-    if(check_logs === 0) return;
+    var ch_logs = await message.guild.channels.cache.find(c => c.id === (new getDataK8s(message).k8s().then((data) => { return data.data.spec?.logs || 0}))) || 0
+    if(ch_logs === 0) return;
     if (!logChannel) return;
     const allLogs = await message.guild.fetchAuditLogs({ type: "MESSAGE_DELETE" });
     const fetchModerator = allLogs.entries.first();

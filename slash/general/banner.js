@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
 module.exports = {
 	name: 'banner',
@@ -14,30 +14,32 @@ module.exports = {
 	timeout: 3000,
 	category: 'general',
 	run: async (interaction, client) => {
-		const user = interaction.options.getMember('user').user || interaction.user;
+		const user = interaction.options.getMember('user')?.user || interaction.user;
 		try {
 			await client.users.fetch(user);
 		} catch (e) {
 			return interaction.reply({ content: ":x: i can't find this user" });
 		}
 		const fetchUser = await client.users.fetch(user);
+		console.log(fetchUser)
 		await fetchUser.fetch(); // to get user banner you need to fetch user before getting banner
 		try {
-		const embed = new MessageEmbed()
-			.setAuthor(fetchUser.tag, fetchUser.displayAvatarURL({ dynamic: true }))
+		const embed = new EmbedBuilder()
+			.setAuthor({ name: fetchUser.username, iconURL: fetchUser.displayAvatarURL({ dynamic: true })})
 			
 			.setImage(fetchUser.bannerURL({ dynamic: true, size: 4096, format: 'png' }))
 			
-			.setFooter(`Requested by ${interaction.user.tag}`, interaction.user.displayAvatarURL({ dynamic: true }));
+			.setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL({ dynamic: true })});
 			console.log(fetchUser.bannerURL({ dynamic: true, size: 4096, format: 'png' }))
-		const row = new MessageActionRow().addComponents(
-			new MessageButton()
-				.setStyle('LINK')
+		const row = new ActionRowBuilder().addComponents(
+			new ButtonBuilder()
+				.setStyle('Link')
 				.setURL(fetchUser.bannerURL({ dynamic: true, size: 4096, format: 'png' }))
 				.setLabel('User Banner'),
 		);
 		interaction.reply({ embeds: [embed], components: [row] });
-		} catch {
+		} catch (e){
+			console.log(e)
 			return interaction.reply('This user does not have a banner')
 		}
 		

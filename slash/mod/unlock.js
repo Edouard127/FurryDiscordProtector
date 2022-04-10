@@ -1,4 +1,5 @@
 const getDataK8s = require('../../utils/getDataK8s.js')
+const { PermissionFlagsBits } = require('discord.js')
 
 
 module.exports = {
@@ -29,16 +30,17 @@ module.exports = {
 	timeout: 3000,
 	category: 'mod',
 	run: async (interaction) => {
+		if(await new getDataK8s(interaction).isAlive() === false) return await interaction.reply({ content: new getDataK8s(interaction).timeout() })
 		const ___ = await new getDataK8s(interaction).k8s()
 		const default_role = ___.data.spec.defaultrole || interaction.guildId
 		const channel = interaction.options.getChannel('channel') || interaction.channel;
 		const isUnlocked = channel.permissionOverwrites.cache
 			.find((r) => r.id === default_role)
-			.deny.has('SEND_MESSAGES');
+			.deny.has(PermissionFlagsBits.SendMessages);
 		if (!isUnlocked) {
 			return interaction.reply({ content: `**:x: #${channel.name} already unlocked.**` });
 		}
-		await channel.permissionOverwrites.edit(default_role, { SEND_MESSAGES: true });
+		await channel.permissionOverwrites.edit(default_role, { [PermissionFlagsBits.SendMessages]: null });
 		interaction.reply({ content: `**🔒 ${channel} has been unlocked.**` });
 	},
 };

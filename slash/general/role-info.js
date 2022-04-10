@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 const humanizeDuration = require('humanize-duration');
 
 module.exports = {
@@ -17,9 +17,9 @@ module.exports = {
 	run: async (interaction) => {
 		const role = interaction.options.getRole('role');
 		const distece = Date.now() - role.createdTimestamp;
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(role.hexColor)
-			.setFooter(interaction.guild.name, interaction.guild.iconURL({ dynamic: true }))
+			.setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL({ dynamic: true })})
 			.addFields(
 				{
 					name: 'Role Name:',
@@ -54,19 +54,19 @@ module.exports = {
 				},
 			);
 		if (role.icon) {
-			embed.addField('Role Icon:', `[Icon URL](${role.iconURL({ size: 4096, format: 'png' })})`);
+			embed.addFields({ name: 'Role Icon:', value: `[Icon URL](${role.iconURL({ size: 4096, format: 'png' })})`});
 			embed.setThumbnail(role.iconURL({ size: 4096, format: 'png' }));
-			embed.setAuthor(role.name, role.iconURL({ size: 4096, format: 'png' }));
+			embed.setAuthor({ name: role.name, iconURL: role.iconURL({ size: 4096, format: 'png' })});
 		}
-		const row = new MessageActionRow()
+		const row = new ActionRowBuilder()
 			.addComponents(
-				new MessageButton().setCustomId('perms').setLabel('Role Permission').setEmoji('🔑').setStyle('PRIMARY'),
+				new ButtonBuilder().setCustomId('perms').setLabel('Role Permission')/*.setEmoji('🔑')*/.setStyle('Primary'),
 			)
 			.addComponents(
-				new MessageButton()
+				new ButtonBuilder()
 					.setCustomId('members')
 					.setLabel('Members With This Role')
-					.setStyle('SECONDARY'),
+					.setStyle('Secondary'),
 			);
 		interaction.reply({ embeds: [embed], components: [row] });
 		const filter = (i) => i.customId === 'perms' || ('members' && i.user.id === interaction.user.id);

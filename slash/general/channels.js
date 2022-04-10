@@ -27,18 +27,21 @@ module.exports = {
 	],
 	category: 'general',
 	run: async (interaction) => {
-		const type = interaction.options.getString('type');
+		const type = interaction.options.get('type')?.value
+		console.log(type)
 		if (type === 'text') {
 			let num = 0;
 			let loop = '';
 			interaction.guild.channels.cache
 				.filter((r) => r.type === 'GUILD_TEXT')
 				.forEach((channel) => {
+					console.log(channel)
 					num++;
 					loop += `**#${num}** - ${channel.name}\nID: ${channel.id}\nRaw Position: ${channel.rawPosition}\nnsfw ?: ${channel.nsfw}\n\n\n`;
 				});
+				console.log(loop)
 				let file = new MessageAttachment(Buffer.from(loop, 'utf-8'), 'channels.txt')
-			return interaction.reply({
+			return await interaction.reply({
 				content: `**\`💬\` ${interaction.guild.name}** Text Channels :`, files: [file],
 			});
 		}
@@ -59,14 +62,16 @@ module.exports = {
 		if (type === 'category') {
 			let num = 0;
 			let loop = '';
-			interaction.guild.channels.cache
+			await interaction.guild.channels.cache
 				.filter((r) => r.type === 'GUILD_CATEGORY')
 				.forEach((channel) => {
+					console.log(channel)
 					num++;
 					loop += `**#${num}** - ${channel.name}\nID: ${channel.id}\nRaw Position: ${channel.rawPosition}\n\n\n`;
-				});
+					console.log(loop)
+				})
 			let file = new MessageAttachment(Buffer.from(loop, 'utf-8'), 'channels.txt')
-			interaction.reply({
+			return await interaction.reply({
 				content: `**\`📂\` ${interaction.guild.name}** Category Channels :`, files: [file]
 			});
 		}

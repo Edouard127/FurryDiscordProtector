@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
 	name: 'role',
@@ -86,23 +86,25 @@ module.exports = {
 	timeout: 3000,
 	category: 'mod',
 	run: async (interaction) => {
+		
 		const user = interaction.options.getMember('user'); // access to guild member obj <https://discord.js.org/#/docs/main/stable/class/GuildMember>
 		const role = interaction.options.getRole('role'); // access to role obj <https://discord.js.org/#/docs/main/stable/class/Role>
+		if(role.id == interaction.guildId) return await interaction.reply({ content: 'You can\'t give or remove everyone to everyone.' })
 		// User Sub Command
 		if (interaction.options.getSubcommand() === 'user') {
 			const botRole = interaction.guild.me.roles.highest.position;
 			const roleToGet = user.roles.highest.position;
 			const authorRole = interaction.member.roles.highest.position;
 			if (authorRole <= roleToGet) {
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setTitle(
 						"I can't role this member because that member has role position is higher than my role or same as you!",
 					)
-					.setColor('#ff0000');
+					.setColor('Random');
 				return interaction.reply({ embeds: [embed] });
 			}
 			if (botRole <= roleToGet) {
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setTitle(
 						"I can't role this member because that member has role position is higher than my role or same as you!",
 					)

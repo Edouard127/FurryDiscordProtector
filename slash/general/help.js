@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageSelectMenu, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonBuilder } = require('discord.js');
 const humanizeDuration = require('humanize-duration');
 
 module.exports = {
@@ -15,12 +15,12 @@ module.exports = {
 	category: 'general',
 	run: async (interaction, client) => {
 		console.log(interaction)
-		const mainMenu = new MessageActionRow()
+		const mainMenu = new ActionRowBuilder()
 			.addComponents(
-				new MessageButton()
+				new ButtonBuilder()
 					.setCustomId('help_menu_main')
 					.setLabel('Return to main menu')
-					.setStyle('PRIMARY'),
+					.setStyle('Primary'),
 			);
 		try {
 			const command = interaction.options.getString('command');
@@ -29,7 +29,7 @@ module.exports = {
 				if (!cmd) {
 					return interaction.reply({ content: `I can\'t find \`${command}\` command`, ephemeral: true });
 				}
-				const embed = new MessageEmbed().setColor(interaction.guild.me.displayHexColor);
+				const embed = new EmbedBuilder().setColor(interaction.guild.me.displayHexColor);
 				if (cmd.name) {
 					embed.setTitle(`Command: ${cmd.name}`);
 				}
@@ -37,20 +37,20 @@ module.exports = {
 					embed.setDescription(cmd.description);
 				}
 				if (cmd.usage) {
-					embed.addField('Usage:', cmd.usage);
+					embed.addFields({ name: 'Usage:', value: cmd.usage});
 				}
 				if (cmd.timeout) {
-					embed.addField('Timeout:', humanizeDuration(cmd.timeout, { round: true }));
+					embed.addFields({ name: 'Timeout:', value: humanizeDuration(cmd.timeout, { round: true })});
 				}
 				return interaction.reply({ embeds: [embed] });
 			}
-			const row = new MessageActionRow().addComponents(
-				new MessageSelectMenu()
+			const row = new ActionRowBuilder().addComponents(
+				new SelectMenuBuilder()
 					.setCustomId('help_menu')
 					.setPlaceholder('Select Command Category.')
 					.setMinValues(1)
 					.setMaxValues(1)
-					.addOptions([
+					.addOptions(
 						{
 							label: 'Fun',
 							description: 'Show all commands in fun category.',
@@ -59,24 +59,24 @@ module.exports = {
 						{
 							label: 'General',
 							description: 'Show all commands in general category.',
-							emoji: '🔎',
 							value: 'general',
+							//emoji: ':mag_right:',
 						},
 						{
 							label: 'Mod',
 							description: 'Show all commands in mod category.',
-							emoji: '🔨',
+							//emoji: ':hammer:',
 							value: 'mod',
 						},
-					]),
+					),
 			);
-			const row2 = new MessageActionRow().addComponents(
-				new MessageSelectMenu()
+			const row2 = new ActionRowBuilder().addComponents(
+				new SelectMenuBuilder()
 					.setCustomId('help_menu')
 					.setPlaceholder('Select Command Category.')
 					.setMinValues(1)
 					.setMaxValues(1)
-					.addOptions([
+					.addOptions(
 						{
 							label: 'Fun',
 							description: 'Show all commands in fun category.',
@@ -85,16 +85,16 @@ module.exports = {
 						{
 							label: 'General',
 							description: 'Show all commands in general category.',
-							emoji: '🔎',
+							//emoji: '🔎',
 							value: 'general',
 						},
 						{
 							label: 'Mod',
 							description: 'Show all commands in mod category.',
-							emoji: '🔨',
+							//emoji: '🔨',
 							value: 'mod',
 						},
-					]),
+					),
 			);
 			interaction.reply({ content: '**Select Category You Need Help For**', components: [row] });
 			const filter = (i) => i.customId === 'help_menu' || ('selected_command' && i.user.id === interaction.user.id) || 'help_menu_main';
@@ -109,7 +109,7 @@ module.exports = {
 					await i.deferUpdate();
 					interaction.editReply({ content: '**Select Category You Need Help For**', components: [row2] });
 				}
-				if (i.values.includes('fun')) {
+				if (i?.values?.includes('fun')) {
 					await i.deferUpdate();
 					const loopArray = [];
 					const funCommands = client.slash.filter((r) => r.category === 'fun');
@@ -130,14 +130,14 @@ module.exports = {
 							.setPlaceholder('Info Commands')
 							.setMinValues(1)
 							.setMaxValues(1)
-							.addOptions(loopArray),
+							.addOptions(...loopArray),
 					);
 					return i.editReply({
 						content: '**Select what command you need help for.**',
 						components: [commandRow, mainMenu],
 					});
 				}
-				if (i.values.includes('general')) {
+				if (i?.values?.includes('general')) {
 					await i.deferUpdate();
 					const loopGeneralCommands = [];
 					const generalCommands = client.slash.filter((r) => r.category === 'general');
@@ -149,23 +149,23 @@ module.exports = {
 							label: cmd.name,
 							value: cmd.name,
 							description: cmd.description,
-							emoji: '🔎',
+							//emoji: '🔎',
 						});
 					});
 					const commandRow = row.setComponents(
-						new MessageSelectMenu()
+						new SelectMenuBuilder()
 							.setCustomId('general_cmd')
 							.setPlaceholder('General Commands')
 							.setMinValues(1)
 							.setMaxValues(1)
-							.addOptions(loopGeneralCommands),
+							.addOptions(...loopGeneralCommands),
 					);
 					return i.editReply({
 						content: '**🔎 Select what command you need help for.**',
 						components: [commandRow, mainMenu],
 					});
 				}
-				if (i.values.includes('mod')) {
+				if (i?.values?.includes('mod')) {
 					await i.deferUpdate();
 					const loopModCommands = [];
 					const modCommands = client.slash.filter((r) => r.category === 'mod');
@@ -177,16 +177,16 @@ module.exports = {
 							label: cmd.name,
 							value: cmd.name,
 							description: cmd.description,
-							emoji: '🔨',
+							///emoji: '🔨',
 						});
 					});
 					const commandRow = row.setComponents(
-						new MessageSelectMenu()
+						new SelectMenuBuilder()
 							.setCustomId('mod_cmd')
 							.setPlaceholder('Mod Commands')
 							.setMinValues(1)
 							.setMaxValues(1)
-							.addOptions(loopModCommands),
+							.addOptions(...loopModCommands),
 					);
 					return i.editReply({
 						content: '**🔨 Select what command you need help for.**',
@@ -194,7 +194,8 @@ module.exports = {
 					});
 				}
 			});
-		} catch {
+		} catch (e){
+			console.log(e)
 			return false;
 		}
 	},

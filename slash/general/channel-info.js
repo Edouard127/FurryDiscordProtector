@@ -1,4 +1,4 @@
-const { Discord, MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { Discord, EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
 module.exports = {
 	name: 'channel-info',
@@ -18,21 +18,23 @@ module.exports = {
 	 */
 	run: async (interaction) => {
 		const channel = interaction.options.getChannel('channel');
-		const embed = new MessageEmbed().setTitle(`${channel.name} Info`);
+		const embed = new EmbedBuilder().setTitle(`${channel.name} Info`);
 		if (channel.isText && channel.topic) {
 			embed.setDescription(channel.topic);
 		}
 		if (channel.rateLimitPerUser) {
-			embed.addField('Slow Mode:', `${channel.rateLimitPerUser} Seconds`, true);
+			embed.addField({ name: 'Slow Mode:', value: `${channel.rateLimitPerUser} Seconds` });
 		}
 		if (channel.parent) {
-			embed.addField('Catgory Name:', channel.parent.name);
+			embed.addFields({ name: 'Catgory Name:', value: channel.parent.name });
 		}
 		if (channel.lastPinTimestamp) {
-			embed.addField('Last Pin Message At:', `<t:${Math.floor(channel.lastPinTimestamp / 1000)}:R>`, true);
+			embed.addFields(
+				{ name: 'Last Pin Message At:', value: `<t:${Math.floor(channel.lastPinTimestamp / 1000)}:R>`}
+			)
 		}
 		if (channel.nsfw) {
-			embed.addField('Channel NSFW?', 'Yes', true);
+			embed.addFields({ name: 'Channel NSFW?', value: 'Yes' });
 		}
 		let channelTypes;
 		switch (channel.type) {
@@ -64,16 +66,16 @@ module.exports = {
 				channelTypes = 'Stage Channel';
 				break;
 		}
-		embed.addField('Channel Type:', channelTypes, true);
-		embed.addField('Channel Created At:', `<t:${Math.floor(channel.createdTimestamp / 1000)}:R>`, true);
+		embed.addFields({ name: 'Channel Type:', value: 'to fix', inline: true })
+		embed.addFields({ name: 'Channel Created At:', value: `<t:${Math.floor(channel.createdTimestamp / 1000)}:R>`, inline: true });
 		embed.setColor(interaction.guild.me.displayHexColor);
-		embed.setFooter(channel.id);
-		const row = new MessageActionRow().addComponents(
-			new MessageButton()
+		
+		const row = new ActionRowBuilder().addComponents(
+			new ButtonBuilder()
 				.setCustomId('members')
-				.setStyle('PRIMARY')
+				.setStyle('Primary')
 				.setLabel('Members With Access To Channel')
-				.setEmoji('👩‍👧‍👦'),
+				.setEmoji({ name:'👩‍👧‍👦' }),
 		);
 		interaction.reply({
 			embeds: [embed],

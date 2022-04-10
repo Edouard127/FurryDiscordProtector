@@ -8,7 +8,7 @@ const client = new Client({ intents: [
 	"CHANNEL",
 	"GUILD_MEMBER"
 ]});
-const { SpotifyPlugin } = require('@distube/spotify')
+/*const { SpotifyPlugin } = require('@distube/spotify')
 const { SoundCloudPlugin } = require('@distube/soundcloud')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 const { DisTube } = require('distube')
@@ -24,8 +24,7 @@ client.distube = new DisTube(client, {
 	  new SoundCloudPlugin(),
 	  new YtDlpPlugin()
 	],
-	youtubeDL: false
-  })
+  })*/
 client.commands = new Collection();
 client.slash = new Collection();
 client.aliases = new Collection();
@@ -45,13 +44,13 @@ let p = 0;
 })
 
 
-  
-  process.on('uncaughtException', (reason, p) => {http://192.168.0.66:6379
+process.on('uncaughtException', (reason, p) => {
 	console.log(`Uncaught Exception: ${reason}\nAt: ${(p)}`);
   });
   process.on('unhandledRejection', (reason, p) => {
     console.log(`Unhandled promise rejection: ${reason}\nAt: ${p}`);
   });
+
 
   //client.on('debug', console.log);
   
