@@ -1,4 +1,4 @@
-const GetKubernetesHealth = require('../../utils/k8sStatus.js')
+const insertDataRedis = require('../../utils/insertDataRedis')
 
 const createEmbed = require('../../utils/createEmbed.js')
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
 		const msg = await interaction.fetchReply();
 		let ws = msg.createdTimestamp - interaction.createdTimestamp
 		let api = Math.round(client.ws.ping)
-		let ping = createEmbed('$0099ff', `${language('_ping_answer')}`, `${language('_ping_response', ws, api, (await GetKubernetesHealth()).data)}`)
+		let ping = createEmbed('$0099ff', `${language('_ping_answer')}`, `${language('_ping_response', ws, api, (await new insertDataRedis().health()))}`)
 		interaction.editReply({ embeds: [ping], content: `<@${interaction.user.id}>` });
 	},
 };

@@ -1,13 +1,8 @@
-const getDataK8s = require('../../utils/getDataK8s.js')
-const insertDataK8s = require('../../utils/insertDataK8s.js')
-const { createClient } = require('redis');
-//const createEmbed = require('../../utils/createEmbed.js')
 const axios = require('axios').default
 
-const client = createClient({ url: `redis://default:${process.env.REDIS_MASTER_PASSWORD}@192.168.0.66:6379` });
-client.on('error', (err) => { console.log('Redis Client Error', err); client.disconnect()});
+const _ = require('../../utils/insertDataRedis')
+const { insert, get, health, timeout } = new _()
 const unallowed = ["clyde", "system", "support", "discord", "hypesquad", "kamigen", "furry protector"]
-
 
 
 module.exports = {
@@ -145,9 +140,8 @@ module.exports = {
 
     ],
     run: async (interaction, bot) => {
-        if(await new getDataK8s(interaction).isAlive() === false) return await interaction.reply({ content: await new getDataK8s(interaction).timeout() })
+        if(typeof await health === "object") return await interaction.reply({ content: timeout() })
         
-        client.connect();
         
         const args = interaction.options.getSubcommand()
         const name = interaction.options.get('name')?.value || 'default'
@@ -182,7 +176,7 @@ module.exports = {
                 },
 
             }
-            let oldData = new Map(Object.entries(JSON.parse(await client.get(interaction.user.id) || '{}')))
+            let oldData = new Map(Object.entries(JSON.parse(await get(interaction.user.id) || '{}')))
             console.log(oldData)
             let toCheck = new Map(Object.entries(config))
             var i = 0
@@ -201,24 +195,24 @@ module.exports = {
             }
             try {
                 try {
-                    var _ = Object.assign(JSON.parse(await client.get(interaction.user.id) || '{}'), config)
+                    var _ = Object.assign(JSON.parse(await get(interaction.user.id) || '{}'), config)
                 } catch {
                     return await interaction.reply({ content: 'You have 0 proxy', ephemeral: true })
                 }
-                await client.set(interaction.user.id, JSON.stringify(_))
+                await insert(interaction.user.id, JSON.stringify(_))
             } catch (e) {
                 return await interaction.reply({ content: `Unexpected error: ${e}`, ephemeral: true })
             }
-            try {
+            /*try {
                 await client.disconnect();
             } catch (e) {
                 return await interaction.reply({ content: `Error while disconnecting\nThe error has been handled by the bot\nThe actions before the errors are successfully registered`, ephemeral: true })
-            }
+            }*/
             return await interaction.reply('ok')
         }
         if (args == 'list') {
             var __ = []
-            var data = new Map(Object.entries(JSON.parse(await client.get(interaction.user.id) || '{}')))
+            var data = new Map(Object.entries(JSON.parse(await get(interaction.user.id) || '{}')))
             console.log(data.size)
             if(data.size <= 0) return await interaction.reply({ content: 'You have 0 proxy', ephemeral: true })
             for (i of data) {
@@ -231,7 +225,7 @@ module.exports = {
             //console.log(interaction.channel)
             const content = interaction.options.get('content')?.value
             async function proxy_avatar() {
-                let _ = new Map(Object.entries(JSON.parse(await client.get(interaction.user.id))))
+                let _ = new Map(Object.entries(JSON.parse(await get(interaction.user.id))))
                 for (key of _) {
                     
                     let re = new RegExp('^'+name+'$', "gm");
@@ -286,7 +280,7 @@ module.exports = {
                 } catch (e){
                     return await interaction.reply({ content: 'Could not find an image', ephemeral: true})
                 }            
-            let oldData = new Map(Object.entries(JSON.parse(await client.get(interaction.user.id))))
+            let oldData = new Map(Object.entries(JSON.parse(await get(interaction.user.id))))
             if(oldData.has(name) == false) { 
                 return await interaction.reply({ content: `Proxy \`${name}\`not found`, ephemeral: true})
             }
@@ -304,12 +298,12 @@ module.exports = {
             }
             _ = Object.fromEntries(_)
             console.log(_)
-            await client.set(interaction.user.id, JSON.stringify(_))
-            try {
+            await insert(interaction.user.id, JSON.stringify(_))
+            /*try {
                 await client.disconnect();
             } catch (e) {
                 return await interaction.reply({ content: `Error while disconnecting\nThe error has been handled by the bot\nThe actions before the errors are successfully registered`, ephemeral: true })
-            }
+            }*/
             return await interaction.reply({ content: '✅ Success', ephemeral: true })
         }
         if(args == 'tupperbox'){
@@ -327,29 +321,29 @@ module.exports = {
                 _o.push(key[0])
             })
             delete old
-            __ = Object.assign(__, JSON.parse(await client.get(interaction.user.id)))
-            await client.set(interaction.user.id, JSON.stringify(__))
+            __ = Object.assign(__, JSON.parse(await get(interaction.user.id)))
+            await insert(interaction.user.id, JSON.stringify(__))
             
-            try {
+            /*try {
                 await client.disconnect();
                 return await interaction.reply({ content: `Successfully added:\n\`${_o.join('\n')}\``})
             } catch (e) {
                 return await interaction.reply({ content: `Error while disconnecting\nThe error has been handled by the bot\nThe actions before the errors are successfully registered`, ephemeral: true })
-            }
+            }*/
             
         }
         if(args == 'plurialkit'){
             //const _ = await axios.get(`https://api.pluralkit.me/v2/systems/${interaction.user.id}`)
             //console.log(_)
-            try {
+            /*try {
                 await client.disconnect();
             } catch (e) {
                 return await interaction.reply({ content: `Error while disconnecting\nThe error has been handled by the bot\nThe actions before the errors are successfully registered`, ephemeral: true })
-            }
+            }*/
             return await interaction.reply({ content: `Their shit so hard to use I can't even find how to get the user data 😭😭`, ephemeral: true })
         }
         if(args == 'remove'){
-            var data = JSON.parse(await client.get(interaction.user.id))
+            var data = JSON.parse(await get(interaction.user.id))
             let re = new RegExp('^'+name+'$', "gm");
             let _ = {}
             new Map(Object.entries(data)).forEach(function(value, index) {
@@ -358,34 +352,34 @@ module.exports = {
                 }
             
             })
-            try {
+            /*try {
                 await client.disconnect();
             } catch (e) {
                 return await interaction.reply({ content: `Error while disconnecting\nThe error has been handled by the bot\nThe actions before the errors are successfully registered`, ephemeral: true })
-            }
-            await client.set(interaction.user.id, JSON.stringify(data))
+            }*/
+            await insert(interaction.user.id, JSON.stringify(data))
             return await interaction.reply({ content: '✅ Success', ephemeral: true })
 
         }
         if(args == 'toggle'){
-            let oldData = new Map(Object.entries(JSON.parse(await client.get(interaction.user.id))))
+            let oldData = new Map(Object.entries(JSON.parse(await get(interaction.user.id))))
             if(oldData.has(name) == false) { 
                 return await interaction.reply({ content: `Proxy \`${name}\`not found`, ephemeral: true})
             }
             try {
-                var _______ = Object.entries((JSON.parse(await client.get(`toggled_${interaction.user.id}`))))[0][1];
+                var _______ = Object.entries((JSON.parse(await get(`toggled_${interaction.user.id}`))))[0][1];
             } catch (e) {
                 console.log(e)
             }
                 _______ = _______ === false ? true : false
                 
-            await client.set(`toggled_${interaction.user.id}`, JSON.stringify({[name]: _______ }))
+            await insert(`toggled_${interaction.user.id}`, JSON.stringify({[name]: _______ }))
             
-            try {
+            /*try {
                 await client.disconnect();
             } catch (e) {
                 return await interaction.reply({ content: `Error while disconnecting\nThe error has been handled by the bot\nThe actions before the errors are successfully registered`, ephemeral: true })
-            }
+            }*/
             if(_______ == true){
                 return await interaction.reply({ content: `Successfully enabled`, ephemeral: true})
             }

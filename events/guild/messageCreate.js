@@ -10,15 +10,18 @@ const profanityImage = require('../../utils/profanityImage.js');
 const profanityText = require('../../utils/profanityText.js');
 const getDataK8s = require('../../utils/getDataK8s.js');
 const { createClient } = require('redis');
+const aa = require('../../utils/insertDataRedis')
 
-const client_r = createClient({ url: `redis://default:${process.env.REDIS_MASTER_PASSWORD}@192.168.0.66:6379` });
+
+const client_r = createClient({ url: `redis://default:${process.env.REDIS_MASTER_PASSWORD}@172.20.183.36:6379` });
 try {
     client_r.connect()
 } catch {}
 
 
 module.exports = async (client , message) => {
-
+    var aaa = await new aa().health()
+    console.log(aaa)
     //client_r.connect()
     //console.log(message.author.id)
     if (message.author.bot) return;

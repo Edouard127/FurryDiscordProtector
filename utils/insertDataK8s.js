@@ -39,7 +39,9 @@ class InsertKubernetes {
         default_c.spec = newObj
         default_c.metadata.name = this.message.guildId
         //console.log(default_c.spec)
+        try {
         client.client.apis["stable.storage.com"].v1.ns("config").kamiplurial(this.message.guildId).patch({ body: { spec: default_c.spec } })
+        } catch {}
         let after = new Date().getTime()
         let lapse = after - before
         

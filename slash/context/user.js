@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const humanizeDuration = require('humanize-duration');
 
 module.exports = {
@@ -8,10 +8,10 @@ module.exports = {
 		const message = interaction.options.getMessage('message');
 		const userCreated = Date.now() - message.author.createdTimestamp;
 		const joinedTime = Date.now() - message.member.joinedTimestamp;
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
 			.setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-			.setColor('RANDOM')
+			.setColor('Random')
 			.addFields(
 				{
 					name: 'User Created At:',

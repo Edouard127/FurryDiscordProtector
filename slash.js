@@ -20,13 +20,11 @@ module.exports = async(client) => {
 		console.log('[Discord API] Started refreshing application (/) commands.'.yellow);
 		client.guilds.cache.forEach(async (guild) => {
 			try {
-			await rest.put(
-				// if you want to make your slash commands in all guilds use "applicationCommands("CLIENT_ID")"
-				Routes.applicationGuildCommands(process.env.BOT_ID, guild.id),
+			await rest.put(Routes.applicationGuildCommands(process.env.BOT_ID, guild.id),
 				{ body: commands },
 			);   
 			} catch (e){
-				console.log(e)
+				if(e.status != 403) console.log(e)
 			}
 			
 })

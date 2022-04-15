@@ -2,8 +2,32 @@ const Timeout = new Set()
 const { EmbedBuilder } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
 const config = require('../../config.json');
+const createEmbed = require('../../utils/createEmbed.js')
+const insertDataK8s = require('../../utils/insertDataK8s.js');
 
 module.exports = async(client, interaction) => {
+	/*const guildLanguages = require('../../utils/languages/config/languages.json')
+	const guildLanguage = guildLanguages[interaction.guildID] || "en"; // "english" will be the default language
+	const language = require(`../../utils/languages/${guildLanguage}.js`);
+	if(interaction.isModalSubmit()){
+		let response = parseInt(interaction.fields.getTextInputValue('config_raid_tres'))
+		console.log(response)
+		if(response < 1 || response > 20){
+			return await interaction.reply({ content: 'Please enter an input in the range of 1 to 20' })
+		}
+		let data = {
+			raidmode: interaction.fields.getTextInputValue('config_raid_tresh')
+		}
+                let __ = await new insertDataK8s(interaction, data).k8s()
+                            var config = createEmbed('#0099ff',
+                                `${language("_config_raid_raidmode")}`,
+                                `${language("_config_success", __.lapse)}`)
+			try {
+			return await interaction.reply({ embeds: [config] })
+			} catch {
+				return await interaction.reply({ content: 'Uh oh, unexpected error happened' })
+			}
+	}*/
     if (interaction.isCommand() || interaction.isContextMenuCommand()) {
 		if (!client.slash.has(interaction.commandName)) return;
 		if (!interaction.guild) return;
