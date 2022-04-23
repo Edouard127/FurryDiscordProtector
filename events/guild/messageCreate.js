@@ -14,14 +14,12 @@ const aa = require('../../utils/insertDataRedis')
 
 
 const client_r = createClient({ url: `redis://default:${process.env.REDIS_MASTER_PASSWORD}@172.20.183.36:6379` });
-try {
     client_r.connect()
-} catch {}
 
-
+var aaa = new aa().health()
+console.log(aaa)
 module.exports = async (client , message) => {
-    var aaa = await new aa().health()
-    console.log(aaa)
+
     //client_r.connect()
     //console.log(message.author.id)
     if (message.author.bot) return;

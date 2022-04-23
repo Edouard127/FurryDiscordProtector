@@ -16,6 +16,7 @@ class InsertKubernetes {
         this.reply = message.reply.bind(message)
     }
     async k8s() {
+        let data = this.data
         //console.log(((this.message.guildId).replace(/\["']/g, '')))
         await client.client.loadSpec()
         
@@ -45,8 +46,10 @@ class InsertKubernetes {
         let after = new Date().getTime()
         let lapse = after - before
         
-
-        return { success: true, lapse: lapse, oldConfig: this.data, newData: newObj }
+        delete this.message
+        delete this.data
+        delete this.reply
+        return { success: true, lapse: lapse, oldConfig: data, newData: newObj }
     }
 }
 module.exports = InsertKubernetes
