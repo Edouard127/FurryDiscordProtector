@@ -47,8 +47,14 @@ module.exports = {
 			await sleep(3000)
 			interaction.deleteReply()
 		}
-		if (role) {
+		else if (role) {
 			fetchedMessage.filter((r) => r.member.roles.cache.has(role.id)).forEach((msg) => msg.delete());
+			interaction.reply({ content: `✅ Successfully deleted ${fetchedMessage.size} messages` })
+			await sleep(3000)
+			interaction.deleteReply()
+		}
+		else {
+			fetchedMessage.forEach((msg) =>  msg.delete());
 			interaction.reply({ content: `✅ Successfully deleted ${fetchedMessage.size} messages` })
 			await sleep(3000)
 			interaction.deleteReply()
