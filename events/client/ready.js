@@ -6,7 +6,7 @@ module.exports = async (client) => {
     //client.user.setStatus('dnd')
     client.user.setStatus('idle')
 	//client.user.setActivity(`${client.guilds.cache.size} servers to protect`, { type: 3 });
-    client.user.setActivity(`⚠️MAINTENANCE⚠️`, { type: 3 });
+    client.user.setActivity(`⚠️Being worked on...`, { type: 3 });
     console.log(`[Discord API] Logged in as ${client.user.tag}`.magenta);
     slash(client);
     setInterval(() => {

@@ -145,12 +145,17 @@ module.exports = {
                 }
             ]
         },
+        {
+            name: "clear",
+            description: 'Clear the configuration',
+            type: 1
+        }
 
 	],
 	timeout: 3000,
 	category: 'mod',
 	run: async (interaction) => {
-        console.log(interaction.options)
+        const subCommand = interaction.options.getSubcommand()
         const channel = interaction.options.get('channel')
         const events = interaction.options.get('events')
         const profanity = interaction.options.get('profanity')
@@ -166,23 +171,27 @@ module.exports = {
         const language = require(`../../utils/languages/${guildLanguage}.js`);
         if(typeof await health === "object") return await interaction.reply({ content: timeout() })
         switch (true) {
+            case (subCommand == "clear"): {
+                await insert(`server_${interaction.guildId}`, JSON.stringify({}), interaction)
+                return await interaction.reply({ content: "Successfully reseted" })
+            }
             case (switch_raid !== null): {
                 let data = {
                     raidmode: switch_raid.value
                 }
-                let __ = await insert(`server_${interaction.user.id}`, JSON.stringify(data), interaction)
+                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
                 console.log(__)
                             var config = createEmbed('#0099ff',
                                 `${language("_config_raid_raidmode")}`,
                                 `${language("_config_success", __.lapse)}`)
-                            interaction.reply({ embeds: [config] })
+                interaction.reply({ embeds: [config] })
             }
                 break;
                 case (thresh_raid !== null): {
                     let data = {
                         threshold_raid: thresh_raid.value
                     }
-                    let __ = await insert(`server_${interaction.user.id}`, JSON.stringify(data), interaction)
+                    let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
                     console.log(__)
                                 var config = createEmbed('#0099ff',
                                     `${language("_config_raid_raidmode")}`,
@@ -195,7 +204,7 @@ module.exports = {
                             antispam: switch_antispam.value
                         }
 
-                        let __ = await insert(`server_${interaction.user.id}`, JSON.stringify(data), interaction)
+                        let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
                         console.log(__)
                                     var config = createEmbed('#0099ff',
                                         `${language("_config_raid_raidmode")}`,
@@ -207,7 +216,7 @@ module.exports = {
                             let data = {
                                 threshold_antispam: thresh_antispam.value
                             }
-                            let __ = await insert(`server_${interaction.user.id}`, JSON.stringify(data), interaction)
+                            let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
                             console.log(__)
                                         var config = createEmbed('#0099ff',
                                             `${language("_config_raid_raidmode")}`,
@@ -220,7 +229,7 @@ module.exports = {
                 let data = {
                     antispam: antispam.value
                 }
-                let __ = await insert(`server_${interaction.user.id}`, JSON.stringify(data), interaction)
+                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
                             let config = createEmbed('#0099ff',
                                 `${language('_config_nspam_config')}`,
                                 `${language('_config_success', __.lapse)}`)
@@ -232,7 +241,7 @@ module.exports = {
                     logs: logs.value
                 }
                 
-                let __ = await insert(`server_${interaction.user.id}`, JSON.stringify(data), interaction)
+                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
                         let log = logs.value
                         let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_success', log, __.lapse))
                         interaction.reply({ embeds: [config] })
@@ -244,7 +253,7 @@ module.exports = {
                     defaultrole: default_role.value || interaction.guildId
                 }
                 
-                let __ = await insert(`server_${interaction.user.id}`, JSON.stringify(data), interaction)
+                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
                 let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_success', log, __.lapse))
                         interaction.reply({ content: 'success' })
             }
@@ -253,7 +262,7 @@ module.exports = {
                     defaultrole: channel?.value
                 }
                 
-                let __ = await insert(`server_${interaction.user.id}`, JSON.stringify(data), interaction)
+                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
                 let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_success', log, __.lapse))
                         interaction.reply({ content: 'success' })
             }
@@ -262,7 +271,7 @@ module.exports = {
                     defaultrole: events?.value
                 }
                 
-                let __ = await insert(`server_${interaction.user.id}`, JSON.stringify(data), interaction)
+                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
                 let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_success', log, __.lapse))
                         interaction.reply({ content: 'success' })
             }
@@ -271,12 +280,12 @@ module.exports = {
                     defaultrole: channel?.value
                 }
                 
-                let __ = await insert(`server_${interaction.user.id}`, JSON.stringify(data), interaction)
+                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
                 let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_success', log, __.lapse))
                         interaction.reply({ content: 'success' })
             }
             default: {
-                let __ = await get(`server_${interaction.user.id}`)
+                let __ = await get(`server_${interaction.guildId}`, interaction)
                 let config = createEmbed('#0099ff',
                     `${language('_config_default')}`,
 

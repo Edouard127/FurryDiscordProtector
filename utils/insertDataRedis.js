@@ -11,15 +11,17 @@ class InsertRedis {
     
 
     async insert(id, data, interaction){
-        client.connect()
+        let before = new Date().getTime()
         if(typeof data === "undefined") return new Error(`Data must not be empty\nReceived: ${typeof data}`)
         if(typeof JSON.parse(data) !== "object") throw new Error(`Data must be an Object\nReceived: ${typeof data}`)
         let previous = await client.get(id)
-        if(typeof JSON.parse(previous) !== "object") {
-            let file = new MessageAttachment(Buffer.from(JSON.parse(previous), 'utf-8'), 'data.json')
-            return await interaction.reply({ content: 'Something went wrong while trying to insert the data.\nThis could be a corrupted configuration\nHere is the previous configuration\n', files: [file]})
+        console.log(typeof previous, data, JSON.stringify(previous))
+        if(typeof JSON.parse(previous) != "object") {
+            await client.set(id, JSON.stringify({}))
+            let file = new MessageAttachment(Buffer.from(previous, 'utf-8'), 'data.json')
+            return await interaction.reply({ content: 'Something went wrong while trying to insert the data.\nThis could be a corrupted configuration', files: [file]})
         }
-        data = Object.assign(JSON.parse(previous, data))
+        data = Object.assign(JSON.parse(previous), data)
         console.log(data)        
         await client.set(id, JSON.stringify(data)).then((response) => {
             console.log(response)
@@ -27,13 +29,21 @@ class InsertRedis {
             client.connect().catch()
             return new Error(`${err}`)
         })
-        return "ok"
+        let after = new Date().getTime()
+        let diff = after - before
+        return { success: true, lapse: diff }
     }
-    async get(id){
+    async get(id, interaction){
         const data = await client.get(id).catch((err) => {
             client.connect().catch()
             return new Error(`${err}`)
         })
+        
+        if(typeof JSON.parse(data) != "object"){
+            let file = new MessageAttachment(Buffer.from(JSON.parse(data), 'utf-8'), 'data.json')
+            await client.set(id, JSON.stringify({}))
+            return await interaction.reply({ content: 'Uh oh, something went wrong on our side.\nThis could be a corrupted configuration\nWe will restore the configuration to a valid state.', files: [file]})
+        } 
         return data
     }
     async health(){
