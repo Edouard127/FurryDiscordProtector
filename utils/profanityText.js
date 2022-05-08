@@ -1,7 +1,7 @@
-const db = require('quick.db')
 const createEmbed = require('./createEmbed.js')
 
-const _K8s = require('./getDataK8s.js');
+const _ = require('./k8sDB');
+const { get } = new _()
 
 var w = /(f*)(u*)[c*|k*] fur|d*(o|0)*g(f*)(u*)(c*)(k)(e|r)|d(e|ea)d fur|h(8|ate) fur|d(1|i)e fur/gmi
 
@@ -14,7 +14,7 @@ async function profanityText(message){
 
     var word = message.content
 if (word.match(w)) {
-    var __ = await new _K8s(message).k8s()
+    var __ = await get(message)
 
     //console.log(__.data.spec.logs)
             var ch_logs =  await message.guild.channels.cache.find(c => c.id === __.data.spec.logs) || 0

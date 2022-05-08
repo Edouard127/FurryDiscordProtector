@@ -1,7 +1,6 @@
 const db = require("quick.db");
 const createEmbed = require('../../utils/createEmbed.js')
-const insertDataK8s = require('../../utils/insertDataK8s')
-const getDataK8s = require('../../utils/getDataK8s')
+const insertDataK8s = require('../../utils/k8sDB')
 
 module.exports = {
     name: 'raidmode',

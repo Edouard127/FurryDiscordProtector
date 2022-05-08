@@ -1,14 +1,15 @@
 const config = require('../../config.json');
-const Discord = require('discord.js');
-const getDataK8s = require('../../utils/getDataK8s')
+const { EmbedBuilder } = require('discord.js');
+const _ = require('../../utils/k8sDB')
+const { get } = new _()
 
 module.exports = async(client, oldMessgae, newMessage) => {
     if(newMessage.author.bot) return;
-    var ch_logs = await newMessage.guild.channels.cache.find(c => c.id === (new getDataK8s(newMessage).k8s().then((data) => { return data.data.spec?.logs }))) || 0
+    var ch_logs = await newMessage.guild.channels.cache.find(c => c.id === get(newMessage).then((data) => { return data.data.spec?.logs })) || 0
     if(ch_logs === 0) return;
     if (!logChannel) return;
     if (oldMessgae.content !== newMessage.content) {
-        const embed = new Discord.MessageEmbed()
+        const embed = new EmbedBuilder
         .setAuthor({ name: newMessage.author.tag, iconURL: newMessage.author.displayAvatarURL({ dynamic: true }) })
         .setTimestamp()
         .setFooter({ text: newMessage.author.tag, iconURL: newMessage.author.displayAvatarURL({ dynamic: true }) })

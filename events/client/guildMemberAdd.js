@@ -1,13 +1,15 @@
 const db = require('quick.db')
 const createEmbed = require('../../utils/createEmbed.js')
-const getDataK8s = require('../../utils/getDataK8s.js')
+const _ = require('../../utils/k8sDB.js')
+const { get } = new _()
 let threshold = {}
 let c = {}
 let raidmode = {}
 let sus_members = []
 
 module.exports = async(client, member) => {
-    var __ = new getDataK8s(member).k8s()
+    member.guildId = member.guild.id
+    var __ = get(member)
     const guildLanguages = require('../../utils/languages/config/languages.json')
     const guildLanguage = guildLanguages[member.guild.id] || "en"; // "english" will be the default language
     const language = require(`../../utils/languages/${guildLanguage}.js`);

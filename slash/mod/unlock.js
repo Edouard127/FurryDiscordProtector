@@ -1,4 +1,5 @@
-const getDataK8s = require('../../utils/getDataK8s.js')
+const _ = require('../../utils/k8sDB')
+const { get, timeout, health } = new _()
 const { PermissionFlagsBits, PermissionsBitField } = require('discord.js')
 
 
@@ -30,9 +31,9 @@ module.exports = {
 	timeout: 3000,
 	category: 'mod',
 	run: async (interaction) => {
-		if(await new getDataK8s(interaction).isAlive() === false) return await interaction.reply({ content: new getDataK8s(interaction).timeout() })
+		if(await health === false) return await interaction.reply({ content: timeout() })
 		if(!interaction.guild.me.permissions.has(PermissionFlagsBits.ManageChannels)) return await interaction.reply('I don\'t have permissions to manage channels')
-		const ___ = await new getDataK8s(interaction).k8s()
+		const ___ = await get(interaction)
 		const default_role = ___.data.spec.defaultrole || interaction.guildId
 		const channel = interaction.options.getChannel('channel') || interaction.channel;
 		const isUnlocked = channel.permissionOverwrites.cache

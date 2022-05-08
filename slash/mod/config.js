@@ -3,9 +3,10 @@ const db = require("quick.db");
 const argsList = ['raidmode', 'antispam', 'logs']
 const createEmbed = require('../../utils/createEmbed.js')
 
-const isAlive = require('../../utils/k8sStatus.js')
-const _ = require('../../utils/insertDataRedis')
-const { insert, get, health, timeout } = new _()
+const removeDuplicates = require('../../utils/removeDuplicates.js')
+const subArrays = require('../../utils/subArrays.js')
+const _ = require('../../utils/k8sDB')
+const { insert, get, health, timeout, insertTo } = new _()
 module.exports = {
 	name: 'config',
 	description: 'Edit your server bot configuration',
@@ -149,151 +150,138 @@ module.exports = {
             name: "clear",
             description: 'Clear the configuration',
             type: 1
+        },
+        {
+            name: "summary",
+            description: 'Config summary',
+            type: 1
         }
 
 	],
 	timeout: 3000,
 	category: 'mod',
 	run: async (interaction) => {
-        const subCommand = interaction.options.getSubcommand()
-        const channel = interaction.options.get('channel')
-        const events = interaction.options.get('events')
-        const profanity = interaction.options.get('profanity')
-        const switch_raid = interaction.options.get('switch_raid')
-        const thresh_raid = interaction.options.get('threshold_raid')
-        const switch_antispam = interaction.options.get('switch_antispam')
-        const thresh_antispam = interaction.options.get('threshold_antispam')
-        const antispam = interaction.options.get('antispam')
-        const logs = interaction.options.get('logs')
-        const default_role = interaction.options.get('default')
         const guildLanguages = require('../../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[interaction.guildID] || "en"; // "english" will be the default language
         const language = require(`../../utils/languages/${guildLanguage}.js`);
         if(typeof await health === "object") return await interaction.reply({ content: timeout() })
-        switch (true) {
-            case (subCommand == "clear"): {
-                await insert(`server_${interaction.guildId}`, JSON.stringify({}), interaction)
-                return await interaction.reply({ content: "Successfully reseted" })
-            }
-            case (switch_raid !== null): {
-                let data = {
-                    raidmode: switch_raid.value
-                }
-                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
-                console.log(__)
-                            var config = createEmbed('#0099ff',
-                                `${language("_config_raid_raidmode")}`,
-                                `${language("_config_success", __.lapse)}`)
-                interaction.reply({ embeds: [config] })
-            }
-                break;
-                case (thresh_raid !== null): {
-                    let data = {
-                        threshold_raid: thresh_raid.value
-                    }
-                    let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
-                    console.log(__)
-                                var config = createEmbed('#0099ff',
-                                    `${language("_config_raid_raidmode")}`,
-                                    `${language("_config_success", __.lapse)}`)
-                                interaction.reply({ embeds: [config] })
-                }
-                    break;
-                    case (switch_antispam !== null): {
-                        let data = {
-                            antispam: switch_antispam.value
+        for(let index of interaction.options.data){
+            for(let option of index.options){
+            
+                switch (index.name){
+                    case "clear": {
+                        for(let option of index.options){
+                        await insert(interaction, JSON.stringify({}))
                         }
-
-                        let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
-                        console.log(__)
-                                    var config = createEmbed('#0099ff',
-                                        `${language("_config_raid_raidmode")}`,
-                                        `${language("_config_success", __.lapse)}`)
-                                    interaction.reply({ embeds: [config] })
+                        return await interaction.reply({ content: "Successfully reseted" })
                     }
-                        break;
-                        case (thresh_antispam !== null): {
-                            let data = {
-                                threshold_antispam: thresh_antispam.value
+                    case "logs": {
+
+                            switch(option.name){
+                                case "events": {
+                                    for(let option of index.options){
+                                            let ___ = await get(interaction).then(data => {
+                                                return data.data.spec?.events || []
+                                            })
+                                            ___ = ___.concat([option.value])
+                                            
+                                            await insert(interaction, JSON.stringify({ events: ___ }))
+                                        }
+                                        return interaction.reply("Ok")
+                                }
+                                case "channel": {
+                                    for(let option of index.options){
+                                    await insert(interaction, JSON.stringify({ logs: option.value }))
+                                    }
+                                    return interaction.reply("Ok")
+                                }
                             }
-                            let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
-                            console.log(__)
-                                        var config = createEmbed('#0099ff',
-                                            `${language("_config_raid_raidmode")}`,
-                                            `${language("_config_success", __.lapse)}`)
-                                        interaction.reply({ embeds: [config] })
+                    }
+                    case "raid": {
+                        switch(option.name){
+                            case "switch_raid": {
+                                for(let option of index.options){
+                                await insert(interaction, JSON.stringify({ raidmode: option.value }))
+                                }
+                                return interaction.reply("Ok")
+                            }
+                            case "threshold_raid": {
+                                for(let option of index.options){
+                                await insert(interaction, JSON.stringify({ raidCheck: option.value }))
+                                }
+                                return interaction.reply("Ok")
+                            }
                         }
-                            break;
-
-            case (antispam !== null && antispam !== undefined): {
-                let data = {
-                    antispam: antispam.value
-                }
-                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
-                            let config = createEmbed('#0099ff',
-                                `${language('_config_nspam_config')}`,
-                                `${language('_config_success', __.lapse)}`)
-                            interaction.reply({ embeds: [config] })       
-            }
-                break;
-            case (logs !== null && logs !== undefined): {
-                let data = {
-                    logs: logs.value
-                }
-                
-                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
-                        let log = logs.value
-                        let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_success', log, __.lapse))
+                    }
+                    case "antispam": {
+                        switch(option.name){
+                            case "switch_antispam": {
+                                for(let option of index.options){
+                                await insert(interaction, JSON.stringify({ antispam: option.value }))
+                                }
+                                return interaction.reply("Ok")
+                            }
+                            case "threshold_antispam": {
+                                for(let option of index.options){
+                                await insert(interaction, JSON.stringify({ spamCheck: option.value }))
+                                }
+                                return interaction.reply("Ok")
+                            }
+                        }
+                        
+                    }
+                    case "profanity": {
+                        switch(option.name){
+                            case "add": {
+                                for(let option of index.options){
+                                let ___ = await get(interaction).then(data => {
+                                    return data.data.spec?.profanityWords || []
+                                })
+                                ___ = ___.concat([option.value])
+                                await insert(interaction, JSON.stringify({ profanityWords: ___ }))
+                            }
+                                return interaction.reply("Ok")
+                            }
+                            case "remove": {
+                                for(let option of index.options){
+                                let ___ = await get(interaction).then(data => {
+                                    return data.data.spec?.profanityWords || []
+                                })
+                                ___ = subArrays(___, [option.value])
+                                await insert(interaction, JSON.stringify({ profanityWords: ___ }))
+                            }
+                                return interaction.reply("Ok")
+                            }
+                        }
+                    }
+                    case "default-role": {
+                        for(let option of index.options){
+                            await insert(interaction, JSON.stringify({ default: option.value }))
+                            return interaction.reply("Ok")
+                        }
+                    }
+                    case "summary": {
+                        let __ = await get(interaction)
+                        let config = createEmbed('#0099ff',
+                            `${language('_config_default')}`,
+        
+                            `${language('_config_raid_configuration', `\`\`\`${JSON.stringify(__.data.spec)}\`\`\``)}`)
+        
+                        return interaction.reply({ embeds: [config] })
+                    }
+                    default: {
+                        let __ = await get(interaction)
+                        let config = createEmbed('#0099ff',
+                            `${language('_config_default')}`,
+        
+                            `${language('_config_raid_configuration', `\`\`\`${JSON.stringify(__.data.spec)}\`\`\``)}`)
+        
                         interaction.reply({ embeds: [config] })
-                
-            }
-                break;
-            case(default_role !== null && default_role !== undefined): {
-                let data = {
-                    defaultrole: default_role.value || interaction.guildId
+                    }
                 }
-                
-                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
-                let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_success', log, __.lapse))
-                        interaction.reply({ content: 'success' })
-            }
-            case(channel !== null && channel !== undefined): {
-                let data = {
-                    defaultrole: channel?.value
-                }
-                
-                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
-                let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_success', log, __.lapse))
-                        interaction.reply({ content: 'success' })
-            }
-            case(events !== null && events !== undefined): {
-                let data = {
-                    defaultrole: events?.value
-                }
-                
-                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
-                let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_success', log, __.lapse))
-                        interaction.reply({ content: 'success' })
-            }
-            case(profanity !== null && profanity !== undefined): {
-                let data = {
-                    defaultrole: channel?.value
-                }
-                
-                let __ = await insert(`server_${interaction.guildId}`, JSON.stringify(data), interaction)
-                let config = createEmbed('#0099ff', language('_logs_logs'), language('_logs_success', log, __.lapse))
-                        interaction.reply({ content: 'success' })
-            }
-            default: {
-                let __ = await get(`server_${interaction.guildId}`, interaction)
-                let config = createEmbed('#0099ff',
-                    `${language('_config_default')}`,
-
-                    `${language('_config_raid_configuration', `\`\`\`${JSON.stringify(__)}\`\`\``)}`)
-
-                interaction.reply({ embeds: [config] })
-            }
         }
+    }
+        
     }
 }
 

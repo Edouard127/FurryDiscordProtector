@@ -1,6 +1,6 @@
 const createEmbed = require('../../utils/createEmbed.js')
-const getDataK8s = require('../../utils/getDataK8s.js')
-const insertDataK8s = require('../../utils/insertDataK8s.js')
+const _ = require('../../utils/k8sDB')
+const { insert } = new _()
 module.exports = {
 	name: 'antispam',
 	description: 'enable/disable antispam',
@@ -28,7 +28,7 @@ module.exports = {
         let data = {
             spamCheck: spam.value
         }
-        await new insertDataK8s(interaction, data).k8s().then((result) => {
+        await insert(interaction, data).then((result) => {
             let config = createEmbed('#0099ff', `${language('_spam_message')}`, `${language('_spam_success', spam.value, result.lapse)}`)
             interaction.reply({ embeds: [config] })
         })

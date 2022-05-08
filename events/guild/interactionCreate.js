@@ -3,7 +3,8 @@ const { EmbedBuilder } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
 const config = require('../../config.json');
 const createEmbed = require('../../utils/createEmbed.js')
-const insertDataK8s = require('../../utils/insertDataK8s.js');
+const _ = require('../../utils/k8sDB');
+const { insert } = new _()
 
 module.exports = async(client, interaction) => {
 	/*const guildLanguages = require('../../utils/languages/config/languages.json')

@@ -2,8 +2,8 @@ const createEmbed = require('../../utils/createEmbed.js')
 const argsList = ['interact', 'threshold', 'exclude']
 const removeDuplicates = require('../../utils/removeDuplicates.js')
 const subArrays = require('../../utils/subArrays.js')
-const getDataK8s = require('../../utils/getDataK8s.js')
-const insertDataK8s = require('../../utils/insertDataK8s.js')
+const _ = require('../../utils/k8sDB')
+const { insert, get, health, timeout } = new _()
 const base64 = require('../../utils/base64.js')
 
 
@@ -51,7 +51,7 @@ module.exports = {
     const threshold = interaction.options.get('threshold')
     const excludes = interaction.options.get('exclude')
     const includes = interaction.options.get('include')
-    if(await new getDataK8s(interaction).isAlive() === false) return interaction.reply({ content: new getDataK8s(interaction).timeout(), ephemeral: true })
+    if(await health === false) return interaction.reply({ content: timeout(), ephemeral: true })
 
     const { MessageMentions: { CHANNELS_PATTERN } } = require('discord.js');
     const guildLanguages = require('../../utils/languages/config/languages.json')
@@ -62,7 +62,7 @@ module.exports = {
             let data = {
                 nsfwCheck: interact.value
             }
-        await new insertDataK8s(interaction, data).k8s().then((result) => {
+        await insert(interaction, JSON.stringify(data)).then((result) => {
             let config = createEmbed('#0099ff', `${language('_nsfw_config')}`, `${language('_nsfw_success', interact.value, result.lapse)}`)
             interaction.reply({ embeds: [config] })
         })  
@@ -73,7 +73,7 @@ module.exports = {
                 let data = {
                     nsfwThreshold: threshold_
                 }
-                let a = await new insertDataK8s(interaction, data).k8s()
+                let a = await insert(interaction, JSON.stringify(data))
                 let config = createEmbed('#0099ff', `${language('_nsfw_config')}`, `${language('_nsfw_success_threshold', threshold_, a.lapse)}`)
                 interaction.reply({ embeds: [config] })
                 
@@ -81,11 +81,11 @@ module.exports = {
         break;
 
         case (excludes !== null && excludes !== undefined): {
-            let ___ = removeDuplicates(await new getDataK8s(interaction).k8s().then((data) => { if(typeof data.data.spec?.excludes !== "undefined") { (data.data.spec.excludes).push(excludes.value); return data.data.spec.excludes } else { let a = []; a.push(excludes.value); return a } }))
+            let ___ = removeDuplicates(await get(interaction).then((data) => { if(typeof data.data.spec?.excludes !== "undefined") { (data.data.spec.excludes).push(excludes.value); return data.data.spec.excludes } else { let a = []; a.push(excludes.value); return a } }))
             let data = {
                 excludes: ___
             }
-            await new insertDataK8s(interaction, data).k8s().then(() => {
+            await insert(interaction, JSON.stringify(data)).then(() => {
                 interaction.reply('Success')
             }).catch(err => {
                 interaction.reply(`❌ || \`\`\`${err}\`\`\``)
@@ -94,12 +94,12 @@ module.exports = {
         }
         break;
         case (includes !== null && includes !== undefined): {
-            let ___ = subArrays(await removeDuplicates(await new getDataK8s(interaction).k8s().then(data => { if(typeof data.data.spec?.excludes !== "undefined"){ (data.data.spec.excludes).push(includes.value); return data.data.spec.excludes } else { return []} })), [includes.value])
+            let ___ = subArrays(await removeDuplicates(await get(interaction).then(data => { if(typeof data.data.spec?.excludes !== "undefined"){ (data.data.spec.excludes).push(includes.value); return data.data.spec.excludes } else { return []} })), [includes.value])
             if(typeof ___ === "undefined") { console.log(0); return }
             let data = {
                 excludes: ___
             }
-            await new insertDataK8s(interaction, data).k8s().then(() => {
+            await insert(interaction, JSON.stringify(data)).then(() => {
                 interaction.reply('Success')
             }).catch(err => {
                 console.log(_arr_)

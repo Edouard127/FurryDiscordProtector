@@ -27,14 +27,12 @@ class GetKubernetes {
         }
         let after = new Date().getTime()
         let lapse = after - before
-        delete this.message
         return { success: true, lapse: lapse, data: __.body }
 
 
 
     }
     async isAlive(){
-        delete this.message
         const agent = new https.Agent({  
             rejectUnauthorized: false
           });
@@ -54,4 +52,3 @@ class GetKubernetes {
     }
 }
 module.exports = GetKubernetes
-

@@ -3,12 +3,13 @@ const axios = require('axios').default
 const _ = require('../../utils/insertDataRedis')
 const { insert, get, health, timeout } = new _()
 const unallowed = ["clyde", "system", "support", "discord", "hypesquad", "kamigen", "furry protector"]
+const { MessageAttachment } = require("discord.js")
 
 
 module.exports = {
 
     name: 'proxy',
-    description: 'WORK IN PROGRESS',
+    description: 'Role playing',
     options: [
         {
             name: 'register',
@@ -136,11 +137,16 @@ module.exports = {
                 },
             ]
         },
+        {
+            name: 'clear',
+            description: 'Clear proxy data',
+            type: 1
+        }
 
 
     ],
     run: async (interaction, bot) => {
-        if(typeof await health === "object") return await interaction.reply({ content: timeout() })
+        if(typeof await health === "object") return await interaction.reply({ content: timeout(), ephemeral: true })
         
         
         const args = interaction.options.getSubcommand()
@@ -368,6 +374,7 @@ module.exports = {
             }
             try {
                 var _______ = Object.entries((JSON.parse(await get(`toggled_${interaction.user.id}`))))[0][1];
+                console.log(_______)
             } catch (e) {
                 console.log(e)
             }
@@ -387,6 +394,10 @@ module.exports = {
                 return await interaction.reply({ content: `Successfully disabled`, ephemeral: true})
             }
             
+        }
+        if(args == "clear"){
+            let _ = new MessageAttachment(Buffer.from(JSON.parse(await get(interaction.user.id)), 'utf-8'), 'data.json')
+            interaction.user.send("a")
         }
 
 

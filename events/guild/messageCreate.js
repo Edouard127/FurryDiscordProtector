@@ -8,7 +8,8 @@ const spam_ = require("../../utils/antispam.js")
 const isNsfwQ = require('../../utils/nsfwdetector.js')
 const profanityImage = require('../../utils/profanityImage.js');
 const profanityText = require('../../utils/profanityText.js');
-const getDataK8s = require('../../utils/getDataK8s.js');
+const _ = require('../../utils/k8sDB');
+const { get } = new _()
 const { createClient } = require('redis');
 const aa = require('../../utils/insertDataRedis')
 
@@ -92,7 +93,7 @@ module.exports = async (client , message) => {
     }
 }
 
-    var __ = await new getDataK8s(message).k8s()
+    var __ = await get(message)
     var check = __.data.spec
     if (!message.author.bot && message.channel.type !== "dm") {
         if (!message.channel.nsfw) {

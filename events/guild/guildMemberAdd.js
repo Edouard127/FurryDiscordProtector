@@ -1,7 +1,6 @@
-const db = require('quick.db')
 const createEmbed = require('../../utils/createEmbed.js')
-const getDataK8s = require('../../utils/getDataK8s')
-const insertDataK8s = require('../../utils/insertDataK8s')
+const _ = require('../../utils/k8sDB.js')
+const { insert, get } = new _()
 let threshold = {}
 let c = {}
 let raidmode = {}
@@ -12,14 +11,14 @@ let sus_members = []
         const guildLanguages = require('../../utils/languages/config/languages.json')
         const guildLanguage = guildLanguages[member.guild.id] || "en"; // "english" will be the default language
         const language = require(`../../utils/languages/${guildLanguage}.js`);
-            var ch_logs = await member.guild.channels.cache.find(c => c.id === (new getDataK8s(member).k8s().then((data) => { return data.data.spec?.logs || 0}))) || 0
-            console.log(ch_logs)
+        member.guidId = member.guild.id
+            var ch_logs = await member.guild.channels.cache.find(c => c.id === (get(member).then((data) => { return data.data.spec?.logs || 0}))) || 0
             
             let config = createEmbed('#0099ff', `New member join`, `Username: ${member.displayName}\nID: ${member.id}\nAccount creation: ${member.user.createdAt}\n`)
             if(ch_logs != 0) ch_logs.send({ embeds: [config]})
-                raidmode[member.guild.id] = { "raid": await new getDataK8s(member).k8s().then((data) => { return data.data.spec?.isRaid || false}) }
+                raidmode[member.guild.id] = { "raid": await get(member).then((data) => { return data.data.spec?.isRaid || false}) }
 
-                threshold[member.guild.id] = (await new getDataK8s(member).k8s().then((data) => { return data.data.spec?.raidmode || 3}))
+                threshold[member.guild.id] = (await get(member).then((data) => { return data.data.spec?.raidmode || 3}))
             if (raidmode[member.guild.id].raid === false) {
                 let canClear = true
 
@@ -38,7 +37,7 @@ let sus_members = []
                     let data = {
                         isRaid: raidmode.value
                     }
-                    let _ = await new insertDataK8s(member, data).k8s()
+                    let _ = await insert(member, data)
 
                                     let config = createEmbed('#0099ff', `${language('_raid_'), `${language('_raid_message', (await member.guild.fetchOwner()).id)}`}`)
                                     if(ch_logs != 0) ch_logs.send({ embeds: [config] })
