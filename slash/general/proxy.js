@@ -3,7 +3,7 @@ const axios = require('axios').default
 const _ = require('../../utils/insertDataRedis')
 const { insert, get, health, timeout } = new _()
 const unallowed = ["clyde", "system", "support", "discord", "hypesquad", "kamigen", "furry protector"]
-const { MessageAttachment } = require("discord.js")
+const { MessageAttachment, ActionRowBuilder, ButtonBuilder } = require("discord.js")
 
 
 module.exports = {
@@ -141,6 +141,26 @@ module.exports = {
             name: 'clear',
             description: 'Clear proxy data',
             type: 1
+        },
+        {
+            name: 'import',
+            description: 'Import proxy user data from this bot',
+            type: 1,
+            options: [
+                /*{
+                    name: 'json_file',
+                    description: 'Import proxy user data from tupperbox file',
+                    type: 11,
+                    require: false,
+                    
+                },*/
+                {
+                    name: 'json_link',
+                    description: 'Import proxy user data from JSON file url',
+                    type: 3,
+                    required: true,
+                },
+            ]
         }
 
 
@@ -219,7 +239,6 @@ module.exports = {
         if (args == 'list') {
             var __ = []
             var data = new Map(Object.entries(JSON.parse(await get(interaction.user.id) || '{}')))
-            console.log(data.size)
             if(data.size <= 0) return await interaction.reply({ content: 'You have 0 proxy', ephemeral: true })
             for (i of data) {
                 __.push(i[0])
@@ -338,6 +357,25 @@ module.exports = {
             }*/
             
         }
+        if(args == 'import'){
+            let __ = {}
+            const json_link = interaction.options.get('json_link')?.value || 'no'
+            
+            let match = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&amp;=]*)/gm
+            if(json_link.match(match) == false) return await interaction.reply({ content: 'Invalid URL', ephemeral: true})
+            let _ = await axios.get(json_link).then((response) => { return response.data })
+            _ = Object.entries(_).forEach((value) => {
+                __[value[0]] = value[1]
+            })
+            let _o = []
+            let old = Object.entries(__).forEach(key => {
+                _o.push(key[0])
+            })
+            delete old
+            __ = Object.assign(__, JSON.parse(await get(interaction.user.id)))
+            await insert(interaction.user.id, JSON.stringify(__))
+            return await interaction.reply({ content: `Successfully added ${Object.entries(__).length} proxy(ies)}`})
+        }
         if(args == 'plurialkit'){
             //const _ = await axios.get(`https://api.pluralkit.me/v2/systems/${interaction.user.id}`)
             //console.log(_)
@@ -374,6 +412,7 @@ module.exports = {
             }
             try {
                 var _______ = Object.entries((JSON.parse(await get(`toggled_${interaction.user.id}`))))[0][1];
+                if(_______ == null) _______ = true
                 console.log(_______)
             } catch (e) {
                 console.log(e)
@@ -396,8 +435,39 @@ module.exports = {
             
         }
         if(args == "clear"){
-            let _ = new MessageAttachment(Buffer.from(JSON.parse(await get(interaction.user.id)), 'utf-8'), 'data.json')
-            interaction.user.send("a")
+            let _ = new MessageAttachment(Buffer.from(await get(interaction.user.id), 'utf-8'), 'data.json')
+            let __ = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
+                    .setCustomId('confirm')
+                    .setStyle('Primary')
+                    .setLabel('confirm')
+                    .setEmoji({ name:'✅' }),
+            );
+            let ____ = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
+                    .setCustomId('cancel')
+                    .setStyle('Primary')
+                    .setLabel('cancel')
+                    .setEmoji({ name:'❌' }),
+            );
+            await interaction.channel.send({ content: 'Are you sure you want to clear your data ?\nYou will be able to recover your data later.', components: [__, ____]})
+
+            const filter = (i) => ['confirm', 'cancel'].includes(i.customId) && i.user.id === interaction.user.id;
+            const collector = interaction.channel.createMessageComponentCollector({ filter: filter, max: 1 });
+            collector.on('collect', async (i) => {
+                if (i.customId === 'confirm') {
+                    await i.deferReply();
+                    await insert(`toggled_${interaction.user.id}`, JSON.stringify({}))
+                    await insert(interaction.user.id, JSON.stringify({}))
+                    i.editReply('Check your private messages ✅')
+                    i.user.send({ files: [_]})
+                }
+                else {
+                    await i.deferReply();
+                    i.editReply('Cancelled')
+                }
+            });
+            
         }
 
 

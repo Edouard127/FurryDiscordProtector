@@ -15,7 +15,7 @@ module.exports = async (client) => {
             client.shard.broadcastEval(client => [client.shard.ids, client.ws.status, client.ws.ping, client.guilds.cache.size])
                 .then((results) => {
 
-                    const embed = new EmbedBuilder()
+                    var embed = new EmbedBuilder()
                         .setTitle(`👨‍💻 Bot Shards (${client.shard.count})`)
                         .setColor('Random')
                         .setTimestamp();
@@ -30,6 +30,9 @@ module.exports = async (client) => {
 
 
                     message.edit({ content: '_ _', embeds: [embed] })
+                    message = null
+                    embed = null
+                    results = null
                 })
                 .catch((error) => {
                     console.error(error);

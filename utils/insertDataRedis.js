@@ -1,5 +1,5 @@
 const { createClient } = require('redis')
-const client = createClient({ url: `redis://default:${process.env.REDIS_MASTER_PASSWORD}@172.18.171.106:6379` })
+const client = createClient({ url: `redis://default:${process.env.REDIS_MASTER_PASSWORD}@172.31.214.125:6379` })
 const { MessageAttachment } = require('discord.js');
 client.connect()
 
@@ -13,7 +13,7 @@ class InsertRedis {
     async insert(id, data){
         if(typeof data === "undefined") return new Error(`Data must not be empty\nReceived: ${typeof data}`)
         if(typeof JSON.parse(data) !== "object") throw new Error(`Data must be an Object\nReceived: ${typeof data}`)
-        await client.set(`server_${id}`, data).catch((err, result) => {
+        await client.set(id, data).catch((err, result) => {
             if(err) return new Error(`${err}`)
         })
         return "ok"
