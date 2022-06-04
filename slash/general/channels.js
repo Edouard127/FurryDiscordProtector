@@ -1,5 +1,11 @@
 const { MessageAttachment } = require('discord.js');
 
+const channelType = {
+	GUILD_TEXT: 0,
+	GUILD_VOICE: 2,
+	GUILD_CATEGORY: 4
+}
+
 module.exports = {
 	name: 'channels',
 	description: 'Shows specific type of channels in this server.',
@@ -7,69 +13,33 @@ module.exports = {
 		{
 			name: 'type',
 			description: 'Type of channel to show.',
-			type: 3,
+			type: 4,
 			required: true,
 			choices: [
 				{
-					name: 'Text',
-					value: 'text',
+					name: 'GUILD_TEXT',
+					value: channelType.GUILD_TEXT
 				},
 				{
-					name: 'Voice',
-					value: 'voice',
+					name: 'GUILD_VOICE',
+					value: channelType.GUILD_VOICE
 				},
 				{
-					name: 'Category',
-					value: 'category',
+					name: 'GUILD_CATEGORY',
+					value: channelType.GUILD_CATEGORY
 				},
 			],
 		},
 	],
 	category: 'general',
 	run: async (interaction) => {
-		const type = interaction.options.get('type')?.value
-		console.log(type)
-		if (type === 'text') {
-			let num = 0;
-			let loop = '';
-			interaction.guild.channels.cache
-				.filter((r) => r.type === 0)
-				.forEach((channel) => {
-					num++;
-					loop += `**#${num}** - ${channel.name}\nID: ${channel.id}\nRaw Position: ${channel.rawPosition}\nnsfw ?: ${channel.nsfw}\n\n\n`;
-				});
-				let file = new MessageAttachment(Buffer.from(loop, 'utf-8'), 'channels.txt')
-			return await interaction.reply({
-				content: `**\`💬\` ${interaction.guild.name}** Text Channels :`, files: [file],
-			});
-		}
-		if (type === 'voice') {
-			let num = 0;
-			let loop = '';
-			interaction.guild.channels.cache
-				.filter((r) => r.type === 2)
-				.forEach((channel) => {
-					num++;
-					loop += `**#${num}** - ${channel.name}\nID: ${channel.id}\nRaw Position: ${channel.rawPosition}\nRegion: ${channel.rtcRegion}\nBitrate: ${channel.bitrate}\nUser limit: ${channel.userLimit}\n\n\n`;
-				});
-				let file = new MessageAttachment(Buffer.from(loop, 'utf-8'), 'channels.txt')
-			return interaction.reply({
-				content: `**\`🔊\` ${interaction.guild.name}** Voice Channels :`, files: [file]
-			});
-		}
-		if (type === 'category') {
-			let num = 0;
-			let loop = '';
-			await interaction.guild.channels.cache
-				.filter((r) => r.type === 4)
-				.forEach((channel) => {
-					num++;
-					loop += `**#${num}** - ${channel.name}\nID: ${channel.id}\nRaw Position: ${channel.rawPosition}\n\n\n`;
-				})
-			let file = new MessageAttachment(Buffer.from(loop, 'utf-8'), 'channels.txt')
-			return await interaction.reply({
-				content: `**\`📂\` ${interaction.guild.name}** Category Channels :`, files: [file]
-			});
-		}
+		const type = interaction.options.getInteger('type')
+
+		const channels = await interaction.guild.channels.cache.filter((r) => r.type === type).map((channel) => `Name: ${channel.name} ID: ${channel.id}`).join('\n')
+		let file = new MessageAttachment(Buffer.from(channels, 'utf-8'), 'channels.txt')
+		return await interaction.reply({
+			content: `**\`💬\` ${interaction.guild.name}** Text Channels :`, files: [file],
+		});
+
 	},
 };
