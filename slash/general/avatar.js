@@ -1,5 +1,4 @@
-const { Discord, EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
-
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 module.exports = {
 	name: 'avatar',
 	description: 'Get user avatar',
@@ -24,18 +23,19 @@ module.exports = {
 	],
 	category: 'general',
 	run: async (interaction) => {
-		const member = interaction.options.getMember('user') || interaction.member;
+		if(!interaction.isChatInputCommand()) return
+		const member = interaction.options.getMember('user')
 		const args = interaction.options.getSubcommand()
 		if (args == 'server') {
-			let icon = interaction.guild.iconURL({ dynamic: true, size: 4096 })
+			let icon = interaction.guild?.iconURL({ size: 4096 })
 			const embed = new EmbedBuilder()
-				.setAuthor({ name: member.user.tag, iconURL: member.avatarURL({ dynamic: true }) })
+				.setAuthor({ name: member.user.tag, iconURL: member?.avatar})
 				.setDescription(`[Icon Link](${icon})`)
 				.setImage(icon)
-				.setFooter({ text: `Requested By ${interaction.user.tag}\nWant to keep your avatar private from this command ? Check our privacy commands`, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) });
+				.setFooter({ text: `Requested By ${interaction.user.tag}\nWant to keep your avatar private from this command ? Check our privacy commands`, iconURL: interaction.user.displayAvatarURL({ size: 4096 }) });
 				const row = new ActionRowBuilder().addComponents(
 					new ButtonBuilder()
-						.setStyle('Link')
+						.setStyle(ButtonStyle.Link)
 						.setURL(icon)
 						.setLabel('Server Icon'),
 				);
@@ -43,14 +43,14 @@ module.exports = {
 		}
 		if(args == 'user'){
 		const embed = new EmbedBuilder()
-			.setAuthor({ name: member.user.tag, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
-			.setDescription(`[Avatar Link](${member.user.displayAvatarURL({ dynamic: true, size: 4096 })})`)
-			.setImage(member.user.displayAvatarURL({ dynamic: true, size: 4096 }))
-			.setFooter({ text: `Requested By ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL({ dynamic: true } )});
+			.setAuthor({ name: member.user.tag, iconURL: member.user.displayAvatarURL({ size: 4096 }) })
+			.setDescription(`[Avatar Link](${member?.avatar})`)
+			.setImage(member?.avatar)
+			.setFooter({ text: `Requested By ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL({ size: 4096 } )});
 			const row = new ActionRowBuilder().addComponents(
 				new ButtonBuilder()
-					.setStyle('Link')
-					.setURL(member.user.displayAvatarURL({ dynamic: true, size: 4096 }))
+					.setStyle(ButtonStyle.Link)
+					.setURL(member.user.displayAvatarURL({ size: 4096 }))
 					.setLabel('Member Avatar'),
 			);
 		return interaction.reply({ embeds: [embed], components: [row] });
