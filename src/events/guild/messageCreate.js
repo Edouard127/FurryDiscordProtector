@@ -14,7 +14,7 @@ const { createClient } = require('redis');
 const aa = require('../../utils/insertDataRedis')
 
 
-const client_r = createClient({ url: `redis://default:${process.env.REDIS_MASTER_PASSWORD}@172.31.214.125:6379` });
+const client_r = createClient({ url: `redis://default:${process.env.REDIS_MASTER_PASSWORD}@172.18.180.222:6379` });
     client_r.connect()
 
 var aaa = new aa().health()
