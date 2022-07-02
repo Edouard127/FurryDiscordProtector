@@ -3,6 +3,11 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'emojis',
 	description: 'Get a list of emojis',
+	description_localizations: {
+		"fr": "Obtenir la liste d'emojis",
+		"es-ES": "Obtener la lista de emojis",
+		"ru": "Получить список эмодзи"
+	},
 	category: 'general',
 	run: async (interaction) => {
 		const emojis = interaction.guild.emojis.cache.map((r) => r).join(' ');

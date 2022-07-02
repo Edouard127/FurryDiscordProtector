@@ -5,6 +5,11 @@ const createEmbed = require('../../utils/createEmbed.js')
 module.exports = {
 	name: 'ping',
 	description: 'Get bot latency',
+	description_localizations: {
+		"fr": "Obtenir la latence du bot",
+		"es-ES": "Obtener la latencia del bot",
+		"ru": "Получить задержку бота"
+	},
 	timeout: 2000,
 	category: 'general',
 	run: async (interaction, client) => {

@@ -9,7 +9,7 @@ const { MessageAttachment, ActionRowBuilder, ButtonBuilder } = require("discord.
 module.exports = {
 
     name: 'proxy',
-    description: 'Role playing',
+    description: 'Proxy users',
     options: [
         {
             name: 'register',

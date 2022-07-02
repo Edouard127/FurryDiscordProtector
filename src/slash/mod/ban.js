@@ -143,6 +143,10 @@ module.exports = {
 						{
 							label: "Harassment",
 							value: 'Harassment'
+						},
+						{
+							label: "Other",
+							value: 'Other'
 						}
 					),
 			);

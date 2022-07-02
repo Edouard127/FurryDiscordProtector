@@ -16,11 +16,21 @@ const badges = { //see https://discord.com/developers/docs/resources/user#user-o
 
 module.exports = {
 	name: 'badges',
-	description: 'Get list of members with badges',
+	description: 'Get list of members from a badge',
+	description_localizations: {
+		"fr": "Obtenir la liste des membres d'un badge",
+		"es-ES": "Obtener la lista de miembros con insignias",
+		"ru": "Получить список пользователей со значками"
+	},
 	options: [
 		{
 			name: 'badge',
-			description: 'Badge you want to get list of members for',
+			description: 'The icon from which you want to retrieve the list of users',
+			description_localizations: {
+				"fr": "Le badge vous voulez récupérer la liste d'utilisateur",
+				"es-ES": "La insignia de la que desea recuperar la lista de usuarios",
+				"ru": "Значок, из которого вы хотите получить список пользователей"
+			},
 			type: 4,
 			required: true,
 			choices: [

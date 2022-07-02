@@ -16,11 +16,21 @@ const channelTypes = {
 
 module.exports = {
 	name: 'channel-info',
-	description: 'Show info about channel in this server',
+	description: 'Show channel informations',
+	description_localizations: {
+		"fr": "Afficher les informations sur le channel",
+		"es-ES": "Mostrar información del canal",
+		"ru": "Показать информацию о канале"
+	},
 	options: [
 		{
 			name: 'channel',
-			description: 'Select channel you need info about',
+			description: 'Select the channel on which you want to get information',
+			description_localizations: {
+				"fr": "Sélectionnez le channel sur lequel vous souhaitez obtenir les informations",
+				"es-ES": "Seleccione el canal sobre el que desea obtener información",
+				"ru": "Выберите канал, по которому вы хотите получить информацию"
+			},
 			type: 7,
 			required: true,
 		},

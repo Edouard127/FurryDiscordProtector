@@ -8,11 +8,21 @@ const channelType = {
 
 module.exports = {
 	name: 'channels',
-	description: 'Shows specific type of channels in this server.',
+	description: 'Shows the specific type of channels in this server.',
+	description_localizations: {
+		"fr": "Montre le type spécifique de channels dans ce serveur.",
+		"es-ES": "Muestra el tipo específico de canales en este servidor.",
+		"ru": "Показывает конкретный тип каналов в данном сервере."
+	},
 	options: [
 		{
 			name: 'type',
-			description: 'Type of channel to show.',
+			description: 'Type of channels.',
+			description_localizations: {
+				"fr": "Type de channels",
+				"es-ES": "Tipo de canales",
+				"ru": "Тип каналов"
+			},
 			type: 4,
 			required: true,
 			choices: [

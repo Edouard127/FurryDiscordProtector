@@ -4,10 +4,20 @@ const humanizeDuration = require('humanize-duration');
 module.exports = {
 	name: 'help',
 	description: 'Get list of all bot commands',
+	description_localizations: {
+		"fr": "Obtenir une liste des commandes du bot",
+		"es-ES": "Obtener una lista de los comandos del bot",
+		"ru": "Получить список команд бота"
+	},
 	options: [
 		{
 			name: 'command',
-			description: 'Command you need help for',
+			description: 'Command you need help with',
+			description_localizations: {
+				"fr": "Commande pour laquelle vous avez besoin d'aide",
+				"es-ES": "Comando con el que necesita ayuda",
+				"ru": "Команда, с которой вам нужна помощь",
+			},
 			type: 3,
 		},
 	],

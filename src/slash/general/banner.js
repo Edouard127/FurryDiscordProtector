@@ -3,10 +3,20 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 module.exports = {
 	name: 'banner',
 	description: 'Get user banner',
+	description_localizations: {
+		"fr": "Obtenir la bannière de l'utilisateur",
+		"es-ES": "Obtener el banner del usuario",
+		"ru": "Получить баннер пользователя"
+	},
 	options: [
 		{
 			name: 'user',
-			description: 'user to get banner for',
+			description: 'User to receive a banner from',
+			description_localizations: {
+				"fr": "Utilisateur pour obtenir la bannière",
+				"es-ES": "Usuario para obtener la pancarta de",
+				"ru": "Пользователь для получения баннера от"
+			},
 			type: 6,
 		},
 	],

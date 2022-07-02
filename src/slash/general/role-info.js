@@ -4,17 +4,30 @@ const humanizeDuration = require('humanize-duration');
 module.exports = {
 	name: 'role-info',
 	permissions: 'MANAGE_ROLES',
-	description: 'Display info about role',
+	description: "Display info about a role",
+	description_localizations: {
+		"en-US": 'Display info about role',
+		"fr": "Afficher les informations sur le role",
+		"es-ES": "Mostrar información sobre el rol",
+		"ru": "Отображение информации о роли"
+	},
 	options: [
 		{
 			name: 'role',
-			description: 'Role to display info about',
+			description: "Role to display info about",
+			description_localizations: {
+				"en-US": "Role to display info about",
+				"fr": "Le role à montrer",
+				"es-ES": "Función para mostrar información sobre",
+				"ru": "Роль для отображения информации о"
+			},
 			type: 8,
 			required: true,
 		},
 	],
 	category: 'mod',
 	run: async (interaction) => {
+		console.log(interaction)
 		const role = interaction.options.getRole('role');
 		const distece = Date.now() - role.createdTimestamp;
 		const embed = new EmbedBuilder()
