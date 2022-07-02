@@ -1,0 +1,10 @@
+{
+  "apiVersion": "stable.storage.com/v1",
+  "kind": "Store",
+  "metadata": {
+    "name": "server-id"
+  },
+  "spec": {
+    "id": "change_me"
+  }
+}
