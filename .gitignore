@@ -1,6 +1,4 @@
 json.sqlite
-src/utils/languages/config/languages.json
-src/utils/languages/config/languages.json
-src/utils/languages/config/languages.json
 node_modules
 k8s.txt
+package-lock.json
