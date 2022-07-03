@@ -1,8 +1,8 @@
 import { EmbedBuilder, Client, Channel } from 'discord.js'
-import slash from '../../slash'
+import slash from '../../../slash'
 import 'colors'
 
-module.exports = async (client: Client) => {
+export default async(client: Client) => {
     client.user!.setStatus('idle')
 	//client.user.setActivity(`${client.guilds.cache.size} servers to protect`, { type: 3 });
     client.user!.setActivity(`❌Criticals functions not working❌`, { type: 3 });
