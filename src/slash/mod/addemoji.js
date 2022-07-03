@@ -34,7 +34,7 @@ module.exports = {
 				return await interaction.reply({ content: err.toString() })
 			}
 			interaction.reply({
-				content: createEmoji.animated ? `Added <a:${createEmoji.name}:${createEmoji.id}> emoji` : `Added <:${createEmoji.name}:${createEmoji.id}> emoji`,
+				content: `Added <${createEmoji.animated ? "a" : ""}:${createEmoji.name}:${createEmoji.id}> emoji`,
 			});
 		} else {
 			interaction.reply({
