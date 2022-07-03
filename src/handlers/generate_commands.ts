@@ -1,10 +1,9 @@
-import { readdirSync, writeFileSync } from 'fs';
-const fs = require('fs');
+import { readdirSync, readFileSync, writeFileSync } from 'fs';
 const yaml = require('js-yaml');
 const dir_ = __dirname + '\\../\/generation/';
 export default async () => {
     readdirSync(dir_).map(async (dir: string) => {
-        const data = yaml.load(fs.readFileSync(dir_ + dir, 'utf8'));
+        const data = yaml.load(readFileSync(dir_ + dir, 'utf8'));
         const content = data
         var newFunc = `/////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// SERVER ${content.guildId} ///////////////////////////////////
@@ -21,3 +20,6 @@ module.exports = customFunction_${content.guildId}
         
     })
 }
+/**
+ * Need recode
+ */
